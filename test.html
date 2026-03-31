@@ -353,7 +353,7 @@
       }
 
       // Salva
-      saveResult({ correct, total, pct, avgTempo, byTema, gruppo, data: new Date().toLocaleDateString('it-IT'), timestamp: Date.now() });
+      saveResult({ correct, total, pct, avgTempo, byTema, gruppo, data: new Date().toLocaleDateString('it-IT'), timestamp: Date.now().toString() });
     }
 
     function goMicrosim(tema) {
