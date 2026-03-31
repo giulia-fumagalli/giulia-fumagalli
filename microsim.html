@@ -131,7 +131,7 @@
     let allQuestions = [], currentTema = '', testQuestions = [], currentIndex = 0, answers = [];
     let timerInterval, questionStartTime;
 
-    fetch('domande.json')
+    fetch('domande.json?v=' + Date.now())
       .then(r => r.json())
       .then(data => {
         allQuestions = data;
