@@ -139,15 +139,21 @@
     renderAdmin();
   }
 
-  function loadResults(gruppo) {
-    if (gruppo === 'ALL') {
-      return JSON.parse(localStorage.getItem('alpha_test_results_ALL') || '[]');
+  const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwgb-mm9AedoDRlqUjxcvw6N0JDmvsdkiBbBEVfUzZLv964OK2JN4jD2qPbU2KMavCDYw/exec';
+
+  async function loadResults(gruppo) {
+    try {
+      const res = await fetch(SHEETS_URL + '?gruppo=' + encodeURIComponent(gruppo));
+      const data = await res.json();
+      return data;
+    } catch(e) {
+      if (gruppo === 'ALL') return JSON.parse(localStorage.getItem('alpha_test_results_ALL') || '[]');
+      return JSON.parse(localStorage.getItem('alpha_test_results_' + gruppo) || '[]');
     }
-    return JSON.parse(localStorage.getItem('alpha_test_results_' + gruppo) || '[]');
   }
 
-  function renderAdmin() {
-    const results = loadResults(currentGruppo);
+  async function renderAdmin() {
+    const results = await loadResults(currentGruppo);
 
     if (results.length === 0) {
       document.getElementById('empty-state').style.display = 'block';
