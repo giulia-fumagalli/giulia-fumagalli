@@ -222,11 +222,16 @@
       options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { min: 0, max: 100, grid: { color: 'rgba(26,37,64,0.05)' } }, x: { grid: { display: false } } } }
     });
 
-    // Per macrotema — legge direttamente le colonne dal Google Sheet
+    // Per macrotema — legge da byTema (localStorage)
     const TEMI_COLS = ['Risk Management','Security aziendale','Normativa','Crisis & emergenze','Geopolitica','Sicurezza informazioni'];
     const temiAvg = {};
     TEMI_COLS.forEach(t => {
       const vals = results.map(r => {
+        // localStorage format: r.byTema[t].correct / r.byTema[t].total
+        if (r.byTema && r.byTema[t]) {
+          return Math.round((r.byTema[t].correct / r.byTema[t].total) * 100);
+        }
+        // Google Sheets format: r[t]
         const v = r[t];
         if (v === undefined || v === null || v === '—') return null;
         const n = typeof v === 'string' ? parseInt(v) : v;
