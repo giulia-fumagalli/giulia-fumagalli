@@ -237,11 +237,7 @@
       const diff = esameDate - new Date();
       if (diff <= 0) { document.getElementById('s-countdown').textContent = '🎓 Oggi!'; return; }
       const d = Math.floor(diff / 86400000);
-      const h = Math.floor((diff % 86400000) / 3600000);
-      const m = Math.floor((diff % 3600000) / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      document.getElementById('s-countdown').textContent =
-        d + 'g ' + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+      document.getElementById('s-countdown').textContent = d + ' giorni';
     }
     update();
     setInterval(update, 1000);
@@ -310,39 +306,111 @@
     document.getElementById('history-table').innerHTML = `<table><thead><tr><th>Data</th><th>Domande</th><th>Corrette</th><th>Punteggio</th><th>Tempo medio</th></tr></thead><tbody>${results.slice().reverse().map((r,i)=>`<tr style="background:${i%2===0?'white':'#faf9f7'}"><td>${r.data||'—'}</td><td>${r.total||'—'}</td><td>${r.correct||'—'}</td><td><span class="score-pill" style="background:${r.pct>=70?'rgba(58,140,92,0.1)':'rgba(192,57,43,0.08)'};color:${r.pct>=70?'var(--green)':'var(--red)'}">${r.pct}%</span></td><td>${r.avgTempo&&r.avgTempo!=='—'?r.avgTempo+'s':'—'}</td></tr>`).join('')}</tbody></table>`;
   }
 
-  // ── AI ASSISTANT ──
-  const SYSTEM_PROMPT = `Sei l'assistente virtuale del corso "Il Professionista di Security" - gruppo Interaziendale.
-Rispondi in italiano, in modo cordiale e preciso. Rispondi SOLO a domande relative al corso.
-Per domande non pertinenti di' gentilmente che puoi rispondere solo su argomenti del corso.
+  // ── AI ASSISTANT (logica locale) ──
+  const MODULI = [
+    { n:1, titolo:'Security Management', date:'11-12 febbraio 2026', presenza:true },
+    { n:2, titolo:'Enterprise Risk Management', date:'5-7 marzo 2026', presenza:false },
+    { n:3, titolo:'Sicurezza Integrata', date:'26-28 marzo 2026', presenza:true },
+    { n:4, titolo:'Strategie, Management e Budgeting', date:'9-11 aprile 2026', presenza:false },
+    { n:5, titolo:'Psicologia del rischio e organizzazione aziendale', date:'7-9 maggio 2026', presenza:true },
+    { n:6, titolo:'Physical Security A', date:'21-23 maggio 2026', presenza:false },
+    { n:7, titolo:'Physical Security B', date:'4-6 giugno 2026', presenza:true },
+    { n:8, titolo:'Safety e Security', date:'17-20 giugno 2026', presenza:false },
+    { n:9, titolo:'Emergency & Crisis Management (L'Aquila)', date:'30 giugno - 2 luglio 2026', presenza:true },
+    { n:10, titolo:'Incident Management & Business Continuity', date:'10-12 settembre 2026', presenza:false },
+    { n:11, titolo:'Information & Cyber Security', date:'24-26 settembre 2026', presenza:true },
+    { n:12, titolo:'Security & Resilience Compliance', date:'8-10 ottobre 2026', presenza:false },
+    { n:13, titolo:'Diritto, Investigation & Intelligence', date:'22-24 ottobre 2026', presenza:true },
+    { n:14, titolo:'Etica e Diritto', date:'5-7 novembre 2026', presenza:false },
+    { n:15, titolo:'Esami finali', date:'26-27 novembre 2026', presenza:true }
+  ];
 
-MODALITÀ D'ESAME (3 prove, 26-27/11/2026, in presenza):
-1. Prova scritta a risposta multipla: 100 domande, 1 ora
-2. Progetto di Security (scritto): 1 ora e 30 minuti
-3. Prova orale: 15 minuti, presentazione tesina su argomento a scelta nel mondo della Security
+  const MODULI_DATES = [
+    new Date('2026-02-11'), new Date('2026-03-05'), new Date('2026-03-26'),
+    new Date('2026-04-09'), new Date('2026-05-07'), new Date('2026-05-21'),
+    new Date('2026-06-04'), new Date('2026-06-17'), new Date('2026-06-30'),
+    new Date('2026-09-10'), new Date('2026-09-24'), new Date('2026-10-08'),
+    new Date('2026-10-22'), new Date('2026-11-05'), new Date('2026-11-26')
+  ];
 
-CALENDARIO (🌸 = in presenza):
-Modulo 1 - Security Management: 11-12/02/2026 🌸
-Modulo 2 - Enterprise Risk Management: 05-07/03/2026
-Modulo 3 - Sicurezza Integrata: 26-28/03/2026 🌸
-Modulo 4 - Strategie, Management e Budgeting: 09-11/04/2026
-Modulo 5 - Psicologia del rischio e organizzazione: 07-09/05/2026 🌸 (7 maggio)
-Modulo 6 - Physical Security A: 21-23/05/2026
-Modulo 7 - Physical Security B: 04-06/06/2026 🌸
-Modulo 8 - Safety e Security: 17-20/06/2026
-Modulo 9 - Emergency & Crisis Management (L'Aquila): 30/06-02/07/2026 🌸 (3 giorni)
-Modulo 10 - Incident Management & Business Continuity: 10-12/09/2026 (11/09 🌸)
-Modulo 11 - Information & Cyber Security: 24-26/09/2026 🌸
-Modulo 12 - Security & Resilience Compliance: 08-10/10/2026
-Modulo 13 - Diritto, Investigation & Intelligence: 22-24/10/2026 🌸
-Modulo 14 - Etica e Diritto: 05-07/11/2026
-Modulo 15 - ESAMI FINALI: 26-27/11/2026 🌸`;
+  function risposta(domanda) {
+    const d = domanda.toLowerCase();
+    const oggi = new Date();
 
-  let aiHistory = [];
+    // Prossima lezione
+    if (d.includes('prossim') || d.includes('prossim') || d.includes('quando') && (d.includes('lezi') || d.includes('modul'))) {
+      const idx = MODULI_DATES.findIndex(dt => dt >= oggi);
+      if (idx === -1) return 'Il corso è terminato. Gli esami finali si sono tenuti il 26-27 novembre 2026.';
+      const m = MODULI[idx];
+      return `Il prossimo appuntamento è il Modulo ${m.n} — ${m.titolo}, in programma ${m.date}.${m.presenza ? ' 🌸 Si tratta di una lezione IN PRESENZA.' : ' La lezione si svolge online.'}`;
+    }
+
+    // Esami
+    if (d.includes('esam') || d.includes('prova') || d.includes('26 novembre') || d.includes('27 novembre')) {
+      if (d.includes('modal') || d.includes('come') || d.includes('struttur') || d.includes('funzion')) {
+        return 'L'esame finale si compone di 3 prove, tutte in presenza il 26-27 novembre 2026:
+
+1️⃣ Prova scritta a risposta multipla — 100 domande in 1 ora
+2️⃣ Progetto di Security (scritto) — 1 ora e 30 minuti
+3️⃣ Prova orale — 15 minuti per presentare la tesina su un argomento a scelta nel mondo della Security';
+      }
+      return 'Gli esami finali si tengono il 26-27 novembre 2026 in presenza. Si compongono di 3 prove: una scritta a risposta multipla (100 domande, 1 ora), il Progetto di Security (1h30), e la prova orale con presentazione della tesina (15 minuti).';
+    }
+
+    // Presenza
+    if (d.includes('presenza') || d.includes('presenz') || d.includes('fisic') || d.includes('vivo')) {
+      const inPresenza = MODULI.filter(m => m.presenza);
+      return 'Le lezioni in presenza 🌸 sono:
+
+' + inPresenza.map(m => `• Modulo ${m.n} — ${m.titolo} (${m.date})`).join('
+');
+    }
+
+    // Calendario completo
+    if (d.includes('calendar') || d.includes('tutti') || d.includes('programm') || d.includes('moduli')) {
+      return 'Ecco il calendario completo del corso:
+
+' + MODULI.map(m => `Mod. ${m.n} — ${m.titolo}
+   📅 ${m.date}${m.presenza ? ' 🌸' : ''}`).join('
+
+');
+    }
+
+    // Tesina / orale
+    if (d.includes('tesin') || d.includes('oral') || d.includes('argomento')) {
+      return 'La prova orale consiste nella presentazione di una tesina su un argomento a scelta nel mondo della Security. Avrete 15 minuti per la presentazione. La scelta dell'argomento è libera, purché attinente ai temi del corso.';
+    }
+
+    // Certificazione
+    if (d.includes('certif') || d.includes('10459') || d.includes('qualific')) {
+      return 'Al termine del corso è possibile conseguire la certificazione "Professionista di Security" in conformità alla norma UNI 10459:2017, nei livelli: Security Expert, Security Manager o Senior Security Manager.';
+    }
+
+    // Specifico modulo
+    for (let m of MODULI) {
+      if (d.includes('modulo ' + m.n) || d.includes('mod ' + m.n) || d.includes(m.titolo.toLowerCase().split(' ').slice(0,2).join(' '))) {
+        return `Modulo ${m.n} — ${m.titolo}
+📅 Date: ${m.date}
+📍 Modalità: ${m.presenza ? 'IN PRESENZA 🌸' : 'Online'}`;
+      }
+    }
+
+    // Default
+    return 'Posso aiutarti con informazioni su:
+• 📅 Date e calendario delle lezioni
+• 🏫 Lezioni in presenza
+• 📝 Modalità e struttura degli esami
+• 📚 Programma e contenuti dei moduli
+• 🎓 Certificazione finale
+
+Prova a chiedermi qualcosa di più specifico!';
+  }
 
   function addMsg(role, text) {
     const div = document.getElementById('ai-messages');
     const el = document.createElement('div');
     el.className = role === 'user' ? 'ai-msg-user' : 'ai-msg-bot';
+    el.style.whiteSpace = 'pre-line';
     el.textContent = text;
     div.appendChild(el);
     div.scrollTop = div.scrollHeight;
@@ -353,44 +421,15 @@ Modulo 15 - ESAMI FINALI: 26-27/11/2026 🌸`;
     sendAI();
   }
 
-  async function sendAI() {
+  function sendAI() {
     const input = document.getElementById('ai-input');
     const text = input.value.trim();
     if (!text) return;
     input.value = '';
     addMsg('user', text);
-    aiHistory.push({ role: 'user', content: text });
-
-    // Typing indicator
-    const typing = document.createElement('div');
-    typing.className = 'ai-msg-bot';
-    typing.id = 'ai-typing';
-    typing.textContent = '...';
-    document.getElementById('ai-messages').appendChild(typing);
-
-    try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
-        body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 400,
-          system: SYSTEM_PROMPT,
-          messages: aiHistory
-        })
-      });
-      const data = await res.json();
-      document.getElementById('ai-typing')?.remove();
-      const reply = data.content?.[0]?.text || 'Errore nella risposta. Riprova.';
-      addMsg('assistant', reply);
-      aiHistory.push({ role: 'assistant', content: reply });
-    } catch(e) {
-      document.getElementById('ai-typing')?.remove();
-      addMsg('assistant', 'Si è verificato un errore di connessione. Riprova tra qualche istante.');
-    }
+    setTimeout(() => {
+      addMsg('assistant', risposta(text));
+    }, 300);
   }
 
   // ── INIT ──
