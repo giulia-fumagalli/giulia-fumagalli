@@ -257,8 +257,8 @@
 
   // ── SOMMARIO ──
   function updateSummary() {
-    const results = loadResults();
     startCountdown();
+    const results = loadResults();
     if (results.length === 0) return;
     const scores = results.map(r => r.pct);
     const tempi = results.map(r => r.avgTempo).filter(v => v && v !== '—' && !isNaN(v));
@@ -482,9 +482,12 @@ CERTIFICAZIONE: Al termine è possibile conseguire la certificazione "Profession
     try {
       const res = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
         body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
+          model: 'claude-haiku-4-5-20251001',
           max_tokens: 500,
           system: SYSTEM_PROMPT,
           messages: aiMessages
