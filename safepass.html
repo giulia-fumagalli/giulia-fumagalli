@@ -139,10 +139,8 @@ body{font-family:Outfit,sans-serif;background:var(--navy);color:#fff;min-height:
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Home
   </a>
-  <a href="index.html" style="position:absolute;top:24px;left:28px;display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.35);text-decoration:none;transition:color 0.2s" onmouseover="this.style.color='rgba(184,148,63,0.8)'" onmouseout="this.style.color='rgba(255,255,255,0.35)'">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L4 7l5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Torna al sito
-  </a>
+  
+  
   <div class="lic"><svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M28 6L6 16l9 4 4 9 4-5 5-18z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M15 20l4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
   <div class="lt">SafePass</div>
   <div class="ls">Crisis &amp; Travel Security Guide</div>
@@ -158,7 +156,11 @@ body{font-family:Outfit,sans-serif;background:var(--navy);color:#fff;min-height:
 <div id="app" style="display:none;flex-direction:column;min-height:100vh">
   <div class="topbar">
     <div style="display:flex;align-items:center;gap:24px">
-      <a href="index.html" style="display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.4);text-decoration:none" onmouseover="this.style.color='#d4af6a'" onmouseout="this.style.color='rgba(255,255,255,0.4)'"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 3L4 7l5 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>&#8592; Torna al sito</a>
+      <a href="index.html" style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s" onmouseover="this.style.color='#d4af6a'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Home
+      </a>
+      
       <div class="bname">SafePass</div>
     </div>
     <div style="display:flex;align-items:center;gap:12px">
@@ -167,7 +169,7 @@ body{font-family:Outfit,sans-serif;background:var(--navy);color:#fff;min-height:
         <button class="tab active" id="tai" onclick="setMode('ai')">AI Assistant</button>
         <button class="tab" id="tdb" onclick="setMode('db')">Procedure</button>
         <button class="tab" id="tpaesi" onclick="setMode('paesi')">Paesi</button>
-        <button class="tab" id="tman" onclick="setMode('man')">Manuale</button>
+        <button class="tab" id="tman" onclick="openManuale()">Manuale</button>
       </div>
       <button style="font-size:12px;color:rgba(255,255,255,.3);background:none;border:none;cursor:pointer" onclick="doLogout()">Esci</button>
     </div>
@@ -235,7 +237,15 @@ body{font-family:Outfit,sans-serif;background:var(--navy);color:#fff;min-height:
   </div>
 </div>
 
-      <div id="pman" style="display:none">
+      <div id="pman" style="display:none;position:fixed;inset:0;background:var(--navy);z-index:300;overflow-y:auto;padding:0">
+        <div style="background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.08);padding:16px 32px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:10;backdrop-filter:blur(10px)">
+          <button onclick="closeManuale()" style="display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);background:none;border:none;cursor:pointer;transition:color 0.3s" onmouseover="this.style.color='#d4af6a'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Dashboard
+          </button>
+          <div style="font-family:Cormorant Garamond,serif;font-size:20px;font-weight:300;color:#fff">Manuale Pre-Partenza</div>
+        </div>
+        <div style="padding:32px 40px;max-width:900px;margin:0 auto">
         <div class="ptitle">Manuale Pre-Partenza</div>
         <div style="font-size:13px;color:rgba(255,255,255,.35);margin-bottom:24px">Tutto ciò che devi preparare prima di una trasferta di lavoro — con fonti ufficiali e soluzioni alternative se hai dimenticato qualcosa</div>
 
@@ -258,6 +268,7 @@ body{font-family:Outfit,sans-serif;background:var(--navy);color:#fff;min-height:
         </div>
 
         <div id="man-content"></div>
+        </div>
       </div>
 
 <div class="ov" id="ovp"><div class="det"><button class="detx" onclick="closeOv('ovp')">✕</button><div class="dem" id="dem"></div><div class="dtitle" id="dtitle"></div><div class="dmeta" id="dmeta"></div><div class="dbody" id="dbody"></div><div class="fonte" id="dfonte"></div></div></div>
@@ -309,18 +320,14 @@ updateConn();
 
 function setMode(m) {
   mode = m;
-  ["ai","db","paesi","man"].forEach(function(p) {
+  ["ai","db","paesi"].forEach(function(p) {
     document.getElementById("p" + p).style.display = p === m ? "block" : "none";
     document.getElementById("t" + p).classList.toggle("active", p === m);
   });
+  document.getElementById("tman").classList.remove("active");
   if (m === "db") renderCards(DB, curCat);
   if (m === "paesi") renderPaesi(curReg);
-  if (m === "man") {
-    setTimeout(function() {
-      var firstTab = document.querySelector("#man-nav .rtab");
-      if (firstTab) showCap(0, firstTab);
-    }, 50);
-  }
+
 }
 
 function onSearch() {
@@ -795,6 +802,19 @@ var CAPITOLI = [
   }
 ];
 
+function openManuale() {
+  document.getElementById("pman").style.display = "block";
+  document.getElementById("tman").classList.add("active");
+  setTimeout(function() {
+    var firstTab = document.querySelector("#man-nav .rtab");
+    if (firstTab) showCap(0, firstTab);
+  }, 50);
+}
+function closeManuale() {
+  document.getElementById("pman").style.display = "none";
+  document.getElementById("tman").classList.remove("active");
+}
+
 function showCap(idx, el) {
   document.querySelectorAll("#man-nav .rtab").forEach(function(t) { t.classList.remove("active"); });
   if (el) el.classList.add("active");
@@ -820,9 +840,6 @@ function showCap(idx, el) {
   document.getElementById("man-content").innerHTML = html;
 }
 
-var aiHist = [];
-var AI_SYS = "Sei SafePass, assistente esperto in sicurezza per viaggiatori aziendali. Rispondi SEMPRE in italiano, in modo chiaro e pratico con procedure step-by-step. In situazioni di pericolo: indica SEMPRE di chiamare il 112 come prima azione. Cita SEMPRE le fonti (Protezione Civile, WHO, FEMA, Farnesina). Tono professionale e rassicurante.";
-
 function addAIMsg(role, text) {
   var d = document.getElementById("aimsgs");
   var el = document.createElement("div");
@@ -835,32 +852,98 @@ function addAIMsg(role, text) {
 
 function qa(t) { document.getElementById("aiin").value = t; sendAI(); }
 
+// Smart local AI using database content
+function smartSearch(query) {
+  var q = query.toLowerCase();
+  var keywords = {
+    "terremoto": 1, "sisma": 1, "scossa": 1,
+    "blackout": 2, "corrente": 2, "elettrico": 2, "luce": 2,
+    "conflitto": 3, "guerra": 3, "attacchi": 3, "militare": 3, "zona": 3, "instabilita": 3,
+    "passaporto": 4, "documenti": 4, "furto": 4, "perso": 4, "smarrito": 4,
+    "medica": 5, "medico": 5, "ospedale": 5, "ferito": 5, "malato": 5, "ambulanza": 5,
+    "alluvione": 6, "inondazione": 6, "acqua": 6, "esondazione": 6,
+    "attacco": 7, "terrorismo": 7, "sparo": 7, "bomba": 7,
+    "numeri": 8, "emergenza": 8, "chiamare": 8, "telefono": 8,
+    "tropicale": 9, "malaria": 9, "dengue": 9, "febbre": 9, "malattia": 9,
+    "volo": 10, "aereo": 10, "bagaglio": 10, "cancellato": 10,
+    "uragano": 11, "tifone": 11, "ciclone": 11, "vento": 11,
+    "furto": 12, "rapina": 12, "sicurezza": 12, "aggressione": 12
+  };
+  var bestId = null, bestScore = 0;
+  for (var kw in keywords) {
+    if (q.includes(kw)) {
+      var id = keywords[kw];
+      var score = kw.length;
+      if (score > bestScore) { bestScore = score; bestId = id; }
+    }
+  }
+  return bestId;
+}
+
+function buildReply(q) {
+  var id = smartSearch(q);
+  if (id) {
+    var entry = DB.find(function(e) { return e.id === id; });
+    if (entry) {
+      var clean = entry.body.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+      return entry.em + " " + entry.title.toUpperCase() + "
+
+" + clean + "
+
+" + entry.fonte.replace(/<[^>]+>/g, "");
+    }
+  }
+  // Generic response
+  var matches = DB.filter(function(e) {
+    var qlow = q.toLowerCase();
+    return e.title.toLowerCase().includes(qlow) || e.tags.some(function(t) { return qlow.includes(t); });
+  });
+  if (matches.length > 0) {
+    var e = matches[0];
+    var clean = e.body.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+    return e.em + " " + e.title.toUpperCase() + "
+
+" + clean;
+  }
+  return "Non ho trovato una procedura specifica per questa situazione nel database. Usa la sezione Procedure per sfogliare tutte le schede disponibili, oppure in caso di pericolo chiama immediatamente il 112.
+
+Per domande generali sulla sicurezza in trasferta consulta il Manuale Pre-Partenza nella sezione dedicata.";
+}
+
 async function sendAI() {
   var inp = document.getElementById("aiin");
   var txt = inp.value.trim();
   if (!txt) return;
   inp.value = "";
   addAIMsg("user", txt);
-  aiHist.push({role:"user", content:txt});
   var typing = addAIMsg("assistant", "...");
-  try {
-    var r = await fetch("https://safepass-ai.giuliafumagalli1998.workers.dev", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ system: AI_SYS, messages: aiHist })
-    });
-    var raw = await r.text();
-    var data = JSON.parse(raw);
-    if (data.error) {
-      typing.textContent = "Errore API: " + (data.error.message || JSON.stringify(data.error));
-      return;
-    }
-    var reply = (data.content && data.content[0] && data.content[0].text) || "Risposta vuota. Raw: " + raw.substring(0,100);
-    typing.textContent = reply;
-    aiHist.push({role:"assistant", content:reply});
-  } catch(e) {
-    typing.textContent = "Errore: " + e.message;
+
+  // Try Cloudflare Worker first (if online)
+  if (navigator.onLine) {
+    try {
+      var r = await fetch("https://safepass-ai.giuliafumagalli1998.workers.dev", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system: "Sei SafePass, assistente esperto in sicurezza per viaggiatori aziendali italiani in trasferta. Rispondi SEMPRE in italiano, in modo chiaro e pratico con procedure step-by-step numerate. In situazioni di pericolo: indica SEMPRE di chiamare il 112 come prima azione. Cita le fonti ufficiali (Protezione Civile, WHO, FEMA, Farnesina). Tono professionale e rassicurante.",
+          messages: [{role:"user", content:txt}]
+        })
+      });
+      if (r.ok) {
+        var raw = await r.text();
+        var data = JSON.parse(raw);
+        if (data.content && data.content[0] && data.content[0].text) {
+          typing.textContent = data.content[0].text;
+          return;
+        }
+      }
+    } catch(e) {}
   }
+
+  // Fallback: smart local search
+  setTimeout(function() {
+    typing.textContent = buildReply(txt);
+  }, 600);
 }
 </script>
 </body>
