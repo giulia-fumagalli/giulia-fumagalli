@@ -1,337 +1,821 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Store — Giulia Fumagalli Security</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#1a2540;--navy-light:#1e2d4a;--gold:#b8943f;--gl:#d4af6a;
-  --cream:#f5f0e8;--white:#fff;--text:#1a2540;--muted:#8a8fa8;
-}
-body{font-family:Outfit,sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+  :root {
+    --navy: #0d1b2e;
+    --navy-mid: #162337;
+    --gold: #c9a96e;
+    --gold-light: #e8c98a;
+    --cream: #f0ead8;
+    --white: #ffffff;
+    --text-muted: rgba(255,255,255,0.45);
+  }
 
-/* HEADER */
-.header{background:var(--navy);padding:20px 48px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-.back-btn{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s}
-.back-btn:hover{color:var(--gl)}
-.header-brand{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:300;color:var(--white);letter-spacing:1px}
-.header-cart{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,0.5);cursor:pointer}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* HERO */
-.hero{background:var(--navy);padding:80px 48px 100px;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(184,148,63,0.12),transparent 60%)}
-.hero-label{font-size:11px;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
-.hero-title{font-family:"Cormorant Garamond",serif;font-size:72px;font-weight:300;color:var(--white);line-height:1.1;margin-bottom:16px;letter-spacing:-2px}
-.hero-sub{font-size:14px;color:rgba(255,255,255,0.4);letter-spacing:2px;text-transform:uppercase;margin-bottom:48px}
-.hero-line{width:60px;height:1px;background:var(--gold);margin:0 auto 48px;opacity:0.5}
-.hero-stats{display:flex;justify-content:center;gap:64px}
-.stat-num{font-family:"Cormorant Garamond",serif;font-size:36px;font-weight:300;color:var(--gl)}
-.stat-label{font-size:11px;color:rgba(255,255,255,0.35);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+  }
 
-/* COMING SOON BANNER */
-.coming-banner{background:rgba(184,148,63,0.12);border:1px solid rgba(184,148,63,0.3);padding:14px 48px;display:flex;align-items:center;justify-content:center;gap:12px}
-.coming-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
-.coming-text{font-size:13px;color:var(--gold);font-weight:500;letter-spacing:1px}
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 40px;
+    background: rgba(13,27,46,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(201,169,110,0.12);
+  }
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s;
+    text-decoration: none;
+  }
+  .nav-left:hover { color: var(--gold); }
+  .nav-left svg { width: 16px; height: 16px; }
 
-/* FILTERS */
-.filters-wrap{padding:40px 48px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.filters{display:flex;gap:8px;flex-wrap:wrap}
-.filter-btn{padding:8px 20px;border:1.5px solid rgba(26,37,64,0.15);border-radius:30px;font-size:12px;font-weight:500;letter-spacing:0.5px;cursor:pointer;background:transparent;color:var(--muted);transition:all 0.25s}
-.filter-btn:hover{border-color:var(--navy);color:var(--navy)}
-.filter-btn.active{background:var(--navy);color:var(--white);border-color:var(--navy)}
-.results-count{font-size:13px;color:var(--muted)}
+  .nav-center {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: var(--white);
+  }
 
-/* GRID */
-.grid-wrap{padding:32px 48px 80px}
-.cat-section{margin-bottom:56px}
-.cat-title{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:300;color:var(--navy);margin-bottom:6px}
-.cat-sub{font-size:13px;color:var(--muted);margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid rgba(26,37,64,0.08)}
-.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px}
-.product-card{background:var(--white);border-radius:12px;overflow:hidden;transition:all 0.3s;border:1px solid rgba(26,37,64,0.06);cursor:pointer;position:relative}
-.product-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(26,37,64,0.12)}
-.product-img{height:220px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.product-badge{position:absolute;top:14px;left:14px;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
-.badge-new{background:var(--navy);color:var(--white)}
-.badge-essential{background:rgba(184,148,63,0.15);color:var(--gold)}
-.badge-pro{background:#1a3a2a;color:#4ade80}
-.product-info{padding:20px 22px 22px}
-.product-cat{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
-.product-name{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:400;color:var(--navy);margin-bottom:6px;line-height:1.3}
-.product-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:16px}
-.product-footer{display:flex;align-items:center;justify-content:space-between}
-.product-price{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:300;color:var(--navy)}
-.product-price span{font-size:13px;font-weight:400;color:var(--muted)}
-.product-btn{padding:9px 18px;background:var(--navy);color:var(--white);border:none;border-radius:8px;font-size:12px;font-weight:500;letter-spacing:0.5px;cursor:pointer;transition:all 0.2s}
-.product-btn:hover{background:var(--gold);color:var(--navy)}
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+  }
+  .nav-right svg { width: 20px; height: 20px; }
 
-/* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(26,37,64,0.7);z-index:300;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px)}
-.modal-overlay.open{display:flex}
-.modal{background:var(--white);border-radius:16px;width:100%;max-width:600px;overflow:hidden;position:relative}
-.modal-img{height:260px;display:flex;align-items:center;justify-content:center}
-.modal-body{padding:32px}
-.modal-close{position:absolute;top:16px;right:16px;width:32px;height:32px;background:rgba(255,255,255,0.9);border:none;border-radius:8px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--navy)}
-.modal-cat{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
-.modal-name{font-family:"Cormorant Garamond",serif;font-size:32px;font-weight:300;color:var(--navy);margin-bottom:12px}
-.modal-desc{font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:24px}
-.modal-features{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
-.feature{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text)}
-.feature-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
-.modal-footer{display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid rgba(26,37,64,0.08)}
-.modal-price{font-family:"Cormorant Garamond",serif;font-size:28px;font-weight:300;color:var(--navy)}
-.modal-btn{padding:12px 28px;background:var(--navy);color:var(--white);border:none;border-radius:10px;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s}
-.modal-btn:hover{background:var(--gold);color:var(--navy)}
-.modal-note{font-size:11px;color:var(--muted);margin-top:8px;text-align:center}
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 120px 40px 60px;
+    overflow: hidden;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, #1a2f4a 0%, var(--navy) 70%);
+  }
 
-/* NEWSLETTER */
-.newsletter{background:var(--navy);padding:80px 48px;text-align:center}
-.nl-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
-.nl-title{font-family:"Cormorant Garamond",serif;font-size:42px;font-weight:300;color:var(--white);margin-bottom:10px}
-.nl-sub{font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:36px}
-.nl-form{display:flex;gap:12px;max-width:440px;margin:0 auto}
-.nl-input{flex:1;padding:14px 20px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:var(--white);font-family:Outfit,sans-serif;font-size:14px;outline:none}
-.nl-input::placeholder{color:rgba(255,255,255,0.3)}
-.nl-btn{padding:14px 24px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap}
-.nl-note{font-size:11px;color:rgba(255,255,255,0.25);margin-top:14px}
+  /* Sagoma animata */
+  .sagoma-wrapper {
+    position: absolute;
+    right: 6%;
+    bottom: 0;
+    width: 340px;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    pointer-events: none;
+    animation: sagomaCycle 8s ease-in-out infinite;
+    opacity: 0;
+  }
+  @keyframes sagomaCycle {
+    0%   { opacity: 0; transform: translateX(20px); }
+    10%  { opacity: 0.18; transform: translateX(0); }
+    45%  { opacity: 0.18; transform: translateX(0); }
+    60%  { opacity: 0; transform: translateX(-10px); }
+    100% { opacity: 0; transform: translateX(20px); }
+  }
+  .sagoma-wrapper img {
+    width: 100%;
+    filter: invert(1) brightness(0.12) sepia(1) hue-rotate(200deg) saturate(0.4);
+    mix-blend-mode: screen;
+  }
 
-/* FOOTER */
-.footer{background:#111827;padding:32px 48px;display:flex;align-items:center;justify-content:space-between}
-.footer-text{font-size:12px;color:rgba(255,255,255,0.25)}
-.footer-brand{font-family:"Cormorant Garamond",serif;font-size:16px;color:rgba(255,255,255,0.4)}
+  /* Linea decorativa */
+  .hero-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 20px auto;
+  }
 
-@media(max-width:768px){
-  .header,.coming-banner,.filters-wrap,.grid-wrap,.newsletter,.footer{padding-left:20px;padding-right:20px}
-  .hero{padding:60px 20px 80px}
-  .hero-title{font-size:48px}
-  .hero-stats{gap:32px}
-  .nl-form{flex-direction:column}
-  .modal-body{padding:20px}
-}
+  .store-icon {
+    color: var(--gold);
+    margin-bottom: 12px;
+    opacity: 0.9;
+  }
+  .store-icon svg { width: 40px; height: 40px; }
+
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(64px, 8vw, 96px);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: var(--white);
+    text-align: center;
+  }
+
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  /* ── SEARCH SECTION ── */
+  .search-section {
+    background: var(--cream);
+    padding: 32px 40px;
+  }
+  .search-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background: var(--white);
+    border: 1.5px solid rgba(201,169,110,0.4);
+    border-radius: 6px;
+    padding: 0 20px;
+    gap: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-bar:focus-within {
+    border-color: var(--gold);
+    box-shadow: 0 4px 24px rgba(201,169,110,0.2);
+  }
+  .search-bar svg { color: var(--gold); flex-shrink: 0; }
+  .search-bar input {
+    flex: 1;
+    border: none;
+    outline: none;
+    font-family: 'Jost', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    color: var(--navy);
+    padding: 16px 0;
+    background: transparent;
+  }
+  .search-bar input::placeholder { color: rgba(13,27,46,0.35); }
+  .search-btn {
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    padding: 10px 22px;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .search-btn:hover { background: var(--gold); color: var(--navy); }
+
+  /* ── MAIN STORE LAYOUT ── */
+  .store-layout {
+    display: flex;
+    gap: 0;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 0 80px;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    background: var(--navy-mid);
+    border-right: 1px solid rgba(201,169,110,0.1);
+    padding: 30px 0;
+    min-height: calc(100vh - 200px);
+  }
+  .sidebar-title {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    padding: 0 24px 16px;
+    border-bottom: 1px solid rgba(201,169,110,0.1);
+    margin-bottom: 8px;
+  }
+  .category-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.65);
+    border-left: 2px solid transparent;
+  }
+  .category-item:hover,
+  .category-item.active {
+    background: rgba(201,169,110,0.08);
+    color: var(--white);
+    border-left-color: var(--gold);
+  }
+  .category-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.7; }
+  .category-item.active svg { opacity: 1; color: var(--gold); }
+  .cat-count {
+    margin-left: auto;
+    font-size: 10px;
+    background: rgba(201,169,110,0.15);
+    color: var(--gold);
+    padding: 2px 7px;
+    border-radius: 10px;
+  }
+
+  /* Dropdown per mobile */
+  .sidebar-mobile {
+    display: none;
+  }
+  .sidebar-mobile select {
+    width: 100%;
+    background: var(--navy-mid);
+    color: var(--white);
+    border: 1px solid rgba(201,169,110,0.3);
+    padding: 12px 16px;
+    font-family: 'Jost', sans-serif;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+
+  /* ── PRODOTTI ── */
+  .products-area {
+    flex: 1;
+    padding: 30px 36px;
+  }
+  .products-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(201,169,110,0.12);
+  }
+  .products-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: 26px;
+    color: var(--white);
+  }
+  .products-header span {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+  .sort-select {
+    background: var(--navy-mid);
+    color: var(--white);
+    border: 1px solid rgba(201,169,110,0.2);
+    padding: 8px 14px;
+    font-family: 'Jost', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 24px;
+  }
+
+  .product-card {
+    background: var(--navy-mid);
+    border: 1px solid rgba(201,169,110,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    position: relative;
+  }
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
+    border-color: rgba(201,169,110,0.35);
+  }
+  .product-badge {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+  .product-img {
+    width: 100%;
+    height: 160px;
+    background: linear-gradient(135deg, #1a2f4a 0%, #0d1b2e 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-img svg {
+    width: 56px;
+    height: 56px;
+    color: rgba(201,169,110,0.35);
+  }
+  .product-info {
+    padding: 16px 18px 20px;
+  }
+  .product-category {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .product-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .product-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--gold-light);
+  }
+  .product-btn {
+    background: transparent;
+    border: 1px solid rgba(201,169,110,0.4);
+    color: var(--gold);
+    padding: 7px 14px;
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .product-btn:hover {
+    background: var(--gold);
+    color: var(--navy);
+    border-color: var(--gold);
+  }
+
+  /* coming soon overlay */
+  .coming-soon-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(13,27,46,0.6);
+    backdrop-filter: blur(3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 8px;
+  }
+  .product-card:hover .coming-soon-overlay {
+    opacity: 1;
+  }
+  .coming-soon-overlay span {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    font-style: italic;
+  }
+
+  /* ── BANNER BOTTOM ── */
+  .bottom-banner {
+    background: var(--cream);
+    padding: 18px 40px;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+  }
+  .bottom-banner::before {
+    content: '● ';
+  }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .sidebar-mobile { display: block; padding: 16px; background: var(--navy-mid); }
+    .products-area { padding: 20px 16px; }
+    .sagoma-wrapper { width: 180px; right: 0; }
+  }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <a href="index.html" class="back-btn">
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Home
+<!-- NAV -->
+<nav>
+  <a class="nav-left" href="#">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 19l-7-7 7-7"/></svg>
+    HOME
   </a>
-  <div class="header-brand">Store</div>
-  <div class="header-cart">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 6h18M16 10a4 4 0 01-8 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+  <div class="nav-center">Store</div>
+  <div class="nav-right">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
     Disponibile presto
   </div>
-</div>
+</nav>
 
-<div class="hero">
-  <div class="hero-label">Giulia Fumagalli Security</div>
-  <div class="hero-title">Store</div>
-  <div class="hero-sub">Everything you need</div>
+<!-- HERO -->
+<section class="hero">
+
+  <!-- Sagoma animata -->
+  <div class="sagoma-wrapper">
+    <img src="/mnt/user-data/uploads/Gemini_Generated_Image_yxajczyxajczyxaj.png" alt="Sagoma sicurezza" />
+  </div>
+
+  <div class="store-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+      <path d="M3 9l1-5h16l1 5"/>
+      <path d="M3 9h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1V9z"/>
+      <path d="M9 9v12M15 9v12"/>
+      <path d="M9 3v6M15 3v6"/>
+    </svg>
+  </div>
+
+  <h1>Store</h1>
+  <div class="hero-sub">SafetyFirst</div>
   <div class="hero-line"></div>
-  <div class="hero-stats">
-    <div><div class="stat-num">40+</div><div class="stat-label">Prodotti</div></div>
-    <div><div class="stat-num">6</div><div class="stat-label">Categorie</div></div>
-    <div><div class="stat-num">Pro</div><div class="stat-label">Qualita</div></div>
-  </div>
-</div>
+</section>
 
-<div class="coming-banner">
-  <div class="coming-dot"></div>
-  <div class="coming-text">Store in allestimento — i prodotti saranno disponibili all'acquisto a breve</div>
-</div>
-
-<div class="filters-wrap">
-  <div class="filters">
-    <button class="filter-btn active" onclick="filterCat('all',this)">Tutti</button>
-    <button class="filter-btn" onclick="filterCat('kit',this)">Kit di emergenza</button>
-    <button class="filter-btn" onclick="filterCat('tech',this)">Tecnologia</button>
-    <button class="filter-btn" onclick="filterCat('viaggio',this)">Viaggio</button>
-    <button class="filter-btn" onclick="filterCat('medico',this)">Primo soccorso</button>
-    <button class="filter-btn" onclick="filterCat('sicurezza',this)">Sicurezza personale</button>
-    <button class="filter-btn" onclick="filterCat('formazione',this)">Formazione</button>
-  </div>
-  <div class="results-count" id="results-count">40 prodotti</div>
-</div>
-
-<div class="grid-wrap" id="grid-wrap"></div>
-
-<div class="newsletter">
-  <div class="nl-label">Resta aggiornato</div>
-  <div class="nl-title">Novita e offerte esclusive</div>
-  <div class="nl-sub">Iscriviti per ricevere i primi accessi ai nuovi prodotti e sconti dedicati</div>
-  <div class="nl-form">
-    <input class="nl-input" type="email" placeholder="La tua email"/>
-    <button class="nl-btn">Iscriviti</button>
-  </div>
-  <div class="nl-note">Nessuno spam. Disiscrizione in qualsiasi momento.</div>
-</div>
-
-<div class="footer">
-  <div class="footer-text">© 2026 Giulia Fumagalli Security — Tutti i diritti riservati</div>
-  <div class="footer-brand">Store</div>
-</div>
-
-<!-- MODAL -->
-<div class="modal-overlay" id="modal-overlay" onclick="if(event.target===this)closeModal()">
-  <div class="modal">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-img" id="modal-img"></div>
-    <div class="modal-body">
-      <div class="modal-cat" id="modal-cat"></div>
-      <div class="modal-name" id="modal-name"></div>
-      <div class="modal-desc" id="modal-desc"></div>
-      <div class="modal-features" id="modal-features"></div>
-      <div class="modal-footer">
-        <div>
-          <div class="modal-price" id="modal-price"></div>
-          <div class="modal-note">Disponibile all'acquisto a breve</div>
-        </div>
-        <button class="modal-btn" onclick="closeModal()">Torna allo store</button>
-      </div>
+<!-- SEARCH -->
+<div class="search-section">
+  <div class="search-inner">
+    <div class="search-bar">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" placeholder="Cerca prodotti, categorie, soluzioni…" id="searchInput" />
+      <button class="search-btn" onclick="doSearch()">CERCA</button>
     </div>
   </div>
 </div>
 
+<!-- SIDEBAR MOBILE -->
+<div class="sidebar-mobile">
+  <select onchange="filterCategory(this.value)">
+    <option value="all">— Tutte le categorie —</option>
+    <option value="casa">Casa & Abitazione</option>
+    <option value="kit">Kit di Emergenza</option>
+    <option value="antincendio">Antincendio</option>
+    <option value="sorveglianza">Sorveglianza</option>
+    <option value="personale">Sicurezza Personale</option>
+    <option value="formazione">Formazione</option>
+  </select>
+</div>
+
+<!-- STORE LAYOUT -->
+<div class="store-layout">
+
+  <!-- SIDEBAR DESKTOP -->
+  <aside class="sidebar">
+    <div class="sidebar-title">Categorie</div>
+
+    <div class="category-item active" onclick="filterCategory('all', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Tutti i prodotti
+      <span class="cat-count">40+</span>
+    </div>
+
+    <div class="category-item" onclick="filterCategory('casa', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L12 3l9 6.5V21H3V9.5z"/><rect x="9" y="14" width="6" height="7"/></svg>
+      Casa & Abitazione
+      <span class="cat-count">12</span>
+    </div>
+
+    <div class="category-item" onclick="filterCategory('kit', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+      Kit di Emergenza
+      <span class="cat-count">8</span>
+    </div>
+
+    <div class="category-item" onclick="filterCategory('antincendio', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v4l3 3"/></svg>
+      Antincendio
+      <span class="cat-count">6</span>
+    </div>
+
+    <div class="category-item" onclick="filterCategory('sorveglianza', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 10l5-5-5-5v3H4v4h11v3z"/><circle cx="12" cy="17" r="3"/><path d="M5 17H3"/><path d="M21 17h-2"/></svg>
+      Sorveglianza
+      <span class="cat-count">9</span>
+    </div>
+
+    <div class="category-item" onclick="filterCategory('personale', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Sicurezza Personale
+      <span class="cat-count">7</span>
+    </div>
+
+    <div class="category-item" onclick="filterCategory('formazione', this)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+      Formazione
+      <span class="cat-count">4</span>
+    </div>
+  </aside>
+
+  <!-- PRODOTTI -->
+  <main class="products-area">
+    <div class="products-header">
+      <h2 id="cat-title">Tutti i prodotti</h2>
+      <div style="display:flex;gap:16px;align-items:center;">
+        <span id="count-label">40+ prodotti</span>
+        <select class="sort-select">
+          <option>Ordina per rilevanza</option>
+          <option>Prezzo crescente</option>
+          <option>Prezzo decrescente</option>
+          <option>Novità</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="products-grid" id="products-grid">
+
+      <!-- CASA -->
+      <div class="product-card" data-cat="casa">
+        <div class="product-badge">NUOVO</div>
+        <div class="product-img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M3 9.5L12 3l9 6.5V21H3V9.5z"/><rect x="9" y="14" width="6" height="7"/><circle cx="17" cy="10" r="2"/><path d="M17 8V4M19 10h2"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Casa & Abitazione</div>
+          <div class="product-name">Telecamera IP Smart 4K</div>
+          <div class="product-desc">Sorveglianza HD, visione notturna, app mobile inclusa.</div>
+          <div class="product-footer">
+            <span class="product-price">€ 189</span>
+            <button class="product-btn">AGGIUNGI</button>
+          </div>
+        </div>
+        <div class="coming-soon-overlay"><span>Disponibile presto</span></div>
+      </div>
+
+      <div class="product-card" data-cat="casa">
+        <div class="product-img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/><circle cx="12" cy="16" r="1"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Casa & Abitazione</div>
+          <div class="product-name">Serratura Smart Bluetooth</div>
+          <div class="product-desc">Accesso via app, codice e impronta digitale.</div>
+          <div class="product-footer">
+            <span class="product-price">€ 249</span>
+            <button class="product-btn">AGGIUNGI</button>
+          </div>
+        </div>
+        <div class="coming-soon-overlay"><span>Disponibile presto</span></div>
+      </div>
+
+      <div class="product-card" data-cat="casa">
+        <div class="product-img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Casa & Abitazione</div>
+          <div class="product-name">Allarme Perimetrale Pro</div>
+          <div class="product-desc">Sensori wireless, sirena 110dB, GSM integrato.</div>
+          <div class="product-footer">
+            <span class="product-price">€ 320</span>
+            <button class="product-btn">AGGIUNGI</button>
+          </div>
+        </div>
+        <div class="coming-soon-overlay"><span>Disponibile presto</span></div>
+      </div>
+
+      <!-- KIT -->
+      <div class="product-card" data-cat="kit">
+        <div class="product-badge">TOP</div>
+        <div class="product-img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Kit di Emergenza</div>
+          <div class="product-name">Kit Emergenza Famiglia</div>
+          <div class="product-desc">72h di autonomia per 4 persone. Pronto all'uso.</div>
+          <div class="product-footer">
+            <span class="product-price">€ 95</span>
+            <button class="product-btn">AGGIUNGI</button>
+          </div>
+        </div>
+        <div class="coming-soon-overlay"><span>Disponibile presto</span></div>
+      </div>
+
+      <div class="product-card" data-cat="kit">
+        <div class="product-img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Kit di Emergenza</div>
+          <div class="product-name">Radio d'Emergenza AM/FM</div>
+          <div class="product-desc">Solare + manovella, torcia LED, ricarica USB.</div>
+          <div class="product-footer">
+            <span class="product-price">€ 42</span>
+            <button class="product-btn">AGGIUNGI</button>
+          </div>
+        </div>
+        <div class="coming-soon-overlay"><span>Disponibile presto</span></div>
+      </div>
+
+      <!-- ANTINCENDIO -->
+      <div class="product-card" data-cat="antincendio">
+        <div class="product-img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 2c0 0-5 5-5 10a5 5 0 0010 0c0-5-5-10-5-10z"/><path d="M12 12c0 0-2 2-2 4a2 2 0 004 0c0-2-2-4-2-4z"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Antincendio</div>
+          <div class="product-name">Estintore CO₂ 5kg</div>
+          <div class="product-desc">Certificato EN3, per uso domestico e professionale.</div>
+          <div class="product-footer">
+            <span class="product-price">€ 68</span>
+            <button class="product-btn">AGGIUNGI</button>
+          </div>
+        </div>
+        <div class="coming-soon-overlay"><span>Disponibile presto</span></div>
+      </div>
+
+      <div class="product-card" data-cat="antincendio">
+        <div class="product-badge">PRO</div>
+        <div class="product-img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Antincendio</div>
+          <div class="product-name">Rilevatore Fumo Smart</div>
+          <div class="product-desc">Wi-Fi, notifiche app, voce multilingue integrata.</div>
+          <div class="product-footer">
+            <span class="product-price">€ 55</span>
+            <button class="product-btn">AGGIUNGI</button>
+          </div>
+        </div>
+        <div class="coming-soon-overlay"><span>Disponibile presto</span></div>
+      </div>
+
+      <!-- SORVEGLIANZA -->
+      <div class="product-card" data-cat="sorveglianza">
+        <div class="product-img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="3"/><path d="M20.188 10.934c.388.472.628 1.024.628 1.566 0 2.485-3.94 5-8.816 5C7.128 17.5 3 15.006 3 12.5c0-.543.241-1.095.63-1.567M12 7.5c2.485 0 4.5.895 4.5 2s-2.015 2-4.5 2-4.5-.895-4.5-2 2.015-2 4.5-2z"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Sorveglianza</div>
+          <div class="product-name">Kit NVR 8 Canali + 4 Cam</div>
+          <div class="product-desc">Registratore NVR, 4 telecamere PoE, HDD 2TB.</div>
+          <div class="product-footer">
+            <span class="product-price">€ 549</span>
+            <button class="product-btn">AGGIUNGI</button>
+          </div>
+        </div>
+        <div class="coming-soon-overlay"><span>Disponibile presto</span></div>
+      </div>
+
+      <!-- PERSONALE -->
+      <div class="product-card" data-cat="personale">
+        <div class="product-img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Sicurezza Personale</div>
+          <div class="product-name">Dispositivo GPS SOS</div>
+          <div class="product-desc">Localizzazione real-time, tasto SOS, geo-fence.</div>
+          <div class="product-footer">
+            <span class="product-price">€ 79</span>
+            <button class="product-btn">AGGIUNGI</button>
+          </div>
+        </div>
+        <div class="coming-soon-overlay"><span>Disponibile presto</span></div>
+      </div>
+
+      <!-- FORMAZIONE -->
+      <div class="product-card" data-cat="formazione">
+        <div class="product-img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Formazione</div>
+          <div class="product-name">Corso Pronto Soccorso BLS</div>
+          <div class="product-desc">Certificazione riconosciuta, 8 ore, online + live.</div>
+          <div class="product-footer">
+            <span class="product-price">€ 120</span>
+            <button class="product-btn">AGGIUNGI</button>
+          </div>
+        </div>
+        <div class="coming-soon-overlay"><span>Disponibile presto</span></div>
+      </div>
+
+      <div class="product-card" data-cat="formazione">
+        <div class="product-badge">NEW</div>
+        <div class="product-img">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="2" y="3" width="20" height="14" rx="2"/><polyline points="8,21 12,17 16,21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="product-info">
+          <div class="product-category">Formazione</div>
+          <div class="product-name">Webinar Sicurezza Domestica</div>
+          <div class="product-desc">Come proteggere la famiglia: guida pratica completa.</div>
+          <div class="product-footer">
+            <span class="product-price">€ 35</span>
+            <button class="product-btn">AGGIUNGI</button>
+          </div>
+        </div>
+        <div class="coming-soon-overlay"><span>Disponibile presto</span></div>
+      </div>
+
+    </div><!-- /grid -->
+  </main>
+</div>
+
+<!-- BOTTOM BANNER -->
+<div class="bottom-banner">
+  Store in allestimento — i prodotti saranno disponibili all'acquisto a breve
+</div>
+
 <script>
-var PRODOTTI = [
-  // KIT EMERGENZA
-  {id:1,cat:"kit",nome:"Kit Sopravvivenza 72h",cat_label:"Kit di emergenza",badge:"essential",prezzo:"89",desc:"Il kit essenziale per 72 ore di autonomia in qualsiasi scenario di emergenza.",features:["Cibo liofilizzato per 3 giorni","Filtro acqua portatile","Coperta termica di emergenza","Radio a manovella con caricabatterie","Fischietto e segnalatore luminoso"],color:"#2d3b55",emoji:"🎒"},
-  {id:2,cat:"kit",nome:"Kit Primo Soccorso Pro",cat_label:"Kit di emergenza",badge:"pro",prezzo:"65",desc:"Kit professionale con materiale certificato per trasferte aziendali.",features:["90+ articoli inclusi","Certificato CE","Guida illustrata in 6 lingue","Borsa impermeabile","Adatto a 4 persone"],color:"#3b2d2d",emoji:"🩺"},
-  {id:3,cat:"kit",nome:"Kit Evacuazione Rapida",cat_label:"Kit di emergenza",badge:"new",prezzo:"120",desc:"Borsa predisposta per evacuazione rapida con tutti gli essenziali.",features:["Zaino ergonomico 30L","Documenti waterproof","Powerbank 20000mAh","Kit igiene personale","Mappa offline integrata"],color:"#2d3b2d",emoji:"🏃"},
-  {id:4,cat:"kit",nome:"Kit Viaggio Sicuro",cat_label:"Kit di emergenza",badge:"essential",prezzo:"45",desc:"Il compagno ideale per trasferte brevi in zone a basso rischio.",features:["Mini kit primo soccorso","Lucchetto TSA","Portadocumenti sicuro","Adattatore universale","Guida emergenze SafePass"],color:"#3b3b2d",emoji:"✈️"},
+  // Filter by category
+  function filterCategory(cat, el) {
+    const cards = document.querySelectorAll('.product-card');
+    const items = document.querySelectorAll('.category-item');
+    items.forEach(i => i.classList.remove('active'));
+    if (el) el.classList.add('active');
 
-  // TECNOLOGIA
-  {id:5,cat:"tech",nome:"Powerbank Solare 26800mAh",cat_label:"Tecnologia",badge:"pro",prezzo:"79",desc:"Ricarica il telefono ovunque con pannello solare integrato.",features:["Pannello solare ad alta efficienza","2 porte USB + USB-C","Impermeabile IP67","LED di emergenza integrato","Carica 3 dispositivi in parallelo"],color:"#1a2a3a",emoji:"☀️"},
-  {id:6,cat:"tech",nome:"Radio di Emergenza",cat_label:"Tecnologia",badge:"essential",prezzo:"55",desc:"Radio AM/FM/NOAA con ricarica solare, manovella e batteria.",features:["Ricezione NOAA Weather","Torcia LED SOS","Ricarica solare e manovella","Ingresso USB","Allarme sonoro integrato"],color:"#2a1a3a",emoji:"📻"},
-  {id:7,cat:"tech",nome:"GPS Personale Tracker",cat_label:"Tecnologia",badge:"new",prezzo:"149",desc:"Localizzatore GPS con SOS per trasferte in zone remote.",features:["Tracking in tempo reale","Pulsante SOS globale","Batteria 7 giorni","Resistente acqua IP68","Abbonamento 1 anno incluso"],color:"#1a2a2a",emoji:"📍"},
-  {id:8,cat:"tech",nome:"Torcia Tattica LED",cat_label:"Tecnologia",badge:"pro",prezzo:"38",desc:"Torcia professionale con 5 modalita e corpo in alluminio aeronautico.",features:["1000 lumen","5 modalita luce","Corpo alluminio aeronautico","Impermeabile IPX8","Batteria ricaricabile inclusa"],color:"#2a2a1a",emoji:"🔦"},
-
-  // VIAGGIO
-  {id:9,cat:"viaggio",nome:"Portadocumenti RFID",cat_label:"Viaggio",badge:"essential",prezzo:"34",desc:"Protegge i tuoi dati da skimming RFID con stile.",features:["Blocco RFID/NFC","Spazio per 8 carte","Porta passaporto","Penna nascosta","Materiale premium"],color:"#3a2a1a",emoji:"👜"},
-  {id:10,cat:"viaggio",nome:"Lucchetto TSA Smart",cat_label:"Viaggio",badge:"new",prezzo:"28",desc:"Lucchetto approvato TSA con apertura combinazione e impronta.",features:["Approvato TSA","Impronta digitale","Combinazione 4 cifre","Corpo in acciaio","Alert apertura non autorizzata"],color:"#2a3a1a",emoji:"🔐"},
-  {id:11,cat:"viaggio",nome:"Borsa Antitaccheggio",cat_label:"Viaggio",badge:"pro",prezzo:"95",desc:"Borsa da trasferta con protezione integrata e porta USB.",features:["Rete antitaglio","Blocco RFID","Porta USB esterna","Impermeabile","15.6 laptop compatibile"],color:"#1a2a1a",emoji:"💼"},
-  {id:12,cat:"viaggio",nome:"Adattatore Universale Pro",cat_label:"Viaggio",badge:"essential",prezzo:"42",desc:"Compatibile con 150+ paesi con 4 porte USB e USB-C.",features:["Compatibile 150+ paesi","4 porte USB-A","1 porta USB-C","Protezione sovratensione","Certificato CE"],color:"#2a1a2a",emoji:"🔌"},
-
-  // MEDICO
-  {id:13,cat:"medico",nome:"Defibrillatore DAE Portatile",cat_label:"Primo soccorso",badge:"pro",prezzo:"890",desc:"DAE semiautomatico certificato per uso pubblico e aziendale.",features:["Certificato CE/FDA","Istruzioni vocali in italiano","Resistente agli urti","Batteria 5 anni","Incluso corso utilizzo online"],color:"#3a1a1a",emoji:"❤️"},
-  {id:14,cat:"medico",nome:"Kit Trauma Avanzato",cat_label:"Primo soccorso",badge:"pro",prezzo:"120",desc:"Kit per gestione traumi in attesa dei soccorsi, usato da professionisti.",features:["Laccio emostatico militare","Garze emostatiche","Decompressore aghi","Forbici trauma","Guida rapida inclusa"],color:"#3a2a1a",emoji:"🩹"},
-  {id:15,cat:"medico",nome:"Pulsossimetro Digitale",cat_label:"Primo soccorso",badge:"essential",prezzo:"29",desc:"Misura saturazione ossigeno e frequenza cardiaca in 10 secondi.",features:["Risultati in 10 secondi","Display OLED","Batterie incluse","Certificato medico","Custodia protettiva"],color:"#1a3a3a",emoji:"💊"},
-  {id:16,cat:"medico",nome:"Coperta Termica Emergency",cat_label:"Primo soccorso",badge:"essential",prezzo:"8",desc:"Coperta isotermica professionale riutilizzabile. 10 pezzi.",features:["Riflette 90% calore corporeo","Impermeabile","Riutilizzabile","160x210cm","Conforme ISO 13485"],color:"#1a3a2a",emoji:"🌡️"},
-
-  // SICUREZZA PERSONALE
-  {id:17,cat:"sicurezza",nome:"Allarme Personale 130dB",cat_label:"Sicurezza personale",badge:"essential",prezzo:"18",desc:"Allarme sonoro personale con luce stroboscopica integrata.",features:["130 decibel","Luce stroboscopica","Attivazione in 1 secondo","Clip da cintura","Batteria 1 anno"],color:"#2a1a3a",emoji:"🚨"},
-  {id:18,cat:"sicurezza",nome:"Spray Antiaggressione",cat_label:"Sicurezza personale",badge:"new",prezzo:"22",desc:"Spray al pepe certificato con colorante UV identificativo.",features:["Colorante UV invisibile","Gittata 4 metri","Sicura anti-accidentale","Conforme legge italiana","Incluso fondina"],color:"#3a1a2a",emoji:"🛡️"},
-  {id:19,cat:"sicurezza",nome:"Dashcam Sicurezza Auto",cat_label:"Sicurezza personale",badge:"pro",prezzo:"140",desc:"Dashcam con visione notturna e registrazione incidenti automatica.",features:["Risoluzione 4K","Visione notturna","G-sensor automatico","WiFi integrato","Memoria 128GB inclusa"],color:"#1a1a3a",emoji:"📹"},
-  {id:20,cat:"sicurezza",nome:"Vetro Fisso Antisfondamento",cat_label:"Sicurezza personale",badge:"pro",prezzo:"65",desc:"Pellicola di sicurezza per finestre auto. Resistenza allo sfondamento.",features:["Spessore 200 micron","Resistenza Class P2A","Trasparente","Facile applicazione","Taglio su misura"],color:"#2a2a3a",emoji:"🔍"},
-
-  // FORMAZIONE
-  {id:21,cat:"formazione",nome:"Manuale SafePass — PDF",cat_label:"Formazione",badge:"new",prezzo:"19",desc:"Il manuale completo pre-partenza in formato PDF scaricabile.",features:["80+ pagine","Fonti ufficiali citate","8 capitoli tematici","Aggiornamento annuale","Stampa ottimizzata"],color:"#1a2a3a",emoji:"📖"},
-  {id:22,cat:"formazione",nome:"Corso Pronto Soccorso Online",cat_label:"Formazione",badge:"pro",prezzo:"49",desc:"Corso certificato con 4 ore di video e attestato finale.",features:["4 ore di video HD","Certificato incluso","Accesso illimitato","Quiz interattivi","Supporto docente"],color:"#2a3a2a",emoji:"🎓"},
-  {id:23,cat:"formazione",nome:"Workshop Sicurezza Aziendale",cat_label:"Formazione",badge:"new",prezzo:"290",desc:"Workshop in presenza o online per team aziendali. 8 ore.",features:["8 ore di formazione","Materiale didattico","Attestato per partecipante","Max 20 persone","Personalizzabile"],color:"#3a2a3a",emoji:"👥"},
-  {id:24,cat:"formazione",nome:"Consulenza Risk Assessment",cat_label:"Formazione",badge:"pro",prezzo:"350",desc:"Analisi del rischio personalizzata per trasferta aziendale.",features:["Report dettagliato","1 ora di consulenza","Analisi paese di destinazione","Piano di emergenza","Aggiornamento 6 mesi"],color:"#3a3a2a",emoji:"📊"}
-];
-
-var currentFilter = "all";
-
-function makeSVGBg(color, emoji) {
-  return "background:" + color + ";display:flex;align-items:center;justify-content:center;font-size:64px;";
-}
-
-function getBadgeHTML(badge) {
-  if (!badge) return "";
-  var map = {
-    new: {cls:"badge-new", txt:"Novita"},
-    essential: {cls:"badge-essential", txt:"Essential"},
-    pro: {cls:"badge-pro", txt:"Pro"}
-  };
-  var b = map[badge];
-  if (!b) return "";
-  return "<div class='product-badge " + b.cls + "'>" + b.txt + "</div>";
-}
-
-function renderGrid(filter) {
-  var filtered = filter === "all" ? PRODOTTI : PRODOTTI.filter(function(p) { return p.cat === filter; });
-  document.getElementById("results-count").textContent = filtered.length + " prodotti";
-
-  if (filter === "all") {
-    var cats = [
-      {key:"kit", label:"Kit di emergenza", sub:"Tutto il necessario per affrontare qualsiasi situazione"},
-      {key:"tech", label:"Tecnologia", sub:"Dispositivi di comunicazione e rilevamento per professionisti"},
-      {key:"viaggio", label:"Viaggio sicuro", sub:"Accessori per proteggere documenti, dati e oggetti in trasferta"},
-      {key:"medico", label:"Primo soccorso", sub:"Materiale medico certificato per rispondere alle emergenze"},
-      {key:"sicurezza", label:"Sicurezza personale", sub:"Strumenti per la protezione individuale"},
-      {key:"formazione", label:"Formazione", sub:"Manuali, corsi e consulenze per prepararsi al meglio"}
-    ];
-    var html = "";
-    for (var i = 0; i < cats.length; i++) {
-      var c = cats[i];
-      var prods = PRODOTTI.filter(function(p) { return p.cat === c.key; });
-      html += "<div class='cat-section'>";
-      html += "<div class='cat-title'>" + c.label + "</div>";
-      html += "<div class='cat-sub'>" + c.sub + "</div>";
-      html += "<div class='products'>";
-      for (var j = 0; j < prods.length; j++) {
-        html += makeCardHTML(prods[j]);
+    let visible = 0;
+    cards.forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = '';
+        visible++;
+      } else {
+        card.style.display = 'none';
       }
-      html += "</div></div>";
-    }
-    document.getElementById("grid-wrap").innerHTML = html;
-  } else {
-    var html2 = "<div class='products'>";
-    for (var k = 0; k < filtered.length; k++) {
-      html2 += makeCardHTML(filtered[k]);
-    }
-    html2 += "</div>";
-    document.getElementById("grid-wrap").innerHTML = html2;
+    });
+
+    const titles = {
+      all: 'Tutti i prodotti', casa: 'Casa & Abitazione',
+      kit: 'Kit di Emergenza', antincendio: 'Antincendio',
+      sorveglianza: 'Sorveglianza', personale: 'Sicurezza Personale',
+      formazione: 'Formazione'
+    };
+    document.getElementById('cat-title').textContent = titles[cat] || 'Prodotti';
+    document.getElementById('count-label').textContent = visible + ' prodotti';
   }
-}
 
-function makeCardHTML(p) {
-  return "<div class='product-card' onclick='openProduct(" + p.id + ")'>" +
-    "<div class='product-img' style='" + makeSVGBg(p.color, p.emoji) + "'>" +
-    getBadgeHTML(p.badge) +
-    "<span>" + p.emoji + "</span></div>" +
-    "<div class='product-info'>" +
-    "<div class='product-cat'>" + p.cat_label + "</div>" +
-    "<div class='product-name'>" + p.nome + "</div>" +
-    "<div class='product-desc'>" + p.desc + "</div>" +
-    "<div class='product-footer'>" +
-    "<div class='product-price'>&euro;" + p.prezzo + " <span>IVA incl.</span></div>" +
-    "<button class='product-btn'>Scopri</button>" +
-    "</div></div></div>";
-}
+  // Search
+  function doSearch() {
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    if (!q) { filterCategory('all'); return; }
+    const cards = document.querySelectorAll('.product-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      if (text.includes(q)) { card.style.display = ''; visible++; }
+      else { card.style.display = 'none'; }
+    });
+    document.getElementById('cat-title').textContent = `Risultati per "${q}"`;
+    document.getElementById('count-label').textContent = visible + ' prodotti';
+    document.querySelectorAll('.category-item').forEach(i => i.classList.remove('active'));
+  }
 
-function filterCat(cat, el) {
-  currentFilter = cat;
-  document.querySelectorAll(".filter-btn").forEach(function(b) { b.classList.remove("active"); });
-  el.classList.add("active");
-  renderGrid(cat);
-}
-
-function openProduct(id) {
-  var p = PRODOTTI.find(function(x) { return x.id === id; });
-  if (!p) return;
-  document.getElementById("modal-img").style.cssText = makeSVGBg(p.color) + "font-size:80px";
-  document.getElementById("modal-img").innerHTML = p.emoji;
-  document.getElementById("modal-cat").textContent = p.cat_label;
-  document.getElementById("modal-name").textContent = p.nome;
-  document.getElementById("modal-desc").textContent = p.desc;
-  document.getElementById("modal-price").innerHTML = "&euro;" + p.prezzo + " <span style='font-size:14px;color:#8a8fa8'>IVA incl.</span>";
-  document.getElementById("modal-features").innerHTML = p.features.map(function(f) {
-    return "<div class='feature'><div class='feature-dot'></div>" + f + "</div>";
-  }).join("");
-  document.getElementById("modal-overlay").classList.add("open");
-}
-
-function closeModal() {
-  document.getElementById("modal-overlay").classList.remove("open");
-}
-
-renderGrid("all");
+  document.getElementById('searchInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') doSearch();
+  });
 </script>
 </body>
 </html>
