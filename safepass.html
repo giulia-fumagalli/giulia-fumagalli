@@ -885,12 +885,8 @@ function buildReply(q) {
   if (id) {
     var entry = DB.find(function(e) { return e.id === id; });
     if (entry) {
-      var clean = entry.body.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
-      return entry.em + " " + entry.title.toUpperCase() + "
-
-" + clean + "
-
-" + entry.fonte.replace(/<[^>]+>/g, "");
+      var clean = entry.body.replace(/<[^>]+>/g, "").replace(/[ ]+/g, " ").trim();
+      return entry.em + " " + entry.title.toUpperCase() + "\n\n" + clean + "\n\n" + entry.fonte.replace(/<[^>]+>/g, "");
     }
   }
   // Generic response
@@ -900,14 +896,14 @@ function buildReply(q) {
   });
   if (matches.length > 0) {
     var e = matches[0];
-    var clean = e.body.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
-    return e.em + " " + e.title.toUpperCase() + "
-
+    var clean = e.body.replace(/<[^>]+>/g, "").replace(/[ ]+/g, " ").trim();
+    return e.em + " " + e.title.toUpperCase() + "\n\n" + clean;
+  }
 " + clean;
   }
   return "Non ho trovato una procedura specifica per questa situazione nel database. Usa la sezione Procedure per sfogliare tutte le schede disponibili, oppure in caso di pericolo chiama immediatamente il 112.
 
-Per domande generali sulla sicurezza in trasferta consulta il Manuale Pre-Partenza nella sezione dedicata.";
+  return "Non ho trovato una procedura specifica. Usa la sezione Procedure per sfogliare le schede, oppure chiama il 112 in caso di pericolo.";
 }
 
 async function sendAI() {
