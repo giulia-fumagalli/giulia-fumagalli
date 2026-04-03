@@ -8,12 +8,12 @@
 <style>
   :root {
     --navy: #0d1b2e;
-    --navy-mid: #162337;
+    --navy-mid: #1e3a52;
     --gold: #c9a96e;
     --gold-light: #e8c98a;
     --cream: #f0ead8;
     --white: #ffffff;
-    --text-muted: rgba(255,255,255,0.45);
+    --text-muted: rgba(255,255,255,0.55);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -51,7 +51,6 @@
   }
   .nav-left:hover { color: var(--gold); }
   .nav-left svg { width: 16px; height: 16px; }
-
   .nav-center {
     font-family: 'Cormorant Garamond', serif;
     font-size: 20px;
@@ -59,7 +58,6 @@
     letter-spacing: 0.25em;
     color: var(--white);
   }
-
   .nav-right {
     display: flex;
     align-items: center;
@@ -203,14 +201,15 @@
     max-width: 1400px;
     margin: 0 auto;
     padding: 0 0 80px;
+    background: #f7f3ec;
   }
 
   /* ── SIDEBAR ── */
   .sidebar {
     width: 260px;
     flex-shrink: 0;
-    background: var(--navy-mid);
-    border-right: 1px solid rgba(201,169,110,0.1);
+    background: #ede8dc;
+    border-right: 1px solid rgba(201,169,110,0.25);
     padding: 30px 0;
     min-height: calc(100vh - 200px);
   }
@@ -220,7 +219,7 @@
     color: var(--gold);
     text-transform: uppercase;
     padding: 0 24px 16px;
-    border-bottom: 1px solid rgba(201,169,110,0.1);
+    border-bottom: 1px solid rgba(201,169,110,0.2);
     margin-bottom: 8px;
   }
   .category-item {
@@ -232,22 +231,22 @@
     transition: background 0.15s, color 0.15s;
     font-size: 13px;
     letter-spacing: 0.06em;
-    color: rgba(255,255,255,0.65);
+    color: rgba(13,27,46,0.6);
     border-left: 2px solid transparent;
   }
   .category-item:hover,
   .category-item.active {
-    background: rgba(201,169,110,0.08);
-    color: var(--white);
+    background: rgba(201,169,110,0.15);
+    color: var(--navy);
     border-left-color: var(--gold);
   }
-  .category-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.7; }
+  .category-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.6; }
   .category-item.active svg { opacity: 1; color: var(--gold); }
   .cat-count {
     margin-left: auto;
     font-size: 10px;
-    background: rgba(201,169,110,0.15);
-    color: var(--gold);
+    background: rgba(201,169,110,0.2);
+    color: #8a6d3b;
     padding: 2px 7px;
     border-radius: 10px;
   }
@@ -271,6 +270,7 @@
   .products-area {
     flex: 1;
     padding: 30px 36px;
+    background: #f7f3ec;
   }
   .products-header {
     display: flex;
@@ -278,23 +278,23 @@
     justify-content: space-between;
     margin-bottom: 28px;
     padding-bottom: 16px;
-    border-bottom: 1px solid rgba(201,169,110,0.12);
+    border-bottom: 1px solid rgba(201,169,110,0.25);
   }
   .products-header h2 {
     font-family: 'Cormorant Garamond', serif;
     font-weight: 400;
     font-size: 26px;
-    color: var(--white);
+    color: var(--navy);
   }
   .products-header span {
     font-size: 12px;
-    color: var(--text-muted);
+    color: rgba(13,27,46,0.45);
     letter-spacing: 0.08em;
   }
   .sort-select {
-    background: var(--navy-mid);
-    color: var(--white);
-    border: 1px solid rgba(201,169,110,0.2);
+    background: #fff;
+    color: var(--navy);
+    border: 1px solid rgba(201,169,110,0.35);
     padding: 8px 14px;
     font-family: 'Jost', sans-serif;
     font-size: 12px;
@@ -310,8 +310,8 @@
   }
 
   .product-card {
-    background: var(--navy-mid);
-    border: 1px solid rgba(201,169,110,0.1);
+    background: #ffffff;
+    border: 1px solid rgba(201,169,110,0.2);
     border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
@@ -320,14 +320,14 @@
   }
   .product-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.35);
-    border-color: rgba(201,169,110,0.35);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.12);
+    border-color: rgba(201,169,110,0.5);
   }
   .product-badge {
     position: absolute;
     top: 10px; right: 10px;
     background: var(--gold);
-    color: var(--navy);
+    color: #fff;
     font-size: 9px;
     font-weight: 500;
     letter-spacing: 0.1em;
@@ -337,7 +337,7 @@
   .product-img {
     width: 100%;
     height: 160px;
-    background: linear-gradient(135deg, #1a2f4a 0%, #0d1b2e 100%);
+    background: linear-gradient(135deg, #eae4d8 0%, #f5f0e8 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -345,7 +345,7 @@
   .product-img svg {
     width: 56px;
     height: 56px;
-    color: rgba(201,169,110,0.35);
+    color: rgba(201,169,110,0.5);
   }
   .product-info {
     padding: 16px 18px 20px;
@@ -361,13 +361,13 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: 17px;
     font-weight: 400;
-    color: var(--white);
+    color: var(--navy);
     margin-bottom: 6px;
     line-height: 1.3;
   }
   .product-desc {
     font-size: 11px;
-    color: var(--text-muted);
+    color: rgba(13,27,46,0.5);
     line-height: 1.5;
     margin-bottom: 14px;
   }
@@ -379,11 +379,11 @@
   .product-price {
     font-family: 'Cormorant Garamond', serif;
     font-size: 20px;
-    color: var(--gold-light);
+    color: #8a6d3b;
   }
   .product-btn {
     background: transparent;
-    border: 1px solid rgba(201,169,110,0.4);
+    border: 1px solid rgba(201,169,110,0.5);
     color: var(--gold);
     padding: 7px 14px;
     font-family: 'Jost', sans-serif;
@@ -395,7 +395,7 @@
   }
   .product-btn:hover {
     background: var(--gold);
-    color: var(--navy);
+    color: #fff;
     border-color: var(--gold);
   }
 
@@ -403,7 +403,7 @@
   .coming-soon-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(13,27,46,0.6);
+    background: rgba(240,234,216,0.75);
     backdrop-filter: blur(3px);
     display: flex;
     align-items: center;
@@ -418,7 +418,7 @@
   .coming-soon-overlay span {
     font-family: 'Cormorant Garamond', serif;
     font-size: 18px;
-    color: var(--gold);
+    color: #8a6d3b;
     letter-spacing: 0.2em;
     font-style: italic;
   }
@@ -452,7 +452,7 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 19l-7-7 7-7"/></svg>
     HOME
   </a>
-  <div class="nav-center">Store</div>
+  <div class="nav-center"></div>
   <div class="nav-right">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
     Disponibile presto
@@ -465,15 +465,6 @@
   <!-- Sagoma animata -->
   <div class="sagoma-wrapper">
     <img src="/mnt/user-data/uploads/Gemini_Generated_Image_yxajczyxajczyxaj.png" alt="Sagoma sicurezza" />
-  </div>
-
-  <div class="store-icon">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
-      <path d="M3 9l1-5h16l1 5"/>
-      <path d="M3 9h18v11a1 1 0 01-1 1H4a1 1 0 01-1-1V9z"/>
-      <path d="M9 9v12M15 9v12"/>
-      <path d="M9 3v6M15 3v6"/>
-    </svg>
   </div>
 
   <h1>Store</h1>
