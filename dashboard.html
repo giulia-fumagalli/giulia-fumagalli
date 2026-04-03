@@ -276,8 +276,8 @@
       if (window._c2) window._c2.destroy();
       window._c2 = new Chart(document.getElementById('chart-temi').getContext('2d'), {
         type:'bar',
-        data:{labels:temiConDati.map(t=>t.length>16?t.substring(0,16)+'…':t),datasets:[{data:pcts,backgroundColor:pcts.map(p=>p>=70?'rgba(58,140,92,0.7)':'rgba(192,57,43,0.6)'),borderRadius:6}]},
-        options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,grid:{color:'rgba(26,37,64,0.05)'},ticks:{callback:v=>v+'%'}},x:{grid:{display:false},ticks:{font:{size:10}}}}}
+        data:{labels:temiConDati,datasets:[{data:pcts,backgroundColor:pcts.map(p=>p>=70?'rgba(58,140,92,0.7)':'rgba(192,57,43,0.6)'),borderRadius:4}]},
+        options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{min:0,max:100,grid:{color:'rgba(26,37,64,0.05)'},ticks:{callback:v=>v+'%',font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:11}}}}}
       });
     }
   }
@@ -308,21 +308,21 @@
 
   // ── AI ASSISTANT (logica locale) ──
   const MODULI = [
-    { n:1, titolo:'Security Management', date:'11-12 febbraio 2026', presenza:true },
-    { n:2, titolo:'Enterprise Risk Management', date:'5-7 marzo 2026', presenza:false },
-    { n:3, titolo:'Sicurezza Integrata', date:'26-28 marzo 2026', presenza:true },
-    { n:4, titolo:'Strategie, Management e Budgeting', date:'9-11 aprile 2026', presenza:false },
-    { n:5, titolo:'Psicologia del rischio e organizzazione aziendale', date:'7-9 maggio 2026', presenza:true },
-    { n:6, titolo:'Physical Security A', date:'21-23 maggio 2026', presenza:false },
-    { n:7, titolo:'Physical Security B', date:'4-6 giugno 2026', presenza:true },
-    { n:8, titolo:'Safety e Security', date:'17-20 giugno 2026', presenza:false },
-    { n:9, titolo:'Emergency e Crisis Management - L\u0027Aquila', date:'30 giugno - 2 luglio 2026', presenza:true },
-    { n:10, titolo:'Incident Management & Business Continuity', date:'10-12 settembre 2026', presenza:false },
-    { n:11, titolo:'Information & Cyber Security', date:'24-26 settembre 2026', presenza:true },
-    { n:12, titolo:'Security & Resilience Compliance', date:'8-10 ottobre 2026', presenza:false },
-    { n:13, titolo:'Diritto, Investigation & Intelligence', date:'22-24 ottobre 2026', presenza:true },
-    { n:14, titolo:'Etica e Diritto', date:'5-7 novembre 2026', presenza:false },
-    { n:15, titolo:'Esami finali', date:'26-27 novembre 2026', presenza:true }
+    { n:1,  titolo:'Security Management', date:'11-12 febbraio 2026', orario:'10:30-18:00', presenza:true },
+    { n:2,  titolo:'Enterprise Risk Management', date:'5-7 marzo 2026', orario:'14:00-18:00', presenza:false },
+    { n:3,  titolo:'Sicurezza Integrata', date:'26-28 marzo 2026', orario:'14:00-18:00', presenza:false },
+    { n:4,  titolo:'Strategie, Management e Budgeting', date:'9-11 aprile 2026', orario:'14:00-18:00', presenza:false },
+    { n:5,  titolo:'Psicologia del rischio e organizzazione aziendale', date:'7-9 maggio 2026', orario:'14:00-18:00', presenza:false },
+    { n:6,  titolo:'Physical Security A', date:'21-23 maggio 2026', orario:'14:00-18:00', presenza:false },
+    { n:7,  titolo:'Physical Security B', date:'4-6 giugno 2026', orario:'14:00-18:00', presenza:false },
+    { n:8,  titolo:'Safety e Security', date:'17-20 giugno 2026', orario:'14:00-18:00', presenza:false },
+    { n:9,  titolo:'Emergency e Crisis Management - L'Aquila', date:'30 giugno - 2 luglio 2026', orario:'Giornata intera', presenza:true },
+    { n:10, titolo:'Incident Management & Business Continuity', date:'10-12 settembre 2026', orario:'14:00-18:00', presenza:false },
+    { n:11, titolo:'Information & Cyber Security', date:'24-26 settembre 2026', orario:'14:00-18:00', presenza:false },
+    { n:12, titolo:'Security & Resilience Compliance', date:'8-10 ottobre 2026', orario:'14:00-18:00', presenza:false },
+    { n:13, titolo:'Diritto, Investigation & Intelligence', date:'22-24 ottobre 2026', orario:'14:00-18:00', presenza:false },
+    { n:14, titolo:'Etica e Diritto', date:'5-7 novembre 2026', orario:'14:00-18:00', presenza:false },
+    { n:15, titolo:'Esami finali', date:'26-27 novembre 2026', orario:'Da definire', presenza:true }
   ];
 
   const MODULI_DATES = [
@@ -341,19 +341,18 @@
       const idx = MODULI_DATES.findIndex(dt => dt >= oggi);
       if (idx === -1) return 'Il corso è terminato. Gli esami finali si sono tenuti il 26-27 novembre 2026.';
       const m = MODULI[idx];
-      return `Il prossimo appuntamento è il Modulo ${m.n} — ${m.titolo}, in programma ${m.date}.${m.presenza ? ' 🌸 Si tratta di una lezione IN PRESENZA.' : ' La lezione si svolge online.'}`;
+      return `Il prossimo appuntamento è il Modulo ${m.n} — ${m.titolo}, in programma ${m.date} (orario: ${m.orario}).${m.presenza ? ' 🌸 Si tratta di una lezione IN PRESENZA.' : ' La lezione si svolge online.'}`;
     }
 
     if (d.includes('esam') || d.includes('prova') || d.includes('26 novembre') || d.includes('27 novembre')) {
       if (d.includes('modal') || d.includes('come') || d.includes('struttur') || d.includes('funzion')) {
-        return `L'esame finale si compone di 3 prove, tutte in presenza il 26-27 novembre 2026:\n\n1️⃣ Prova scritta a risposta multipla — 100 domande in 1 ora\n2️⃣ Progetto di Security (scritto) — 1 ora e 30 minuti\n3️⃣ Prova orale — 15 minuti per presentare la tesina su un argomento a scelta nel mondo della Security`;
+        return `L'esame finale si compone di 3 prove, tutte in presenza il 26-27 novembre 2026:\n\n1️⃣ Prova scritta a risposta multipla — 100 domande in 1 ora\n2️⃣ Progetto di Security (scritto) — 1 ora e 30 minuti\n3️⃣ Prova orale — 15 minuti per presentare la tesina su un argomento a scelta in ambito Security`;
       }
       return `Gli esami finali si tengono il 26-27 novembre 2026 in presenza. Sono composte da 3 prove: scritta a risposta multipla (100 domande, 1 ora), Progetto di Security (1h30) e prova orale con presentazione della tesina (15 minuti).`;
     }
 
     if (d.includes('presenza') || d.includes('presenz') || d.includes('fisic') || d.includes('vivo')) {
-      const inPresenza = MODULI.filter(m => m.presenza);
-      return 'Le lezioni in presenza 🌸 sono:\n\n' + inPresenza.map(m => `• Modulo ${m.n} — ${m.titolo} (${m.date})`).join('\n');
+      return `Le lezioni in presenza 🌸 sono solo 3:\n\n• Modulo 1 — Security Management (11-12 febbraio 2026)\n• Modulo 9 — Emergency e Crisis Management a L'Aquila (30 giugno - 2 luglio 2026)\n• Modulo 15 — Esami finali (26-27 novembre 2026)\n\nTutte le altre lezioni si svolgono online.`;
     }
 
     if (d.includes('calendar') || d.includes('tutti') || d.includes('programm') || d.includes('moduli')) {
@@ -361,7 +360,7 @@
     }
 
     if (d.includes('tesin') || d.includes('oral') || d.includes('argomento')) {
-      return `La prova orale consiste nella presentazione di una tesina su un argomento a scelta nel mondo della Security. Avrete 15 minuti per la presentazione. La scelta dell'argomento è libera, purché attinente ai temi del corso.`;
+      return `La prova orale consiste nella presentazione di una tesina su un argomento a scelta in ambito Security. Avrete 15 minuti per la presentazione. La scelta dell'argomento è libera, purché attinente ai temi del corso.`;
     }
 
     if (d.includes('certif') || d.includes('10459') || d.includes('qualific')) {
