@@ -305,7 +305,12 @@ function setMode(m) {
   });
   if (m === "db") renderCards(DB, curCat);
   if (m === "paesi") renderPaesi(curReg);
-  if (m === "man") showCap(0, document.querySelector("#man-nav .rtab"));
+  if (m === "man") {
+    setTimeout(function() {
+      var firstTab = document.querySelector("#man-nav .rtab");
+      if (firstTab) showCap(0, firstTab);
+    }, 50);
+  }
 }
 
 function onSearch() {
@@ -834,12 +839,17 @@ async function sendAI() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ system: AI_SYS, messages: aiHist })
     });
+    if (!r.ok) {
+      typing.textContent = "Errore del server (" + r.status + "). Riprova tra qualche istante.";
+      return;
+    }
     var data = await r.json();
     var reply = (data.content && data.content[0] && data.content[0].text) || "Non ho ricevuto risposta. Riprova.";
     typing.textContent = reply;
     aiHist.push({role:"assistant", content:reply});
   } catch(e) {
-    typing.textContent = "Connessione non disponibile. Usa la sezione Procedure per le schede offline.";
+    console.error("AI error:", e);
+    typing.textContent = "Errore di connessione: " + e.message;
   }
 }
 </script>
