@@ -10,14 +10,15 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --navy: #1a2540;
-      --navy-light: #243058;
-      --gold: #b8943f;
+      --navy:       #1a2540;
+      --navy-deep:  #0e1626;
+      --gold:       #b8943f;
       --gold-light: #d4af6a;
-      --cream: #f5f2ee;
-      --text: #1a2540;
+      --cream:      #f5f2ee;
+      --text:       #1a2540;
       --text-muted: #6b7694;
-      --white: #ffffff;
+      --white:      #ffffff;
+      --border:     rgba(26,37,64,0.09);
     }
 
     html { scroll-behavior: smooth; }
@@ -26,33 +27,90 @@
       font-family: 'Outfit', sans-serif;
       background: var(--cream);
       color: var(--text);
-      min-height: 100vh;
     }
 
-    /* ── HERO ── */
+    /* ════════════════════════════════
+       NAVBAR
+    ════════════════════════════════ */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 60px;
+      height: 64px;
+      background: rgba(245,242,238,0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+
+    .navbar.scrolled { background: rgba(245,242,238,0.97); }
+
+    .navbar-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--navy);
+      letter-spacing: 0.02em;
+    }
+    .navbar-name em { font-style: italic; color: var(--gold); }
+
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .navbar-links a {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.25s;
+      position: relative;
+    }
+
+    .navbar-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--gold);
+      transition: width 0.3s;
+    }
+
+    .navbar-links a:hover { color: var(--navy); }
+    .navbar-links a:hover::after { width: 100%; }
+
+    .navbar-links .nav-store {
+      color: var(--gold);
+      border: 1px solid rgba(184,148,63,0.35);
+      padding: 7px 16px;
+      border-radius: 3px;
+      transition: background 0.25s, color 0.25s;
+    }
+    .navbar-links .nav-store:hover { background: var(--gold); color: var(--white); }
+    .navbar-links .nav-store::after { display: none; }
+
+    /* ════════════════════════════════
+       HERO
+    ════════════════════════════════ */
     .hero {
       min-height: 100vh;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 60% 80% at 70% 50%, rgba(26,37,64,0.04) 0%, transparent 70%),
-        repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(26,37,64,0.03) 80px);
-      pointer-events: none;
+      padding-top: 64px;
     }
 
     .hero-left {
       background: var(--navy);
-      display: flex;
-      align-items: flex-end;
-      padding: 0;
       position: relative;
       overflow: hidden;
     }
@@ -61,12 +119,11 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(26,37,64,0.6) 0%, transparent 50%);
+      background: linear-gradient(to top, rgba(14,22,38,0.5) 0%, transparent 55%);
     }
 
     .hero-photo {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
       object-position: center top;
       display: block;
@@ -77,58 +134,49 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 80px 70px 80px 60px;
-      position: relative;
+      padding: 80px 70px 80px 64px;
     }
 
     .hero-tag {
-      font-family: 'Outfit', sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 3px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3.5px;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 24px;
+      margin-bottom: 28px;
       display: flex;
       align-items: center;
       gap: 12px;
     }
-
     .hero-tag::before {
       content: '';
       display: block;
-      width: 32px;
-      height: 1px;
+      width: 28px; height: 1px;
       background: var(--gold);
+      flex-shrink: 0;
     }
 
-    h1 {
+    .hero-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(48px, 5vw, 72px);
+      font-size: clamp(52px, 5.5vw, 78px);
       font-weight: 300;
-      line-height: 1.05;
+      line-height: 1.0;
       color: var(--navy);
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
+    .hero-name em { font-style: italic; color: var(--gold); }
 
-    h1 em {
-      font-style: italic;
-      color: var(--gold);
-    }
-
-    .hero-title-sub {
-      font-family: 'Outfit', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 2.5px;
+    .hero-location {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--text-muted);
       margin-bottom: 40px;
     }
 
-    .divider {
-      width: 48px;
-      height: 2px;
+    .hero-rule {
+      width: 44px; height: 1px;
       background: linear-gradient(to right, var(--gold), var(--gold-light));
       margin-bottom: 40px;
     }
@@ -137,82 +185,93 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 19px;
       font-weight: 300;
-      line-height: 1.7;
+      line-height: 1.75;
       color: var(--navy);
-      max-width: 440px;
-      margin-bottom: 48px;
+      max-width: 420px;
+      margin-bottom: 52px;
     }
 
     .scroll-cue {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 12px;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 2px;
+      gap: 10px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
       color: var(--text-muted);
       cursor: pointer;
-      transition: color 0.3s;
+      background: none;
+      border: none;
+      transition: color 0.25s;
     }
-
     .scroll-cue:hover { color: var(--navy); }
-    .scroll-cue svg { animation: bounce 2s infinite; }
+    .scroll-cue svg { animation: cue-bounce 2.2s ease-in-out infinite; }
 
-    @keyframes bounce {
+    @keyframes cue-bounce {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(5px); }
+      50%       { transform: translateY(6px); }
     }
 
-    /* ── PROFILE SECTION ── */
-    .profile {
-      padding: 100px 80px;
-      max-width: 1200px;
+    /* ════════════════════════════════
+       SHARED SECTION LAYOUT
+    ════════════════════════════════ */
+    .section-wrap {
+      max-width: 1160px;
       margin: 0 auto;
+      padding: 100px 60px;
     }
 
-    .section-label {
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 3px;
+    .section-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3.5px;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 48px;
+      margin-bottom: 52px;
       display: flex;
       align-items: center;
       gap: 16px;
     }
-
-    .section-label::after {
+    .section-eyebrow::after {
       content: '';
       flex: 1;
+      max-width: 180px;
       height: 1px;
       background: linear-gradient(to right, rgba(184,148,63,0.4), transparent);
-      max-width: 200px;
     }
 
+    /* Tutte le sezioni dopo hero condividono lo stesso sfondo crema
+       e sono separate da un singolo bordo sottile */
+    section { background: var(--cream); }
+    section + section { border-top: 1px solid var(--border); }
+
+    /* ════════════════════════════════
+       PROFILO
+    ════════════════════════════════ */
     .profile-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 80px;
     }
 
-    .profile-block h2 {
+    .profile-col h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 300;
       color: var(--navy);
-      margin-bottom: 32px;
+      margin-bottom: 36px;
+      line-height: 1.2;
     }
 
-    .education-item {
-      border-left: 2px solid var(--gold);
-      padding-left: 24px;
-      margin-bottom: 32px;
+    .edu-item {
+      border-left: 1.5px solid var(--gold);
+      padding-left: 22px;
+      margin-bottom: 36px;
     }
 
-    .education-item .year {
-      font-size: 11px;
+    .edu-year {
+      font-size: 10px;
       font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -220,306 +279,261 @@
       margin-bottom: 6px;
     }
 
-    .education-item h3 {
+    .edu-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 20px;
+      font-size: 19px;
       font-weight: 400;
       color: var(--navy);
-      line-height: 1.3;
+      line-height: 1.35;
       margin-bottom: 4px;
     }
 
-    .education-item .institution {
-      font-size: 13px;
+    .edu-inst {
+      font-size: 12px;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
-    .education-item .grade {
+    .edu-grade {
       display: inline-block;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
       color: var(--gold);
       background: rgba(184,148,63,0.1);
       padding: 3px 10px;
       border-radius: 20px;
       letter-spacing: 0.5px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
-    .education-item .thesis {
+    .edu-thesis {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
-      font-size: 15px;
+      font-size: 14px;
       color: var(--text-muted);
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
-    .editorial-card {
+    .editorial {
       background: var(--navy);
       color: var(--white);
-      padding: 32px;
+      padding: 28px 30px;
       border-radius: 4px;
-      margin-bottom: 32px;
       position: relative;
       overflow: hidden;
     }
-
-    .editorial-card::before {
+    .editorial::before {
       content: '"';
       position: absolute;
-      top: -10px;
-      right: 16px;
+      top: -14px; right: 14px;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 120px;
-      color: rgba(184,148,63,0.15);
+      font-size: 110px;
+      color: rgba(184,148,63,0.12);
       line-height: 1;
+      pointer-events: none;
     }
-
-    .editorial-card .pub {
-      font-size: 11px;
-      font-weight: 500;
+    .editorial-pub {
+      font-size: 10px;
+      font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--gold-light);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
-
-    .editorial-card h3 {
+    .editorial h3 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 300;
       line-height: 1.5;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
-
-    .editorial-card p {
-      font-size: 13px;
-      color: rgba(255,255,255,0.6);
-      line-height: 1.6;
+    .editorial p {
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.65;
     }
 
     .course-item {
       display: flex;
-      gap: 16px;
+      gap: 18px;
       padding: 14px 0;
-      border-bottom: 1px solid rgba(26,37,64,0.08);
+      border-bottom: 1px solid var(--border);
     }
-
     .course-item:last-child { border-bottom: none; }
 
     .course-year {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
       color: var(--gold);
-      min-width: 36px;
+      min-width: 34px;
       padding-top: 2px;
+      letter-spacing: 1px;
     }
 
     .course-text {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--text);
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
-    /* ── SERVIZI DIGITALI ── */
-    .aziende {
-      background: var(--navy);
-      padding: 100px 80px;
-    }
+    /* ════════════════════════════════
+       SERVIZI DIGITALI
+    ════════════════════════════════ */
+    .servizi-header { margin-bottom: 48px; }
 
-    .aziende .section-label {
-      color: var(--gold-light);
-      max-width: 1200px;
-      margin: 0 auto 48px;
-    }
-
-    .aziende .section-label::after {
-      background: linear-gradient(to right, rgba(212,175,106,0.4), transparent);
-    }
-
-    .aziende-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .aziende-title {
+    .servizi-header h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 40px;
+      font-size: 36px;
       font-weight: 300;
-      color: var(--white);
-      margin-bottom: 16px;
+      color: var(--navy);
+      margin-bottom: 10px;
     }
 
-    .aziende-sub {
-      font-size: 15px;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 60px;
-      max-width: 480px;
-      line-height: 1.6;
+    .servizi-header p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.65;
     }
 
-    .aziende-grid {
+    .servizi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      max-width: 640px;
     }
 
-    .azienda-card {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      padding: 40px 32px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.35s ease;
+    .servizio-card {
       display: flex;
       flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 32px 28px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      text-decoration: none;
+      background: var(--white);
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+    .servizio-card:hover {
+      border-color: rgba(184,148,63,0.4);
+      box-shadow: 0 8px 28px rgba(26,37,64,0.07);
+      transform: translateY(-3px);
+    }
+
+    .servizio-icon {
+      width: 46px; height: 46px;
+      border: 1px solid rgba(184,148,63,0.28);
+      border-radius: 10px;
+      display: flex;
       align-items: center;
-      gap: 20px;
-      position: relative;
-      overflow: hidden;
+      justify-content: center;
+      color: var(--gold);
     }
 
-    .azienda-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(184,148,63,0.08) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.35s;
+    .servizio-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 17px;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.3;
     }
 
-    .azienda-card:hover {
-      border-color: rgba(184,148,63,0.5);
-      transform: translateY(-4px);
-      background: rgba(255,255,255,0.08);
-    }
-
-    .azienda-card:hover::before { opacity: 1; }
-
-    .azienda-access {
-      font-size: 11px;
-      font-weight: 500;
+    .servizio-access {
+      font-size: 10px;
+      font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--gold-light);
+      color: var(--gold);
       display: flex;
       align-items: center;
       gap: 6px;
+      margin-top: auto;
     }
 
-    /* ══════════════════════════════════════
-       STORE SECTION — area dedicata
-    ══════════════════════════════════════ */
-    .store-section {
-      background: var(--cream);
-      padding: 0;
-      overflow: hidden;
-    }
-
-    .store-inner {
+    /* ════════════════════════════════
+       STORE
+    ════════════════════════════════ */
+    .store-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      min-height: 580px;
+      gap: 60px;
+      align-items: center;
     }
 
-    /* Pannello sinistro scuro */
-    .store-panel-left {
-      background: linear-gradient(150deg, #0f1c33 0%, #1a2540 50%, #1f2f50 100%);
-      padding: 72px 64px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+    .store-card {
+      background: var(--navy);
+      border-radius: 8px;
+      padding: 52px 48px;
       position: relative;
       overflow: hidden;
     }
-
-    /* cerchi decorativi */
-    .store-panel-left::before {
+    .store-card::before {
       content: '';
       position: absolute;
-      width: 500px;
-      height: 500px;
+      width: 380px; height: 380px;
       border-radius: 50%;
       border: 1px solid rgba(184,148,63,0.08);
-      top: -160px;
-      right: -180px;
-      pointer-events: none;
-    }
-    .store-panel-left::after {
-      content: '';
-      position: absolute;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      border: 1px solid rgba(184,148,63,0.06);
-      bottom: -80px;
-      left: -80px;
+      top: -130px; right: -130px;
       pointer-events: none;
     }
 
-    .store-eyebrow {
+    .store-card-eyebrow {
       font-size: 10px;
       font-weight: 600;
-      letter-spacing: 3.5px;
+      letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       position: relative;
       z-index: 1;
     }
-    .store-eyebrow::before {
+    .store-card-eyebrow::before {
       content: '';
-      width: 28px;
-      height: 1px;
+      width: 22px; height: 1px;
       background: var(--gold);
     }
 
-    .store-heading {
+    .store-card h2 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(44px, 4.5vw, 68px);
+      font-size: clamp(34px, 3.2vw, 50px);
       font-weight: 300;
-      line-height: 1.02;
       color: var(--white);
-      margin-bottom: 24px;
+      line-height: 1.1;
+      margin-bottom: 18px;
       position: relative;
       z-index: 1;
     }
-    .store-heading em {
-      font-style: italic;
-      color: var(--gold-light);
-    }
+    .store-card h2 em { font-style: italic; color: var(--gold-light); }
 
-    .store-desc {
-      font-size: 14px;
-      color: rgba(255,255,255,0.45);
+    .store-card p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.4);
       line-height: 1.75;
-      max-width: 340px;
-      margin-bottom: 44px;
+      max-width: 290px;
+      margin-bottom: 38px;
       position: relative;
       z-index: 1;
     }
 
-    .store-numbers {
+    .store-nums {
       display: flex;
-      gap: 36px;
-      margin-bottom: 48px;
+      gap: 26px;
+      margin-bottom: 42px;
       position: relative;
       z-index: 1;
     }
 
     .store-num {
-      border-left: 1px solid rgba(184,148,63,0.3);
-      padding-left: 16px;
+      border-left: 1px solid rgba(184,148,63,0.22);
+      padding-left: 14px;
     }
 
     .store-num-val {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 34px;
+      font-size: 30px;
       font-weight: 300;
       color: var(--gold-light);
       line-height: 1;
@@ -530,472 +544,466 @@
       font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.25);
       margin-top: 5px;
     }
 
     .store-btn {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
-      padding: 15px 32px;
+      gap: 10px;
+      padding: 13px 26px;
       background: var(--gold);
       color: var(--navy);
-      font-family: 'Outfit', sans-serif;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
-      letter-spacing: 2px;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
       text-decoration: none;
       border-radius: 3px;
       transition: background 0.25s, gap 0.2s;
-      align-self: flex-start;
       position: relative;
       z-index: 1;
     }
-    .store-btn:hover {
-      background: var(--gold-light);
-      gap: 18px;
-    }
-    .store-btn svg { flex-shrink: 0; }
+    .store-btn:hover { background: var(--gold-light); gap: 16px; }
 
-    /* Pannello destro chiaro — categorie */
-    .store-panel-right {
-      background: var(--white);
-      padding: 72px 56px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .store-cat-label {
+    .store-cats-label {
       font-size: 10px;
       font-weight: 600;
       letter-spacing: 3px;
       text-transform: uppercase;
       color: var(--text-muted);
-      margin-bottom: 32px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .store-cat-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(26,37,64,0.1);
+      margin-bottom: 22px;
     }
 
-    .store-cat-grid {
+    .store-cats {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 32px;
+      gap: 11px;
+      margin-bottom: 26px;
     }
 
-    .store-cat-item {
+    .store-cat {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 18px 16px;
-      border: 1px solid rgba(26,37,64,0.08);
-      border-radius: 8px;
+      gap: 12px;
+      padding: 15px 13px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
       text-decoration: none;
+      background: var(--white);
       transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-      cursor: pointer;
     }
-
-    .store-cat-item:hover {
-      border-color: rgba(184,148,63,0.45);
-      box-shadow: 0 6px 20px rgba(26,37,64,0.07);
+    .store-cat:hover {
+      border-color: rgba(184,148,63,0.38);
+      box-shadow: 0 5px 16px rgba(26,37,64,0.06);
       transform: translateY(-2px);
     }
 
-    .store-cat-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 8px;
+    .store-cat-ico {
+      width: 32px; height: 32px;
+      border-radius: 6px;
       background: var(--cream);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      color: var(--gold);
       transition: background 0.2s;
     }
-    .store-cat-item:hover .store-cat-icon {
-      background: rgba(184,148,63,0.12);
-    }
-    .store-cat-icon svg {
-      color: var(--gold);
-    }
+    .store-cat:hover .store-cat-ico { background: rgba(184,148,63,0.1); }
 
     .store-cat-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 15px;
-      font-weight: 400;
+      font-size: 14px;
       color: var(--navy);
       line-height: 1.3;
     }
-    .store-cat-count {
+    .store-cat-n {
       font-size: 10px;
       color: var(--text-muted);
-      margin-top: 2px;
+      margin-top: 1px;
     }
 
-    .store-coming {
+    .store-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 12px;
+      font-size: 11px;
       color: var(--gold);
-      letter-spacing: 0.06em;
-      background: rgba(184,148,63,0.08);
-      border: 1px solid rgba(184,148,63,0.2);
-      padding: 10px 16px;
+      letter-spacing: 0.05em;
+      background: rgba(184,148,63,0.07);
+      border: 1px solid rgba(184,148,63,0.17);
+      padding: 9px 14px;
       border-radius: 4px;
     }
 
-    .store-coming-dot {
-      width: 7px;
-      height: 7px;
+    .badge-dot {
+      width: 6px; height: 6px;
       border-radius: 50%;
       background: var(--gold);
-      animation: storePulse 1.8s ease-in-out infinite;
+      animation: badge-pulse 1.9s ease-in-out infinite;
     }
 
-    @keyframes storePulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.8); }
+    @keyframes badge-pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
     }
 
-    /* ── FOOTER ── */
+    /* ════════════════════════════════
+       FOOTER
+    ════════════════════════════════ */
     footer {
-      background: #0e1626;
-      padding: 40px 80px;
+      background: var(--navy-deep);
+      padding: 36px 60px;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    footer .name {
+    .footer-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 18px;
-      color: rgba(255,255,255,0.4);
+      font-size: 16px;
+      color: rgba(255,255,255,0.32);
     }
 
-    footer .copy {
-      font-size: 12px;
-      color: rgba(255,255,255,0.25);
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(255,255,255,0.18);
+      letter-spacing: 0.5px;
     }
 
-    /* ── ANIMATIONS ── */
+    /* ════════════════════════════════
+       FADE-IN
+    ════════════════════════════════ */
     .fade-in {
       opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
+      transform: translateY(22px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* ════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════ */
+    @media (max-width: 960px) {
+      .navbar { padding: 0 28px; }
+      .navbar-links { gap: 20px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-left { height: 55vh; }
+      .hero-right { padding: 52px 32px; }
+      .section-wrap { padding: 72px 32px; }
+      .profile-grid { grid-template-columns: 1fr; gap: 52px; }
+      .servizi-grid { grid-template-columns: 1fr; max-width: 340px; }
+      .store-grid { grid-template-columns: 1fr; gap: 36px; }
+      .store-cats { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 10px; padding: 28px 32px; text-align: center; }
     }
 
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero-left { height: 50vh; }
-      .hero-right { padding: 48px 32px; }
-      .profile { padding: 60px 32px; }
-      .profile-grid { grid-template-columns: 1fr; gap: 48px; }
-      .aziende { padding: 60px 32px; }
-      .store-inner { grid-template-columns: 1fr; }
-      .store-panel-left { padding: 52px 32px; }
-      .store-panel-right { padding: 48px 32px; }
-      .store-cat-grid { grid-template-columns: 1fr; }
-      footer { flex-direction: column; gap: 12px; padding: 32px; }
+    @media (max-width: 600px) {
+      .navbar-links { display: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HERO -->
-  <section class="hero">
+  <!-- ══ NAVBAR ══ -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-name">Giulia <em>Fumagalli</em></div>
+    <ul class="navbar-links">
+      <li><a href="#profilo">Profilo</a></li>
+      <li><a href="#servizi">Servizi</a></li>
+      <li><a href="#store" class="nav-store">Store</a></li>
+    </ul>
+  </nav>
+
+  <!-- ══ HERO ══ -->
+  <section class="hero" id="home">
     <div class="hero-left">
       <img src="foto.png" alt="Giulia Fumagalli" class="hero-photo" />
     </div>
     <div class="hero-right fade-in">
       <div class="hero-tag">Security &amp; Safety Specialist</div>
-      <h1>Giulia<br /><em>Fumagalli</em></h1>
-      <div class="hero-title-sub">Milano · Roma</div>
-      <div class="divider"></div>
+      <h1 class="hero-name">Giulia<br /><em>Fumagalli</em></h1>
+      <div class="hero-location">Milano · Roma</div>
+      <div class="hero-rule"></div>
       <p class="hero-bio">
-        Consulente specializzata in Enterprise Risk &amp; Security Management, Travel Risk Management e progettazione di percorsi formativi per la certificazione professionale UNI 10459:2017.
+        Consulente specializzata in Enterprise Risk &amp; Security Management, Travel Risk Management e progettazione di percorsi formativi per la certificazione professionale UNI&nbsp;10459:2017.
       </p>
-      <div class="scroll-cue" onclick="document.querySelector('.profile').scrollIntoView({behavior:'smooth'})">
+      <button class="scroll-cue" onclick="document.querySelector('#profilo').scrollIntoView({behavior:'smooth'})">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           <path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         Scopri il profilo
-      </div>
+      </button>
     </div>
   </section>
 
-  <!-- PROFILO -->
-  <section class="profile">
-    <div class="section-label">Profilo</div>
-    <div class="profile-grid">
+  <!-- ══ PROFILO ══ -->
+  <section id="profilo">
+    <div class="section-wrap">
+      <div class="section-eyebrow">Profilo</div>
+      <div class="profile-grid">
 
-      <!-- Formazione -->
-      <div class="profile-block fade-in">
-        <h2>Formazione<br />Accademica</h2>
+        <div class="profile-col fade-in">
+          <h2>Formazione<br />Accademica</h2>
 
-        <div class="education-item">
-          <div class="year">2024</div>
-          <h3>Laurea Magistrale in Scienze Criminologiche per l'Investigazione e la Sicurezza</h3>
-          <div class="institution">Alma Mater Studiorum, Bologna</div>
-          <span class="grade">110/110 con lode</span>
-          <p class="thesis">Tesi: "GUN VIOLENCE: un confronto tra Italia e Stati Uniti sulla natura e le implicazioni della violenza armata"</p>
-        </div>
-
-        <div class="education-item">
-          <div class="year">2022</div>
-          <h3>Laurea Triennale in Scienze Sociali</h3>
-          <div class="institution">Università degli Studi di Firenze</div>
-          <span class="grade">110/110 con lode</span>
-          <p class="thesis">Tesi: "Famiglie negligenti e lavoro di prevenzione"</p>
-        </div>
-
-        <div class="editorial-card fade-in">
-          <div class="pub">Contributo Editoriale · Alpes Italia, 2023</div>
-          <h3>"Dal disagio psichico alla salute mentale: Il lavoro relazionale e la promozione del benessere"</h3>
-          <p>Autrice del capitolo <em>"La negligenza parentale e le famiglie vulnerabili"</em> — analisi dell'impatto del maltrattamento sullo sviluppo psicologico del bambino, con focus sulla resilienza.</p>
-        </div>
-      </div>
-
-      <!-- Corsi -->
-      <div class="profile-block fade-in">
-        <h2>Corsi &amp;<br />Certificazioni</h2>
-
-        <div class="course-item">
-          <span class="course-year">2024</span>
-          <span class="course-text">Certificate of Completion — Essentials of Security Risk Assessment, <strong>ASIS International</strong></span>
-        </div>
-        <div class="course-item">
-          <span class="course-year">2024</span>
-          <span class="course-text">Relatrice al seminario "Applicazioni pratiche del Risk Management (UNI ISO 31.000)" — <strong>Università di Bologna</strong></span>
-        </div>
-        <div class="course-item">
-          <span class="course-year">2024</span>
-          <span class="course-text">Vincitrice del contest <strong>"Security is You(th)!"</strong> — ASIS Italy Chapter, Milano</span>
-        </div>
-        <div class="course-item">
-          <span class="course-year">2024</span>
-          <span class="course-text">Certificato IACA — Digital Forensic e manipolazione delle immagini con intelligenza artificiale</span>
-        </div>
-        <div class="course-item">
-          <span class="course-year">2023</span>
-          <span class="course-text">Certificato — Sicurezza e Salute ai sensi del D.lgs 81/08 e Accordo Stato Regioni (8 ore)</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SERVIZI DIGITALI — solo Il Professionista e SafePass -->
-  <section class="aziende" id="aziende">
-    <div class="aziende-inner">
-      <div class="section-label">Area Riservata</div>
-      <h2 class="aziende-title fade-in">Servizi Digitali</h2>
-      <p class="aziende-sub fade-in">Seleziona il tuo servizio e inserisci le credenziali di accesso.</p>
-
-      <div class="aziende-grid">
-        <a href="login.html" class="azienda-card fade-in">
-          <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
-            <div style="width:60px;height:60px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(184,148,63,0.4);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--gold-light)">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <path d="M14 2L4 7v7c0 5.5 4 10.5 10 12 6-1.5 10-6.5 10-12V7L14 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-                <path d="M9.5 14l3 3 6-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div style="text-align:center;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:rgba(255,255,255,0.9);line-height:1.4">Il Professionista<br/>di Security</div>
+          <div class="edu-item">
+            <div class="edu-year">2024</div>
+            <div class="edu-title">Laurea Magistrale in Scienze Criminologiche per l'Investigazione e la Sicurezza</div>
+            <div class="edu-inst">Alma Mater Studiorum, Bologna</div>
+            <span class="edu-grade">110/110 con lode</span>
+            <p class="edu-thesis">Tesi: "GUN VIOLENCE: un confronto tra Italia e Stati Uniti sulla natura e le implicazioni della violenza armata"</p>
           </div>
-          <div class="azienda-access">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <rect x="1" y="5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
-              <path d="M3.5 5V3.5a2.5 2.5 0 015 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+
+          <div class="edu-item">
+            <div class="edu-year">2022</div>
+            <div class="edu-title">Laurea Triennale in Scienze Sociali</div>
+            <div class="edu-inst">Università degli Studi di Firenze</div>
+            <span class="edu-grade">110/110 con lode</span>
+            <p class="edu-thesis">Tesi: "Famiglie negligenti e lavoro di prevenzione"</p>
+          </div>
+
+          <div class="editorial fade-in">
+            <div class="editorial-pub">Contributo Editoriale · Alpes Italia, 2023</div>
+            <h3>"Dal disagio psichico alla salute mentale: Il lavoro relazionale e la promozione del benessere"</h3>
+            <p>Autrice del capitolo <em>"La negligenza parentale e le famiglie vulnerabili"</em> — analisi dell'impatto del maltrattamento sullo sviluppo psicologico del bambino, con focus sulla resilienza.</p>
+          </div>
+        </div>
+
+        <div class="profile-col fade-in">
+          <h2>Corsi &amp;<br />Certificazioni</h2>
+
+          <div class="course-item">
+            <span class="course-year">2024</span>
+            <span class="course-text">Certificate of Completion — Essentials of Security Risk Assessment, <strong>ASIS International</strong></span>
+          </div>
+          <div class="course-item">
+            <span class="course-year">2024</span>
+            <span class="course-text">Relatrice al seminario "Applicazioni pratiche del Risk Management (UNI ISO 31.000)" — <strong>Università di Bologna</strong></span>
+          </div>
+          <div class="course-item">
+            <span class="course-year">2024</span>
+            <span class="course-text">Vincitrice del contest <strong>"Security is You(th)!"</strong> — ASIS Italy Chapter, Milano</span>
+          </div>
+          <div class="course-item">
+            <span class="course-year">2024</span>
+            <span class="course-text">Certificato IACA — Digital Forensic e manipolazione delle immagini con intelligenza artificiale</span>
+          </div>
+          <div class="course-item">
+            <span class="course-year">2023</span>
+            <span class="course-text">Certificato — Sicurezza e Salute ai sensi del D.lgs 81/08 e Accordo Stato Regioni (8 ore)</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ SERVIZI DIGITALI ══ -->
+  <section id="servizi">
+    <div class="section-wrap">
+      <div class="section-eyebrow">Area Riservata</div>
+      <div class="servizi-header fade-in">
+        <h2>Servizi Digitali</h2>
+        <p>Seleziona il tuo servizio e inserisci le credenziali di accesso.</p>
+      </div>
+
+      <div class="servizi-grid">
+
+        <a href="login.html" class="servizio-card fade-in">
+          <div class="servizio-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L4 6v6c0 5.5 3.5 10.5 8 12 4.5-1.5 8-6.5 8-12V6L12 2z"/>
+              <path d="M9 12l2 2 4-4"/>
             </svg>
+          </div>
+          <div class="servizio-name">Il Professionista<br />di Security</div>
+          <div class="servizio-access">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><rect x="1" y="5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 5V3.5a2.5 2.5 0 015 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
             Accedi
           </div>
         </a>
 
-        <a href="safepass.html" class="azienda-card fade-in">
-          <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
-            <div style="width:60px;height:60px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(184,148,63,0.4);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--gold-light)">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-                <path d="M25 5L3 14l8 3.5L14 25l3.5-5L25 5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
-                <path d="M11 17.5L16 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <div style="text-align:center;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:rgba(255,255,255,0.9);line-height:1.4">SafePass<br/>Travel Security</div>
-          </div>
-          <div class="azienda-access">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-              <rect x="1" y="5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
-              <path d="M3.5 5V3.5a2.5 2.5 0 015 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        <a href="safepass.html" class="servizio-card fade-in">
+          <div class="servizio-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 4L11 13 8.5 10.5"/>
+              <path d="M22 4L15 22l-3.5-6L5 12.5 22 4z"/>
             </svg>
+          </div>
+          <div class="servizio-name">SafePass<br />Travel Security</div>
+          <div class="servizio-access">
+            <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><rect x="1" y="5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 5V3.5a2.5 2.5 0 015 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
             Accedi
           </div>
         </a>
+
       </div>
     </div>
   </section>
 
-  <!-- ══════════════════════════════════════════
-       STORE — Sezione dedicata e accattivante
-  ══════════════════════════════════════════ -->
-  <section class="store-section" id="store">
-    <div class="store-inner">
+  <!-- ══ STORE ══ -->
+  <section id="store">
+    <div class="section-wrap">
+      <div class="section-eyebrow">Safety Store</div>
 
-      <!-- Pannello sinistro: pitch -->
-      <div class="store-panel-left fade-in">
-        <div class="store-eyebrow">Safety Store</div>
-        <h2 class="store-heading">Tutto ciò<br />che serve per<br />stare al <em>sicuro</em></h2>
-        <p class="store-desc">
-          Prodotti professionali per la sicurezza domestica, personale e aziendale. Selezionati, certificati, consegnati.
-        </p>
-        <div class="store-numbers">
-          <div class="store-num">
-            <div class="store-num-val">40+</div>
-            <div class="store-num-label">Prodotti</div>
+      <div class="store-grid">
+
+        <div class="store-card fade-in">
+          <div class="store-card-eyebrow">Giulia Fumagalli Security</div>
+          <h2>Tutto ciò che<br />serve per stare<br />al <em>sicuro</em></h2>
+          <p>Prodotti professionali per la sicurezza domestica, personale e aziendale. Selezionati, certificati, consegnati.</p>
+          <div class="store-nums">
+            <div class="store-num">
+              <div class="store-num-val">40+</div>
+              <div class="store-num-label">Prodotti</div>
+            </div>
+            <div class="store-num">
+              <div class="store-num-val">6</div>
+              <div class="store-num-label">Categorie</div>
+            </div>
+            <div class="store-num">
+              <div class="store-num-val">Pro</div>
+              <div class="store-num-label">Qualità</div>
+            </div>
           </div>
-          <div class="store-num">
-            <div class="store-num-val">6</div>
-            <div class="store-num-label">Categorie</div>
+          <a href="store.html" class="store-btn">
+            Entra nello Store
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="fade-in">
+          <div class="store-cats-label">Esplora le categorie</div>
+          <div class="store-cats">
+
+            <a href="store.html" class="store-cat">
+              <div class="store-cat-ico">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 9.5L12 3l9 6.5V21H3V9.5z"/><rect x="9" y="14" width="6" height="7"/>
+                </svg>
+              </div>
+              <div>
+                <div class="store-cat-name">Casa &amp; Abitazione</div>
+                <div class="store-cat-n">12 prodotti</div>
+              </div>
+            </a>
+
+            <a href="store.html" class="store-cat">
+              <div class="store-cat-ico">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="7" width="20" height="14" rx="2"/>
+                  <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+                  <line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/>
+                </svg>
+              </div>
+              <div>
+                <div class="store-cat-name">Kit di Emergenza</div>
+                <div class="store-cat-n">8 prodotti</div>
+              </div>
+            </a>
+
+            <a href="store.html" class="store-cat">
+              <div class="store-cat-ico">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="store-cat-name">Sicurezza Personale</div>
+                <div class="store-cat-n">7 prodotti</div>
+              </div>
+            </a>
+
+            <a href="store.html" class="store-cat">
+              <div class="store-cat-ico">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/>
+                </svg>
+              </div>
+              <div>
+                <div class="store-cat-name">Antincendio</div>
+                <div class="store-cat-n">6 prodotti</div>
+              </div>
+            </a>
+
+            <a href="store.html" class="store-cat">
+              <div class="store-cat-ico">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 10l5-5-5-5v3H4v4h11v3z"/>
+                  <circle cx="12" cy="17" r="3"/>
+                  <path d="M5 17H3M21 17h-2"/>
+                </svg>
+              </div>
+              <div>
+                <div class="store-cat-name">Sorveglianza</div>
+                <div class="store-cat-n">9 prodotti</div>
+              </div>
+            </a>
+
+            <a href="store.html" class="store-cat">
+              <div class="store-cat-ico">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
+                  <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="store-cat-name">Formazione</div>
+                <div class="store-cat-n">4 prodotti</div>
+              </div>
+            </a>
+
           </div>
-          <div class="store-num">
-            <div class="store-num-val">Pro</div>
-            <div class="store-num-label">Qualità</div>
+
+          <div class="store-badge">
+            <div class="badge-dot"></div>
+            Store in allestimento — disponibile a breve
           </div>
         </div>
-        <a href="store.html" class="store-btn">
-          Entra nello Store
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
+
       </div>
-
-      <!-- Pannello destro: categorie -->
-      <div class="store-panel-right fade-in">
-        <div class="store-cat-label">Esplora le categorie</div>
-        <div class="store-cat-grid">
-
-          <a href="store.html" class="store-cat-item">
-            <div class="store-cat-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 9.5L12 3l9 6.5V21H3V9.5z"/>
-                <rect x="9" y="14" width="6" height="7"/>
-              </svg>
-            </div>
-            <div>
-              <div class="store-cat-name">Casa &amp; Abitazione</div>
-              <div class="store-cat-count">12 prodotti</div>
-            </div>
-          </a>
-
-          <a href="store.html" class="store-cat-item">
-            <div class="store-cat-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="2" y="7" width="20" height="14" rx="2"/>
-                <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
-                <line x1="12" y1="12" x2="12" y2="16"/>
-                <line x1="10" y1="14" x2="14" y2="14"/>
-              </svg>
-            </div>
-            <div>
-              <div class="store-cat-name">Kit di Emergenza</div>
-              <div class="store-cat-count">8 prodotti</div>
-            </div>
-          </a>
-
-          <a href="store.html" class="store-cat-item">
-            <div class="store-cat-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-            </div>
-            <div>
-              <div class="store-cat-name">Sicurezza Personale</div>
-              <div class="store-cat-count">7 prodotti</div>
-            </div>
-          </a>
-
-          <a href="store.html" class="store-cat-item">
-            <div class="store-cat-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="9"/>
-                <path d="M12 8v4l3 3"/>
-              </svg>
-            </div>
-            <div>
-              <div class="store-cat-name">Antincendio</div>
-              <div class="store-cat-count">6 prodotti</div>
-            </div>
-          </a>
-
-          <a href="store.html" class="store-cat-item">
-            <div class="store-cat-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 10l5-5-5-5v3H4v4h11v3z"/>
-                <circle cx="12" cy="17" r="3"/>
-                <path d="M5 17H3M21 17h-2"/>
-              </svg>
-            </div>
-            <div>
-              <div class="store-cat-name">Sorveglianza</div>
-              <div class="store-cat-count">9 prodotti</div>
-            </div>
-          </a>
-
-          <a href="store.html" class="store-cat-item">
-            <div class="store-cat-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
-                <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
-              </svg>
-            </div>
-            <div>
-              <div class="store-cat-name">Formazione</div>
-              <div class="store-cat-count">4 prodotti</div>
-            </div>
-          </a>
-
-        </div>
-
-        <div class="store-coming">
-          <div class="store-coming-dot"></div>
-          Store in allestimento — disponibile a breve
-        </div>
-      </div>
-
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ══ FOOTER ══ -->
   <footer>
-    <div class="name">Giulia Fumagalli</div>
-    <div class="copy">© 2026 — Tutti i diritti riservati</div>
+    <div class="footer-name">Giulia Fumagalli</div>
+    <div class="footer-copy">© 2026 — Tutti i diritti riservati</div>
   </footer>
 
   <script>
+    // Fade-in
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
+        if (entry.isIntersecting)
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Navbar on scroll
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // Active nav link
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.navbar-links a:not(.nav-store)');
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
-          setTimeout(() => entry.target.classList.add('visible'), i * 100);
+          navLinks.forEach(a => a.style.color = '');
+          const active = document.querySelector(`.navbar-links a[href="#${entry.target.id}"]`);
+          if (active) active.style.color = 'var(--navy)';
         }
       });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    }, { threshold: 0.35 });
+    sections.forEach(s => navObserver.observe(s));
   </script>
 </body>
 </html>
