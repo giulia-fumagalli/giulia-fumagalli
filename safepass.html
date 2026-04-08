@@ -3,2098 +3,773 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SafePass — Travel Risk Management Platform</title>
+<title>SafePass — Travel Risk Management</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --ink: #0a1628;
-  --ink-mid: #142035;
-  --ink-light: #1e3050;
-  --gold: #c8a65a;
-  --gold-lt: #e2c07e;
-  --gold-dk: #8c6e30;
-  --off: #f5f1ea;
-  --white: #ffffff;
-  --danger: #e05555;
-  --warn: #e8923a;
-  --ok: #4caf7d;
-  --muted: rgba(255,255,255,0.38);
-  --line: rgba(200,166,90,0.18);
-  --line-lt: rgba(10,22,40,0.10);
-  --sans: 'Inter', sans-serif;
-  --serif: 'Cormorant Garamond', serif;
+:root{
+  --ink:#08101f; --ink2:#0f1c30; --ink3:#162540;
+  --gold:#c8a65a; --glt:#e2c07e; --gdk:#7a5e28;
+  --ok:#4caf7d; --warn:#e8923a; --danger:#e05555;
+  --line:rgba(200,166,90,0.18); --line2:rgba(255,255,255,0.06);
+  --muted:rgba(255,255,255,0.38);
+  --sans:'Inter',sans-serif; --serif:'Cormorant Garamond',serif;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:var(--sans);background:var(--ink);color:#fff;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--ink);}::-webkit-scrollbar-thumb{background:var(--gdk);}
 
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:var(--ink);}
-::-webkit-scrollbar-thumb{background:var(--gold-dk);border-radius:2px;}
+/* LOGIN */
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 30% 50%,#0d1e38 0%,var(--ink) 70%);}
+.lb{background:var(--ink2);border:1px solid var(--line);border-radius:8px;padding:46px 42px;width:100%;max-width:420px;}
+.ll{font-family:var(--serif);font-size:28px;font-weight:300;margin-bottom:4px;}
+.ll em{font-style:italic;color:var(--glt);}
+.ls{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:34px;}
+.lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;display:block;}
+.li{width:100%;background:var(--ink3);border:1px solid rgba(255,255,255,0.09);border-radius:3px;padding:11px 13px;color:#fff;font-family:var(--sans);font-size:13px;margin-bottom:13px;outline:none;transition:border-color .2s;}
+.li:focus{border-color:var(--gold);}
+.li::placeholder{color:rgba(255,255,255,0.18);}
+.lsel{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8' viewBox='0 0 10 8'%3E%3Cpath d='M1 1l4 5 4-5' stroke='%23c8a65a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+.lsel option{background:var(--ink2);}
 
-/* ══════════ LOGIN ══════════ */
-#login-screen {
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--ink);
-  position:relative;
-  overflow:hidden;
-}
-#login-screen::before {
-  content:'';
-  position:absolute;inset:0;
-  background:repeating-linear-gradient(-55deg,transparent,transparent 80px,rgba(200,166,90,0.015) 80px,rgba(200,166,90,0.015) 81px);
-  pointer-events:none;
-}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border:none;border-radius:3px;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.bg{background:var(--gold);color:var(--ink);}
+.bg:hover{background:var(--glt);}
+.bgh{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.12);}
+.bgh:hover{color:#fff;border-color:rgba(255,255,255,0.28);}
+.bok{background:var(--ok);color:#fff;}
+.bok:hover{filter:brightness(1.1);}
+.bdis{opacity:.35;cursor:not-allowed!important;}
+.bfull{width:100%;justify-content:center;}
 
-.login-box {
-  background:var(--ink-mid);
-  border:1px solid var(--line);
-  border-radius:8px;
-  padding:52px 48px;
-  width:100%;
-  max-width:460px;
-  position:relative;
-  z-index:1;
-}
+/* APP */
+#app{display:none;flex-direction:column;height:100vh;overflow:hidden;}
 
-.login-logo {
-  font-family:var(--serif);
-  font-size:28px;
-  font-weight:300;
-  color:#fff;
-  margin-bottom:6px;
-  letter-spacing:0.04em;
-}
-.login-logo em{font-style:italic;color:var(--gold-lt);}
+/* TOPBAR */
+.tb{background:rgba(8,16,31,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;}
+.tbl{font-family:var(--serif);font-size:15px;font-weight:300;}
+.tbl em{font-style:italic;color:var(--glt);}
+.tbr{display:flex;align-items:center;gap:14px;}
+.tbadge{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);padding:3px 10px;border:1px solid var(--line);border-radius:2px;}
+.tlo{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.22);background:none;border:none;cursor:pointer;transition:color .2s;}
+.tlo:hover{color:#fff;}
 
-.login-sub {
-  font-size:11px;
-  font-weight:500;
-  letter-spacing:2.5px;
-  text-transform:uppercase;
-  color:rgba(255,255,255,0.3);
-  margin-bottom:40px;
-}
+/* TOPNAV */
+.tn{background:var(--ink2);border-bottom:1px solid var(--line2);display:flex;padding:0 24px;flex-shrink:0;overflow-x:auto;}
+.tnb{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);padding:13px 16px;cursor:pointer;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap;transition:all .2s;}
+.tnb:hover{color:rgba(255,255,255,.65);}
+.tnb.on{color:var(--gold);border-bottom-color:var(--gold);}
 
-.login-label {
-  font-size:10px;
-  font-weight:600;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  color:rgba(255,255,255,0.35);
-  margin-bottom:8px;
-  display:block;
-}
+/* MAIN BODY */
+.body{display:flex;flex:1;overflow:hidden;}
 
-.profile-selector {
-  width:100%;
-  background:var(--ink-light);
-  border:1px solid var(--line);
-  border-radius:4px;
-  padding:13px 16px;
-  color:#fff;
-  font-family:var(--sans);
-  font-size:14px;
-  margin-bottom:24px;
-  cursor:pointer;
-  appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23c8a65a' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;
-  background-position:right 16px center;
-}
-.profile-selector option{background:var(--ink-mid);}
+/* LEFT SIDEBAR — phase steps */
+.psb{width:260px;flex-shrink:0;background:var(--ink2);border-right:1px solid var(--line2);display:flex;flex-direction:column;overflow:hidden;}
+.psb-trip{padding:18px 18px 12px;border-bottom:1px solid var(--line2);}
+.psb-dest{font-family:var(--serif);font-size:16px;font-weight:300;color:#fff;margin-bottom:2px;}
+.psb-meta{font-size:10px;color:rgba(255,255,255,.3);}
+.psb-steps{flex:1;overflow-y:auto;padding:8px 0;}
+.pstep{padding:13px 16px 13px 14px;border-left:2px solid transparent;cursor:pointer;transition:all .2s;position:relative;}
+.pstep.cur{border-left-color:var(--gold);background:rgba(200,166,90,.05);}
+.pstep.done-s{border-left-color:var(--ok);background:rgba(76,175,125,.03);}
+.pstep.lock{opacity:.32;cursor:not-allowed;}
+.pstep:not(.lock):not(.cur):hover{background:rgba(255,255,255,.02);}
+.ps-eye{font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:3px;}
+.pstep.cur .ps-eye{color:var(--gold);}
+.pstep.done-s .ps-eye{color:var(--ok);}
+.ps-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.55);}
+.pstep.cur .ps-name{color:#fff;}
+.ps-prog{font-size:10px;color:rgba(255,255,255,.22);margin-top:2px;}
+.ps-tick{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:9px;}
+.pstep.done-s .ps-tick{background:var(--ok);border-color:var(--ok);}
+.pstep.lock .ps-tick{font-size:11px;color:rgba(255,255,255,.2);}
+.psb-foot{padding:14px 16px;border-top:1px solid var(--line2);}
+.psb-foot-lbl{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:6px;}
+.mpbar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin-bottom:5px;}
+.mpbar-f{height:100%;background:var(--gold);border-radius:2px;transition:width .4s ease;}
+.mpbar-c{font-size:10px;color:rgba(255,255,255,.28);}
+.mpbar-c strong{color:var(--glt);}
 
-.login-input {
-  width:100%;
-  background:var(--ink-light);
-  border:1px solid var(--line);
-  border-radius:4px;
-  padding:13px 16px;
-  color:#fff;
-  font-family:var(--sans);
-  font-size:14px;
-  margin-bottom:16px;
-  outline:none;
-  transition:border-color 0.25s;
-}
-.login-input::placeholder{color:rgba(255,255,255,0.25);}
-.login-input:focus{border-color:var(--gold);}
+/* PHASE CONTENT */
+.pcont{flex:1;overflow-y:auto;padding:28px 32px;}
+.peyebrow{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:7px;}
+.peyebrow::before{content:'◆';font-size:5px;}
+.ptitle{font-family:var(--serif);font-size:clamp(20px,2.8vw,32px);font-weight:300;line-height:1.1;margin-bottom:18px;}
+.ptitle em{font-style:italic;color:var(--glt);}
 
-.btn {
-  display:inline-flex;align-items:center;gap:8px;
-  padding:13px 24px;
-  border:none;border-radius:3px;
-  font-family:var(--sans);font-size:11px;font-weight:600;
-  letter-spacing:2px;text-transform:uppercase;
-  cursor:pointer;transition:all 0.25s;text-decoration:none;
-}
-.btn-gold{background:var(--gold);color:var(--ink);}
-.btn-gold:hover{background:var(--gold-lt);}
-.btn-ghost{background:transparent;color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.12);}
-.btn-ghost:hover{color:#fff;border-color:rgba(255,255,255,0.35);}
-.btn-danger{background:var(--danger);color:#fff;}
-.btn-ok{background:var(--ok);color:#fff;}
-.btn-full{width:100%;justify-content:center;}
+/* ALERT */
+.ab{display:flex;gap:10px;align-items:flex-start;padding:11px 13px;border:1px solid;border-radius:4px;margin-bottom:14px;font-size:11px;line-height:1.6;}
+.ab svg{flex-shrink:0;margin-top:1px;}
+.ab.danger{border-color:rgba(224,85,85,.3);background:rgba(224,85,85,.05);color:rgba(255,180,180,.85);}
+.ab.warn{border-color:rgba(232,146,58,.3);background:rgba(232,146,58,.05);color:rgba(255,200,150,.85);}
+.ab.info{border-color:rgba(100,160,255,.3);background:rgba(100,160,255,.05);color:rgba(180,210,255,.85);}
+.ab.ok{border-color:rgba(76,175,125,.3);background:rgba(76,175,125,.05);color:rgba(160,230,190,.85);}
 
-/* ══════════ APP SHELL ══════════ */
-#app { display:none; flex-direction:column; min-height:100vh; }
+/* CHECKLIST */
+.cl-wrap{margin-bottom:20px;}
+.cl-head{display:flex;align-items:center;gap:9px;padding:9px 13px;background:rgba(200,166,90,.04);border:1px solid var(--line);border-radius:4px 4px 0 0;}
+.cl-head-ico{width:26px;height:26px;border-radius:50%;background:rgba(200,166,90,.1);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;}
+.cl-head-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);flex:1;}
+.cl-head-cnt{font-size:10px;color:rgba(255,255,255,.28);}
+.cl-list{border:1px solid var(--line);border-top:none;border-radius:0 0 4px 4px;}
+.cli{display:flex;align-items:flex-start;gap:12px;padding:13px 13px;border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s;}
+.cli:last-child{border-bottom:none;}
+.cli:hover{background:rgba(255,255,255,.02);}
+.cli.faded{opacity:.5;}
+.chkbox{width:19px;height:19px;flex-shrink:0;border:1.5px solid rgba(255,255,255,.2);border-radius:3px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.chkbox.law{border-color:rgba(224,85,85,.55);}
+.chkbox.ck{background:var(--ok);border-color:var(--ok);}
+.cli-body{flex:1;}
+.cli-t{font-size:12px;font-weight:500;color:rgba(255,255,255,.85);margin-bottom:2px;line-height:1.4;}
+.cli-d{font-size:11px;color:rgba(255,255,255,.32);line-height:1.6;}
+.tags{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap;}
+.tag{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border-radius:2px;}
+.tlaw{background:rgba(224,85,85,.1);color:var(--danger);border:1px solid rgba(224,85,85,.22);}
+.tmed{background:rgba(76,175,125,.1);color:var(--ok);border:1px solid rgba(76,175,125,.22);}
+.trec{background:rgba(200,166,90,.1);color:var(--gold);border:1px solid var(--line);}
+.tright{background:rgba(100,160,255,.1);color:#88b4ff;border:1px solid rgba(100,160,255,.22);}
 
-.topbar {
-  position:sticky;top:0;z-index:100;
-  background:rgba(10,22,40,0.96);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--line);
-  height:58px;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 32px;
-}
+/* ADVANCE */
+.adv{margin-top:22px;padding:18px;background:rgba(200,166,90,.04);border:1px solid var(--line);border-radius:4px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.adv-l{}
+.adv-label{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:3px;}
+.adv-count{font-family:var(--serif);font-size:20px;font-weight:300;color:var(--glt);}
+.adv-r{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.adv-note{font-size:10px;color:var(--danger);max-width:200px;text-align:right;line-height:1.4;}
 
-.topbar-logo{
-  font-family:var(--serif);font-size:16px;font-weight:300;
-  color:#fff;letter-spacing:0.05em;
-}
-.topbar-logo em{font-style:italic;color:var(--gold-lt);}
+/* RIGHT PANEL */
+.rpan{width:296px;flex-shrink:0;background:var(--ink2);border-left:1px solid var(--line2);display:flex;flex-direction:column;overflow:hidden;}
+.rpan-h{padding:14px 16px;border-bottom:1px solid var(--line2);}
+.rpan-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px;}
+.rpan-prog{display:flex;align-items:center;gap:8px;}
+.rpbar{flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;}
+.rpbar-f{height:100%;background:var(--gold);border-radius:2px;transition:width .4s;}
+.rpbar-n{font-size:11px;font-weight:600;color:var(--glt);}
+.rpan-body{flex:1;overflow-y:auto;padding:6px 0;}
+.rpg{margin-bottom:2px;}
+.rpg-h{padding:8px 16px;display:flex;justify-content:space-between;align-items:center;}
+.rpg-label{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);}
+.rpg-label.phase-active{color:var(--gold);}
+.rpg-label.phase-done{color:var(--ok);}
+.rpg-label.phase-lock{color:rgba(255,255,255,.15);}
+.rpg-cnt{font-size:9px;color:rgba(255,255,255,.22);}
+.rpi{padding:7px 16px;display:flex;align-items:flex-start;gap:9px;border-bottom:1px solid rgba(255,255,255,.025);}
+.rpi-chk{width:13px;height:13px;border-radius:2px;border:1px solid rgba(255,255,255,.14);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;}
+.rpi-chk.ck{background:var(--ok);border-color:var(--ok);}
+.rpi-chk.law{border-color:rgba(224,85,85,.4);}
+.rpi-chk.lock{opacity:.3;}
+.rpi-txt{font-size:10px;color:rgba(255,255,255,.4);line-height:1.45;flex:1;}
+.rpi-txt.ck{text-decoration:line-through;opacity:.38;}
+.rpi-txt.lock{opacity:.2;}
+.rpan-foot{padding:12px 16px;border-top:1px solid var(--line2);}
+.bk-btn{width:100%;justify-content:center;font-size:9px;padding:9px 16px;}
 
-.topbar-right{display:flex;align-items:center;gap:20px;}
+/* PAESI */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;}
+.pc{background:var(--ink3);border:1px solid var(--line);border-radius:5px;padding:16px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;}
+.pc::after{content:'';position:absolute;top:0;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}
+.pc:hover{border-color:rgba(200,166,90,.38);transform:translateY(-2px);}
+.pc:hover::after{width:100%;}
+.pc-f{font-size:22px;margin-bottom:7px;}
+.pc-n{font-size:13px;font-weight:600;color:#fff;margin-bottom:1px;}
+.pc-r{font-size:10px;color:rgba(255,255,255,.28);margin-bottom:9px;}
+.rbar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin-bottom:6px;}
+.rbf{height:100%;border-radius:2px;}
+.rbf.h{background:var(--danger);width:80%;}
+.rbf.m{background:var(--warn);width:50%;}
+.rbf.l{background:var(--ok);width:22%;}
+.pc-src{font-size:8px;color:rgba(255,255,255,.18);margin-top:5px;}
+.rbadge{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px;}
+.ra{background:rgba(224,85,85,.1);color:var(--danger);border:1px solid rgba(224,85,85,.25);}
+.rm{background:rgba(232,146,58,.1);color:var(--warn);border:1px solid rgba(232,146,58,.25);}
+.rl{background:rgba(76,175,125,.1);color:var(--ok);border:1px solid rgba(76,175,125,.25);}
+.rsrc-box{background:rgba(200,166,90,.04);border:1px solid var(--line);border-radius:4px;padding:12px 14px;margin-bottom:18px;}
+.rsrc-t{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gdk);margin-bottom:8px;}
+.rsrc-row{display:flex;align-items:flex-start;gap:7px;margin-bottom:5px;font-size:11px;color:rgba(255,255,255,.38);line-height:1.5;}
+.rsrc-dot{width:4px;height:4px;border-radius:50%;background:var(--gdk);flex-shrink:0;margin-top:5px;}
 
-.profile-badge {
-  display:flex;align-items:center;gap:8px;
-  font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
-  color:var(--gold);
-  padding:5px 12px;
-  border:1px solid var(--line);
-  border-radius:2px;
-}
+/* MANUAL */
+.man-wrap{display:flex;height:100%;overflow:hidden;}
+.man-sb{width:210px;flex-shrink:0;border-right:1px solid var(--line2);overflow-y:auto;}
+.man-sb-i{padding:10px 14px;font-size:11px;color:rgba(255,255,255,.38);cursor:pointer;border-left:2px solid transparent;border-bottom:1px solid rgba(255,255,255,.03);transition:all .18s;}
+.man-sb-i:hover{color:rgba(255,255,255,.7);background:rgba(255,255,255,.02);}
+.man-sb-i.on{color:var(--gold);border-left-color:var(--gold);background:rgba(200,166,90,.04);}
+.man-body{flex:1;overflow-y:auto;padding:22px 24px;}
+.ms{display:none;}
+.ms.on{display:block;}
+.ms h3{font-family:var(--serif);font-size:19px;font-weight:300;color:#fff;margin-bottom:12px;}
+.ms h4{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gdk);margin:14px 0 7px;}
+.ms p{font-size:12px;color:rgba(255,255,255,.42);line-height:1.7;margin-bottom:8px;}
+.mlist{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.mlist li{font-size:12px;color:rgba(255,255,255,.46);line-height:1.6;padding-left:15px;position:relative;}
+.mlist li::before{content:'◆';font-size:5px;position:absolute;left:0;top:6px;color:var(--gdk);}
+.mproc{background:rgba(200,166,90,.04);border:1px solid var(--line);border-radius:4px;padding:13px 14px;margin-bottom:9px;}
+.mproc-t{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+.mproc-b{font-size:11px;color:rgba(255,255,255,.42);line-height:1.65;}
 
-.btn-logout{
-  font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;
-  color:rgba(255,255,255,0.3);background:none;border:none;cursor:pointer;
-  transition:color 0.2s;
-}
-.btn-logout:hover{color:#fff;}
+/* nuova trasferta */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.fg{display:flex;flex-direction:column;gap:5px;}
+.fg.full{grid-column:1/-1;}
+.flbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.fi,.fsel{background:var(--ink3);border:1px solid rgba(255,255,255,.08);border-radius:3px;padding:10px 12px;color:#fff;font-family:var(--sans);font-size:12px;outline:none;transition:border-color .2s;}
+.fi:focus,.fsel:focus{border-color:var(--gold);}
+.fi::placeholder{color:rgba(255,255,255,.18);}
+.fsel option{background:var(--ink2);}
+.map-ph{background:var(--ink3);border:1px solid var(--line);border-radius:4px;height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:rgba(255,255,255,.18);cursor:pointer;grid-column:1/-1;font-size:11px;text-align:center;}
+.card{background:var(--ink2);border:1px solid var(--line);border-radius:5px;overflow:hidden;margin-bottom:14px;}
+.card-h{padding:12px 16px;border-bottom:1px solid var(--line2);display:flex;align-items:center;justify-content:space-between;}
+.card-t{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);}
+.card-b{padding:16px;}
 
-/* MAIN NAV */
-.main-nav {
-  background:var(--ink-mid);
-  border-bottom:1px solid var(--line);
-  display:flex;
-  padding:0 32px;
-  gap:0;
-}
-
-.nav-tab {
-  font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
-  color:rgba(255,255,255,0.38);
-  padding:16px 20px;
-  cursor:pointer;
-  border-bottom:2px solid transparent;
-  transition:all 0.25s;
-  background:none;border-top:none;border-left:none;border-right:none;
-  display:flex;align-items:center;gap:8px;
-}
-.nav-tab:hover{color:rgba(255,255,255,0.7);}
-.nav-tab.active{color:var(--gold);border-bottom-color:var(--gold);}
-.nav-tab svg{opacity:0.6;}
-.nav-tab.active svg{opacity:1;}
-
-/* ══════════ CONTENT ══════════ */
-.content { flex:1; }
-.tab-panel { display:none; }
-.tab-panel.active { display:block; }
-
-/* ══════════ HERO BANNER ══════════ */
-.cycle-banner {
-  background:var(--ink-mid);
-  border-bottom:1px solid var(--line);
-  padding:32px 40px;
-  display:flex;
-  align-items:center;
-  gap:40px;
-  overflow-x:auto;
-}
-
-.cycle-phase {
-  display:flex;
-  align-items:center;
-  gap:0;
-  flex:1;
-}
-
-.phase-block {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:12px;
-  flex:1;
-  min-width:160px;
-  position:relative;
-}
-
-.phase-block::after {
-  content:'→';
-  position:absolute;
-  right:-20px;top:20px;
-  font-size:18px;
-  color:var(--gold-dk);
-  opacity:0.6;
-}
-.phase-block:last-child::after{display:none;}
-
-.phase-icon {
-  width:56px;height:56px;
-  border-radius:50%;
-  border:1.5px solid var(--line);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--gold);
-  background:rgba(200,166,90,0.06);
-  transition:all 0.3s;
-}
-.phase-block:hover .phase-icon { background:rgba(200,166,90,0.12);border-color:var(--gold); }
-
-.phase-label {
-  font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);
-}
-.phase-title {
-  font-family:var(--serif);font-size:15px;font-weight:300;
-  color:rgba(255,255,255,0.75);text-align:center;line-height:1.3;
-}
-
-.cycle-title {
-  font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
-  color:rgba(255,255,255,0.2);writing-mode:vertical-rl;white-space:nowrap;
-  flex-shrink:0;
-}
-
-/* ══════════ SECTION SHELL ══════════ */
-.section {
-  max-width:1200px;
-  margin:0 auto;
-  padding:40px 40px;
-}
-
-.section-header {
-  margin-bottom:32px;
-  display:flex;align-items:flex-end;justify-content:space-between;
-  flex-wrap:wrap;gap:16px;
-}
-
-.section-title {
-  font-family:var(--serif);
-  font-size:clamp(24px,3vw,36px);
-  font-weight:300;
-  color:#fff;
-  line-height:1.1;
-}
-.section-title em{font-style:italic;color:var(--gold-lt);}
-
-.section-label {
-  font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;
-  color:var(--gold);margin-bottom:10px;
-  display:flex;align-items:center;gap:8px;
-}
-.section-label::before{content:'◆';font-size:6px;}
-
-/* ══════════ STATS ROW ══════════ */
-.stats-row {
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:1px;
-  background:var(--line);
-  border:1px solid var(--line);
-  border-radius:4px;
-  overflow:hidden;
-  margin-bottom:32px;
-}
-.stat-box {
-  background:var(--ink-mid);
-  padding:24px 20px;
-  text-align:center;
-}
-.stat-val {
-  font-family:var(--serif);font-size:36px;font-weight:300;
-  line-height:1;
-  color:var(--gold-lt);
-}
-.stat-val.ok{color:var(--ok);}
-.stat-val.warn{color:var(--warn);}
-.stat-val.danger{color:var(--danger);}
-.stat-lbl {
-  font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
-  color:rgba(255,255,255,0.3);margin-top:6px;
-}
-
-/* ══════════ CARDS ══════════ */
-.card {
-  background:var(--ink-mid);
-  border:1px solid var(--line);
-  border-radius:6px;
-  overflow:hidden;
-}
-.card-head {
-  padding:18px 24px;
-  border-bottom:1px solid var(--line);
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-}
-.card-title {
-  font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
-  color:rgba(255,255,255,0.55);
-}
-.card-body{padding:24px;}
-
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-
-/* ══════════ TRIP LIST ══════════ */
-.trip-row {
-  display:flex;align-items:center;gap:16px;
-  padding:16px 24px;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-  transition:background 0.2s;cursor:pointer;
-}
-.trip-row:last-child{border-bottom:none;}
-.trip-row:hover{background:rgba(255,255,255,0.03);}
-
-.trip-flag{
-  width:38px;height:38px;border-radius:6px;
-  background:var(--ink-light);
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;flex-shrink:0;
-}
-.trip-info{flex:1;}
-.trip-dest{font-size:14px;font-weight:500;color:#fff;margin-bottom:2px;}
-.trip-meta{font-size:11px;color:rgba(255,255,255,0.35);}
-.risk-badge{
-  font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  padding:4px 10px;border-radius:2px;flex-shrink:0;
-}
-.risk-alto{background:rgba(224,85,85,0.15);color:var(--danger);border:1px solid rgba(224,85,85,0.3);}
-.risk-medio{background:rgba(232,146,58,0.15);color:var(--warn);border:1px solid rgba(232,146,58,0.3);}
-.risk-basso{background:rgba(76,175,125,0.15);color:var(--ok);border:1px solid rgba(76,175,125,0.3);}
-.status-badge{
-  font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  padding:4px 10px;border-radius:2px;flex-shrink:0;
-}
-.status-pending{background:rgba(200,166,90,0.12);color:var(--gold);border:1px solid var(--line);}
-.status-active{background:rgba(76,175,125,0.12);color:var(--ok);border:1px solid rgba(76,175,125,0.3);}
-.status-closed{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.1);}
-
-/* ══════════ CHECKLIST ══════════ */
-.checklist-phase {
-  margin-bottom:24px;
-}
-.phase-header {
-  display:flex;align-items:center;gap:12px;
-  padding:12px 16px;
-  background:rgba(200,166,90,0.06);
-  border:1px solid var(--line);
-  border-radius:4px 4px 0 0;
-  cursor:pointer;
-}
-.phase-header-icon{
-  width:32px;height:32px;border-radius:50%;
-  background:rgba(200,166,90,0.1);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--gold);flex-shrink:0;
-}
-.phase-header-title{
-  font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  color:var(--gold);flex:1;
-}
-.phase-header-count{
-  font-size:11px;font-weight:600;
-  color:rgba(255,255,255,0.3);
-}
-.phase-items{
-  border:1px solid var(--line);
-  border-top:none;
-  border-radius:0 0 4px 4px;
-  overflow:hidden;
-}
-
-.check-item {
-  display:flex;align-items:flex-start;gap:14px;
-  padding:16px 16px;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-  transition:background 0.2s;
-}
-.check-item:last-child{border-bottom:none;}
-.check-item:hover{background:rgba(255,255,255,0.02);}
-
-.check-box{
-  width:20px;height:20px;flex-shrink:0;
-  border:1.5px solid rgba(255,255,255,0.2);
-  border-radius:3px;
-  cursor:pointer;
-  transition:all 0.2s;
-  display:flex;align-items:center;justify-content:center;
-  margin-top:1px;
-}
-.check-box.checked{background:var(--ok);border-color:var(--ok);}
-.check-box.mandatory{border-color:var(--danger);}
-.check-box.mandatory.checked{background:var(--ok);border-color:var(--ok);}
-
-.check-content{flex:1;}
-.check-title{
-  font-size:13px;font-weight:500;color:rgba(255,255,255,0.85);
-  margin-bottom:3px;line-height:1.4;
-}
-.check-desc{
-  font-size:11px;color:rgba(255,255,255,0.38);line-height:1.55;
-}
-.check-tags{
-  display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;
-}
-.check-tag{
-  font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
-  padding:2px 7px;border-radius:2px;
-}
-.tag-law{background:rgba(224,85,85,0.1);color:var(--danger);border:1px solid rgba(224,85,85,0.2);}
-.tag-rec{background:rgba(200,166,90,0.1);color:var(--gold);border:1px solid var(--line);}
-.tag-med{background:rgba(76,175,125,0.1);color:var(--ok);border:1px solid rgba(76,175,125,0.2);}
-
-/* ══════════ FORM ══════════ */
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-.form-group{display:flex;flex-direction:column;gap:6px;}
-.form-group.full{grid-column:1/-1;}
-.form-label{
-  font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
-  color:rgba(255,255,255,0.4);
-}
-.form-input,.form-select,.form-textarea{
-  background:var(--ink-light);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:3px;
-  padding:11px 14px;
-  color:#fff;
-  font-family:var(--sans);font-size:13px;
-  outline:none;
-  transition:border-color 0.25s;
-}
-.form-input::placeholder,.form-textarea::placeholder{color:rgba(255,255,255,0.2);}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);}
-.form-select option{background:var(--ink-mid);}
-.form-textarea{min-height:80px;resize:vertical;}
-
-/* map placeholder */
-.map-placeholder{
-  background:var(--ink-light);
-  border:1px solid var(--line);
-  border-radius:4px;
-  height:200px;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  gap:12px;
-  color:rgba(255,255,255,0.25);
-  grid-column:1/-1;
-  position:relative;
-  overflow:hidden;
-}
-.map-placeholder::before{
-  content:'';
-  position:absolute;inset:0;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M0 30 Q15 10 30 30 Q45 50 60 30' fill='none' stroke='rgba(200,166,90,0.05)' stroke-width='1'/%3E%3C/svg%3E") repeat;
-}
-.map-placeholder svg{color:var(--gold);opacity:0.4;}
-.map-placeholder span{font-size:11px;letter-spacing:1px;text-align:center;}
-
-/* ══════════ MANUAL / PAESI ══════════ */
-.manual-grid{display:grid;grid-template-columns:260px 1fr;gap:0;min-height:500px;}
-.manual-sidebar{
-  border-right:1px solid var(--line);
-  padding:0;
-}
-.manual-sidebar-item{
-  padding:13px 20px;
-  font-size:12px;font-weight:500;
-  color:rgba(255,255,255,0.45);
-  cursor:pointer;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-  border-left:2px solid transparent;
-  transition:all 0.2s;
-}
-.manual-sidebar-item:hover{color:rgba(255,255,255,0.75);background:rgba(255,255,255,0.02);}
-.manual-sidebar-item.active{color:var(--gold);border-left-color:var(--gold);background:rgba(200,166,90,0.04);}
-
-.manual-content{padding:28px;}
-.manual-section{display:none;}
-.manual-section.active{display:block;}
-.manual-section h3{
-  font-family:var(--serif);font-size:22px;font-weight:300;color:#fff;
-  margin-bottom:16px;
-}
-.manual-section h4{
-  font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--gold-dk);margin:20px 0 10px;
-}
-.manual-section p{
-  font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:12px;
-}
-.manual-list{
-  list-style:none;display:flex;flex-direction:column;gap:8px;
-}
-.manual-list li{
-  font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;
-  padding-left:18px;position:relative;
-}
-.manual-list li::before{
-  content:'◆';font-size:5px;
-  position:absolute;left:0;top:6px;
-  color:var(--gold-dk);
-}
-
-/* procedura box */
-.proc-box{
-  background:rgba(200,166,90,0.05);
-  border:1px solid var(--line);
-  border-radius:4px;
-  padding:18px 20px;
-  margin-bottom:12px;
-}
-.proc-title{
-  font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
-  color:var(--gold);margin-bottom:8px;
-  display:flex;align-items:center;gap:8px;
-}
-.proc-body{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.65;}
-
-.alert-box{
-  border:1px solid;border-radius:4px;padding:14px 16px;margin-bottom:12px;
-  display:flex;gap:12px;align-items:flex-start;
-}
-.alert-box.danger{border-color:rgba(224,85,85,0.3);background:rgba(224,85,85,0.06);}
-.alert-box.warn{border-color:rgba(232,146,58,0.3);background:rgba(232,146,58,0.06);}
-.alert-box span{font-size:12px;line-height:1.6;}
-.alert-box.danger span{color:rgba(255,180,180,0.8);}
-.alert-box.warn span{color:rgba(255,200,150,0.8);}
-
-/* ══════════ PAESI ══════════ */
-.paesi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
-.paese-card{
-  background:var(--ink-light);
-  border:1px solid var(--line);
-  border-radius:6px;
-  padding:20px;
-  cursor:pointer;
-  transition:all 0.25s;
-  position:relative;
-  overflow:hidden;
-}
-.paese-card::after{
-  content:'';
-  position:absolute;top:0;left:0;
-  width:0;height:2px;
-  background:var(--gold);
-  transition:width 0.35s;
-}
-.paese-card:hover{border-color:rgba(200,166,90,0.35);transform:translateY(-2px);}
-.paese-card:hover::after{width:100%;}
-
-.paese-flag{font-size:28px;margin-bottom:10px;}
-.paese-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:4px;}
-.paese-region{font-size:10px;color:rgba(255,255,255,0.3);margin-bottom:12px;}
-.paese-risk{display:flex;align-items:center;gap:8px;}
-.risk-bar{
-  flex:1;height:3px;
-  background:rgba(255,255,255,0.08);
-  border-radius:2px;overflow:hidden;
-}
-.risk-fill{height:100%;border-radius:2px;}
-.risk-fill.high{background:var(--danger);width:80%;}
-.risk-fill.med{background:var(--warn);width:50%;}
-.risk-fill.low{background:var(--ok);width:25%;}
-
-/* ══════════ WORKFLOW SCHEDA ══════════ */
-.workflow-step{
-  display:flex;gap:20px;
-  padding:20px 0;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-}
-.workflow-step:last-child{border-bottom:none;}
-.step-num{
-  width:36px;height:36px;
-  border-radius:50%;
-  background:rgba(200,166,90,0.1);
-  border:1px solid var(--line);
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--serif);font-size:16px;font-weight:300;
-  color:var(--gold);flex-shrink:0;
-}
-.step-body{flex:1;}
-.step-title{font-size:14px;font-weight:600;color:#fff;margin-bottom:4px;}
-.step-desc{font-size:12px;color:rgba(255,255,255,0.38);line-height:1.6;}
-
-/* SCENARIO BOX */
-.scenario-box{
-  background:var(--ink-light);
-  border:1px solid var(--line);
-  border-radius:6px;
-  padding:28px;
-  margin-bottom:20px;
-  position:relative;
-}
-.scenario-tag{
-  position:absolute;top:20px;right:20px;
-  font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  color:var(--warn);background:rgba(232,146,58,0.1);
-  border:1px solid rgba(232,146,58,0.25);
-  padding:3px 10px;border-radius:2px;
-}
-.scenario-loc{font-family:var(--serif);font-size:20px;font-weight:300;color:#fff;margin-bottom:6px;}
-.scenario-time{font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:16px;}
-.scenario-text{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;}
-
-/* ══════════ SITEMAP ══════════ */
-.sitemap-tree{padding:20px 0;}
-.sm-branch{margin-bottom:20px;}
-.sm-phase{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 16px;
-  background:rgba(200,166,90,0.06);
-  border:1px solid var(--line);
-  border-radius:4px;
-  margin-bottom:8px;
-}
-.sm-phase-label{
-  font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;
-  color:var(--gold);
-}
-.sm-items{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:8px;
-  padding-left:20px;
-}
-.sm-item{
-  background:var(--ink-light);
-  border:1px solid rgba(255,255,255,0.07);
-  border-radius:3px;
-  padding:10px 14px;
-  font-size:12px;color:rgba(255,255,255,0.55);
-}
-.sm-item strong{display:block;color:rgba(255,255,255,0.8);font-size:12px;margin-bottom:2px;}
-.sm-item span{font-size:10px;color:rgba(255,255,255,0.3);}
-
-/* ══════════ VIAGGIATORE DASHBOARD ══════════ */
-.duty-accordion{margin-bottom:8px;}
-.duty-head{
-  display:flex;align-items:center;gap:14px;
-  padding:14px 18px;
-  background:var(--ink-light);
-  border:1px solid var(--line);
-  border-radius:4px;
-  cursor:pointer;
-  transition:background 0.2s;
-}
-.duty-head:hover{background:rgba(255,255,255,0.04);}
-.duty-head-icon{
-  width:32px;height:32px;border-radius:50%;
-  background:rgba(200,166,90,0.08);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--gold);flex-shrink:0;
-}
-.duty-head-title{flex:1;font-size:12px;font-weight:600;color:rgba(255,255,255,0.7);}
-.duty-head-arrow{color:rgba(255,255,255,0.3);transition:transform 0.3s;font-size:12px;}
-.duty-body{
-  border:1px solid var(--line);border-top:none;
-  border-radius:0 0 4px 4px;
-  overflow:hidden;
-  display:none;
-}
-.duty-body.open{display:block;}
-.duty-item{
-  padding:14px 18px;
-  border-bottom:1px solid rgba(255,255,255,0.04);
-  font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;
-}
-.duty-item:last-child{border-bottom:none;}
-.duty-item strong{display:block;color:rgba(255,255,255,0.75);font-size:12px;margin-bottom:2px;}
-
-/* ACCEPT BOX */
-.accept-box{
-  background:rgba(200,166,90,0.06);
-  border:1px solid var(--line);
-  border-radius:6px;
-  padding:28px;
-  margin-bottom:24px;
-}
-.accept-warning{
-  display:flex;gap:12px;
-  background:rgba(232,146,58,0.06);
-  border:1px solid rgba(232,146,58,0.2);
-  border-radius:4px;
-  padding:14px 16px;
-  margin-bottom:20px;
-  font-size:12px;color:rgba(255,200,150,0.8);
-  line-height:1.6;
-}
-
-/* ══════════ RESPONSIVE ══════════ */
-@media (max-width:900px){
-  .stats-row{grid-template-columns:1fr 1fr;}
-  .grid-2,.grid-3,.form-grid{grid-template-columns:1fr;}
-  .form-group.full{grid-column:unset;}
-  .manual-grid{grid-template-columns:1fr;}
-  .manual-sidebar{border-right:none;border-bottom:1px solid var(--line);}
-  .cycle-banner{padding:20px 24px;}
-}
-@media (max-width:600px){
-  .topbar{padding:0 16px;}
-  .main-nav{padding:0 16px;overflow-x:auto;}
-  .section{padding:24px 16px;}
-  .stats-row{grid-template-columns:1fr 1fr;}
-}
+@media(max-width:1100px){.rpan{display:none;}}
+@media(max-width:800px){.psb{width:100%;border-right:none;border-bottom:1px solid var(--line2);}.body{flex-direction:column;}.psb-steps{display:flex;overflow-x:auto;}.pstep{min-width:140px;border-left:none;border-bottom:2px solid transparent;}.pstep.cur{border-bottom-color:var(--gold);border-left:none;}}
+@media(max-width:580px){.pcont{padding:18px 14px;}.fgrid{grid-template-columns:1fr;}.fg.full{grid-column:unset;}}
 </style>
 </head>
 <body>
 
-<!-- ══════════ LOGIN ══════════ -->
-<div id="login-screen">
-  <div class="login-box">
-    <div class="login-logo">Safe<em>Pass</em></div>
-    <div class="login-sub">Travel Risk Management Platform</div>
-
-    <label class="login-label">Profilo di accesso</label>
-    <select class="profile-selector" id="profile-select">
-      <option value="">— Seleziona profilo —</option>
-      <option value="responsabile">Responsabile Trasferte (HR / Datore di Lavoro)</option>
-      <option value="viaggiatore">Viaggiatore (Dipendente)</option>
-    </select>
-
-    <label class="login-label">Email aziendale</label>
-    <input class="login-input" type="email" placeholder="nome@azienda.com"/>
-
-    <label class="login-label">Password</label>
-    <input class="login-input" type="password" placeholder="••••••••"/>
-
-    <button class="btn btn-gold btn-full" style="margin-top:8px;" onclick="doLogin()">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M6 3h7v10H6M10 8H2M8 6l-2 2 2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Accedi alla piattaforma
-    </button>
-  </div>
+<!-- LOGIN -->
+<div id="login">
+<div class="lb">
+  <div class="ll">Safe<em>Pass</em></div>
+  <div class="ls">Travel Risk Management Platform</div>
+  <label class="lbl">Profilo di accesso</label>
+  <select class="li lsel" id="psel">
+    <option value="">— Seleziona profilo —</option>
+    <option value="resp">Responsabile Trasferte / HR</option>
+    <option value="viag">Viaggiatore / Dipendente</option>
+  </select>
+  <label class="lbl">Email aziendale</label>
+  <input class="li" type="email" placeholder="nome@azienda.com"/>
+  <label class="lbl">Password</label>
+  <input class="li" type="password" placeholder="••••••••"/>
+  <button class="btn bg bfull" style="margin-top:6px" onclick="doLogin()">Accedi →</button>
+</div>
 </div>
 
-<!-- ══════════ APP ══════════ -->
+<!-- APP -->
 <div id="app">
-
-  <!-- TOPBAR -->
-  <div class="topbar">
-    <div class="topbar-logo">Safe<em>Pass</em></div>
-    <div class="topbar-right">
-      <div class="profile-badge" id="profile-label">◆ RESPONSABILE</div>
-      <button class="btn-logout" onclick="doLogout()">Esci</button>
+  <div class="tb">
+    <div class="tbl">Safe<em>Pass</em></div>
+    <div class="tbr">
+      <div class="tbadge" id="tbadge">◆ RESPONSABILE</div>
+      <button class="tlo" onclick="doLogout()">Esci</button>
     </div>
   </div>
-
-  <!-- MAIN NAV -->
-  <nav class="main-nav" id="main-nav">
-    <!-- injected by JS -->
-  </nav>
-
-  <!-- CONTENT -->
-  <div class="content" id="content-area">
-    <!-- injected by JS -->
-  </div>
-
+  <div class="tn" id="tn"></div>
+  <div class="body" id="body"></div>
 </div>
 
 <script>
-// ════════════ STATE ════════════
-let currentProfile = null;
-let activeTab = 'dashboard';
+/* ═══════════════════════════════
+   STATE
+═══════════════════════════════ */
+let profile = null;
+let view = 'trip';
+let curPhase = 0; // 0=pre 1=on 2=post
 
-// ════════════ LOGIN ════════════
-function doLogin() {
-  const p = document.getElementById('profile-select').value;
-  if (!p) { alert('Seleziona un profilo di accesso.'); return; }
-  currentProfile = p;
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'flex';
-  document.getElementById('app').style.flexDirection = 'column';
-  document.getElementById('profile-label').textContent = '◆ ' + (p === 'responsabile' ? 'RESPONSABILE' : 'VIAGGIATORE');
-  buildNav();
-  showTab('dashboard');
+// All checklist items — resp:  'resp' | 'viag'
+const ALL_ITEMS = [
+  // ── PRE ── RESPONSABILE
+  {id:'r0',ph:0,who:'resp',law:true, t:'Valutazione idoneità alla mansione',d:'Verifica medica del lavoratore per le attività previste in Nigeria. Medical Fitness Certification.',tags:['law','med']},
+  {id:'r1',ph:0,who:'resp',law:true, t:'Stipula assicurazione specifica trasferta ad alto rischio',d:'Polizza obbligatoria: rimpatrio, assistenza sanitaria h24, invalidità permanente, morte. D.Lgs. 81/08.',tags:['law']},
+  {id:'r2',ph:0,who:'resp',law:true, t:'Verifica visti e documenti di ingresso Nigeria',d:'Passaporto valido minimo 6 mesi, visto lavorativo, documenti aziendali richiesti dalle autorità nigeriane.',tags:['law']},
+  {id:'r3',ph:0,who:'resp',law:true, t:'Registrazione portale MAECI / Farnesina',d:'Obbligatoria per paese ad alto rischio. Permette ricezione avvisi critici su dispositivi mobili. Direttiva Ippocampo 2006.',tags:['law']},
+  {id:'r4',ph:0,who:'resp',law:true, t:'Erogazione formazione obbligatoria (art. 37 D.Lgs. 81/08)',d:'La formazione NON è facoltativa. Il lavoratore non può rifiutarsi né partire senza averla completata. Deve rimanere traccia verificabile.',tags:['law']},
+  {id:'r5',ph:0,who:'resp',law:true, t:'Sorveglianza sanitaria e vaccinazioni Nigeria',d:'Febbre gialla (obbligatoria), malaria (profilassi), tifo, epatite A/B. Colloquio con medico di travel medicine.',tags:['law','med']},
+  {id:'r6',ph:0,who:'resp',law:true, t:'Elaborazione e consegna Scheda Paese Nigeria',d:'Documento con: valutazione rischio, zone a rischio Lagos, numeri emergenza, normative locali, Contact Sheet plastificata.',tags:['law']},
+  {id:'r7',ph:0,who:'resp',law:true, t:'Aggiornamento DVR per trasferte internazionali',d:'Sentenza Bonatti 2024 + Cassazione n.35510/2021: modello organizzativo verificabile obbligatorio prima della partenza.',tags:['law']},
+  {id:'r8',ph:0,who:'resp',law:false,t:'Attivazione Security Operation Centre (SOC) h24',d:'Numero dedicato raggiungibile h24 7/7. Security check giornalieri per destinazioni ad alto rischio.',tags:['rec']},
+  // ── PRE ── VIAGGIATORE
+  {id:'v0',ph:0,who:'viag',law:true, t:'Completare la formazione obbligatoria TRM',d:'Art. 37 D.Lgs. 81/08 — Non posso rifiutarmi né partire senza averla completata. Traccia verificabile conservata nel sistema.',tags:['law']},
+  {id:'v1',ph:0,who:'viag',law:true, t:'Leggere e comprendere la Scheda Paese Nigeria',d:'Valutazione rischio, zone a rischio Lagos, numeri emergenza, normative locali e raccomandazioni comportamentali. Art. 36 D.Lgs. 81/08.',tags:['law']},
+  {id:'v2',ph:0,who:'viag',law:true, t:'Visita medica pre-trasferta e vaccinazioni',d:'Colloquio con medico di travel medicine. Nigeria: febbre gialla obbligatoria, malaria, tifo. Medical Fitness Certification.',tags:['law','med']},
+  {id:'v3',ph:0,who:'viag',law:true, t:'Accettazione formale incarico (Duty of Loyalty)',d:'Firma digitale: prendo atto dei rischi, mi impegno a rispettare le procedure SafePass e a comunicare tutti gli spostamenti.',tags:['law']},
+  {id:'v4',ph:0,who:'viag',law:false,t:'Allestire zaino delle emergenze',d:'Kit primo soccorso, torcia, copia documenti, denaro contante, coperta isotermica, fischietto, power bank, viveri secchi.',tags:['rec']},
+  {id:'v5',ph:0,who:'viag',law:false,t:'Comunicare itinerario dettagliato al responsabile',d:'Hotel, meeting, spostamenti, numeri di contatto locali. Avvertire tempestivamente in caso di modifiche al programma.',tags:['rec']},
+  // ── ON ── RESPONSABILE
+  {id:'r9', ph:1,who:'resp',law:false,t:'Verifica situazione paese alla partenza',d:'Aggiornamento in tempo reale: sicurezza, allerte, proteste attive. Trasmissione update al viaggiatore prima del volo.',tags:['rec']},
+  {id:'r10',ph:1,who:'resp',law:true, t:'Monitoraggio itinerario — safety check giornalieri',d:'Conferma check-in hotel, verifica spostamenti, geolocalizzazione GPS attiva per tutta la missione Nigeria.',tags:['law','rec']},
+  {id:'r11',ph:1,who:'resp',law:true, t:'Conferma attivazione copertura assicurativa',d:'Verifica che la polizza sia attiva e operativa per tutta la durata della missione nigeriana.',tags:['law']},
+  {id:'r12',ph:1,who:'resp',law:false,t:'Disponibilità contatti anagrafici viaggiatore',d:'Cellulare nazionale, eventuale numero estero, email. Trattati in ottemperanza normativa privacy giuslavoristica.',tags:['rec']},
+  // ── ON ── VIAGGIATORE
+  {id:'v6',ph:1,who:'viag',law:false,t:'Safety check giornaliero — conferma posizione sicura',d:'Rispondere ai check del SOC h24. Per Nigeria: obbligatorio ogni giorno entro le 20:00 locali.',tags:['rec']},
+  {id:'v7',ph:1,who:'viag',law:false,t:'Comunicare ogni spostamento in tempo reale',d:'Non spostarsi senza aver comunicato destinazione. Solo trasporti ufficiali prenotati. In taxi: annotare targa e licenza.',tags:['rec']},
+  {id:'v8',ph:1,who:'viag',law:false,t:'Rispettare le raccomandazioni SafePass on-trip',d:'Non uscire soli di notte, non esibire oggetti di valore, usare solo taxi prenotati, bere solo acqua sigillata.',tags:['rec']},
+  {id:'v9',ph:1,who:'viag',law:true, t:'Duty of Loyalty — non ignorare le raccomandazioni di sicurezza',d:'Sentenza Bonatti: ignorare le indicazioni dell\'Ambasciata ha portato a condanne penali. Seguire sempre le istruzioni ufficiali.',tags:['law']},
+  // ── POST ── RESPONSABILE
+  {id:'r13',ph:2,who:'resp',law:false,t:'Condurre debriefing con il viaggiatore',d:'Raccolta feedback su: adeguatezza supporto, misure adottate, gestione criticità. ISO 31030: ciclo miglioramento continuo.',tags:['rec']},
+  {id:'r14',ph:2,who:'resp',law:false,t:'Scheduling follow-up medico post-trasferta',d:'Nigeria: screening malaria, malattie tropicali, check up psicofisico. Costruzione terapie specifiche se necessario.',tags:['med','rec']},
+  {id:'r15',ph:2,who:'resp',law:false,t:'Valutazione stress trasferta-correlato (ISO 31030:2021)',d:'Considerare: durata volo, fuso orario, intensità attività, destinazione ad alto rischio. Chiarire il riposo spettante.',tags:['rec']},
+  {id:'r16',ph:2,who:'resp',law:true, t:'Aggiornamento DVR con lezioni apprese dalla missione',d:'Inserire nel ciclo di miglioramento continuo le criticità emerse. Cassazione n.35510/2021: obbligo di vigilanza permanente.',tags:['law']},
+  {id:'r17',ph:2,who:'resp',law:false,t:'Chiusura pratiche assicurative',d:'Reportistica sinistri se applicabile, chiusura copertura specifica missione Nigeria.',tags:['rec']},
+  // ── POST ── VIAGGIATORE
+  {id:'v10',ph:2,who:'viag',law:false,t:'Partecipare al debriefing post-trasferta',d:'Fornire feedback onesto su: supporto ricevuto, problemi incontrati, efficacia misure di sicurezza adottate.',tags:['rec']},
+  {id:'v11',ph:2,who:'viag',law:false,t:'Effettuare visita medica post-trasferta',d:'Nigeria: screening malaria, valutazione psicofisica. Comunicare qualsiasi sintomo emerso durante o dopo la missione.',tags:['med','rec']},
+  {id:'v12',ph:2,who:'viag',law:false,t:'Segnalare incidenti o eventi anomali',d:'Qualsiasi evento di sicurezza, malessere fisico o psicologico va documentato per il miglioramento continuo SafePass.',tags:['rec']},
+];
+
+let itemState = {}; // id -> bool
+
+function myItems(){return ALL_ITEMS.filter(i=>i.who===profile);}
+function phItems(ph){return myItems().filter(i=>i.ph===ph);}
+function phDone(ph){return phItems(ph).filter(i=>itemState[i.id]).length;}
+function phLaw(ph){return phItems(ph).filter(i=>i.law).length;}
+function phLawDone(ph){return phItems(ph).filter(i=>i.law&&itemState[i.id]).length;}
+function phComplete(ph){return phLawDone(ph)>=phLaw(ph)&&phLaw(ph)>0;}
+function totDone(){return myItems().filter(i=>itemState[i.id]).length;}
+function totItems(){return myItems().length;}
+
+const PHASE_LABELS = ['PRE-TRIP','ON-TRIP','POST-TRIP'];
+const PHASE_NAMES_RESP = ['Pianificazione & Conformità','Monitoraggio & Protezione','Debriefing & Chiusura'];
+const PHASE_NAMES_VIAG = ['Informazione & Preparazione','Duty of Loyalty & Sicurezza','Rientro & Follow-up'];
+
+function phName(ph){return profile==='resp'?PHASE_NAMES_RESP[ph]:PHASE_NAMES_VIAG[ph];}
+
+/* ═══════════════════════════════
+   LOGIN / LOGOUT
+═══════════════════════════════ */
+function doLogin(){
+  const p=document.getElementById('psel').value;
+  if(!p){alert('Seleziona un profilo.');return;}
+  profile=p; itemState={}; curPhase=0;
+  document.getElementById('login').style.display='none';
+  document.getElementById('app').style.display='flex';
+  document.getElementById('app').style.flexDirection='column';
+  document.getElementById('tbadge').textContent='◆ '+(p==='resp'?'RESPONSABILE':'VIAGGIATORE');
+  buildNav(); showView('trip');
+}
+function doLogout(){
+  profile=null;
+  document.getElementById('login').style.display='flex';
+  document.getElementById('app').style.display='none';
 }
 
-function doLogout() {
-  currentProfile = null;
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('app').style.display = 'none';
+/* ═══════════════════════════════
+   NAV
+═══════════════════════════════ */
+function buildNav(){
+  const tabs=profile==='resp'
+    ?[['trip','Trasferta Attiva'],['nuova','Nuova Trasferta'],['paesi','Schede Paese'],['manuale','Manuale']]
+    :[['trip','La Mia Trasferta'],['paesi','Schede Paese'],['manuale','Manuale']];
+  document.getElementById('tn').innerHTML=tabs.map(([id,l])=>`<button class="tnb" id="tn-${id}" onclick="showView('${id}')">${l}</button>`).join('');
+}
+function showView(id){
+  view=id;
+  document.querySelectorAll('.tnb').forEach(b=>b.classList.remove('on'));
+  const b=document.getElementById('tn-'+id);if(b)b.classList.add('on');
+  const body=document.getElementById('body');
+  if(id==='trip')renderTrip(body);
+  else if(id==='nuova')renderNuova(body);
+  else if(id==='paesi')renderPaesi(body);
+  else if(id==='manuale')renderManuale(body);
 }
 
-// ════════════ NAV ════════════
-const navConfig = {
-  responsabile: [
-    { id:'dashboard', label:'Dashboard', icon:'grid' },
-    { id:'nuova-trasferta', label:'Nuova Trasferta', icon:'plus' },
-    { id:'checklist', label:'Checklist Conformità', icon:'check' },
-    { id:'sitemap', label:'Architettura', icon:'map' },
-    { id:'paesi', label:'Schede Paese', icon:'globe' },
-    { id:'manuale', label:'Manuale Operativo', icon:'book' },
-  ],
-  viaggiatore: [
-    { id:'dashboard', label:'La Mia Trasferta', icon:'user' },
-    { id:'accetta', label:'Accetta Incarico', icon:'shield' },
-    { id:'diritti-doveri', label:'Diritti & Doveri', icon:'info' },
-    { id:'paesi', label:'Schede Paese', icon:'globe' },
-    { id:'manuale', label:'Manuale Operativo', icon:'book' },
-  ]
-};
-
-const icons = {
-  grid: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="10" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="1" y="10" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="10" y="10" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/></svg>`,
-  plus: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`,
-  check: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-  map: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M1 3l5 2 4-2 5 2v9l-5-2-4 2-5-2V3z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M6 5v9M10 3v9" stroke="currentColor" stroke-width="1.3"/></svg>`,
-  globe: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 1.5c0 0-3 3-3 6.5s3 6.5 3 6.5M8 1.5c0 0 3 3 3 6.5S8 14.5 8 14.5M1.5 8h13" stroke="currentColor" stroke-width="1.3"/></svg>`,
-  book: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 2h10v12H3V2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M6 5h5M6 8h5M6 11h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`,
-  user: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M2 14c0-3.314 2.686-5 6-5s6 1.686 6 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>`,
-  shield: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1L2 4v5c0 4 6 6 6 6s6-2 6-6V4L8 1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>`,
-  info: `<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 7v5M8 5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>`
-};
-
-function buildNav() {
-  const nav = document.getElementById('main-nav');
-  const tabs = navConfig[currentProfile];
-  nav.innerHTML = tabs.map(t => `
-    <button class="nav-tab" id="tab-${t.id}" onclick="showTab('${t.id}')">
-      ${icons[t.icon]} ${t.label}
-    </button>
-  `).join('');
+/* ═══════════════════════════════
+   TRIP VIEW
+═══════════════════════════════ */
+function renderTrip(body){
+  body.innerHTML=`${sidebar()}${phaseContent()}${rightPanel()}`;
+}
+function refresh(){
+  const body=document.getElementById('body');
+  if(view==='trip')renderTrip(body);
 }
 
-function showTab(id) {
-  activeTab = id;
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  const tab = document.getElementById('tab-' + id);
-  if (tab) tab.classList.add('active');
-  const area = document.getElementById('content-area');
-  area.innerHTML = '';
-
-  if (currentProfile === 'responsabile') renderResponsabile(id, area);
-  else renderViaggiatore(id, area);
-}
-
-// ════════════ CYCLE BANNER ════════════
-function cycleBanner() {
-  return `
-  <div class="cycle-banner">
-    <div class="cycle-title">IL CICLO DELLA TRASFERTA SAFEPASS</div>
-    <div class="cycle-phase">
-      <div class="phase-block" onclick="showTab('nuova-trasferta')" style="cursor:pointer;">
-        <div class="phase-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-            <path d="M8 14h.01M12 14h.01M16 14h.01"/>
-          </svg>
-        </div>
-        <div class="phase-label">PRE-TRIP</div>
-        <div class="phase-title">Pianificazione<br/>& Conformità</div>
-      </div>
-      <div class="phase-block" style="cursor:pointer;">
-        <div class="phase-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="8" r="4"/><path d="M12 12v6m-4 0h8"/>
-            <path d="M5 20c0-3 3.1-5 7-5s7 2 7 5"/>
-          </svg>
-        </div>
-        <div class="phase-label">ON-TRIP</div>
-        <div class="phase-title">Esecuzione<br/>& Protezione</div>
-      </div>
-      <div class="phase-block" style="cursor:pointer;">
-        <div class="phase-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 12l2 2 4-4"/><path d="M5 7l1-3h12l1 3"/><rect x="3" y="7" width="18" height="14" rx="2"/>
-          </svg>
-        </div>
-        <div class="phase-label">POST-TRIP</div>
-        <div class="phase-title">Debriefing<br/>& Analisi</div>
-      </div>
+/* SIDEBAR */
+function sidebar(){
+  const td=totDone(),tt=totItems();
+  const pct=tt?Math.round(td/tt*100):0;
+  const steps=[0,1,2].map(ph=>{
+    const isDone=phComplete(ph);
+    const isActive=ph===curPhase;
+    const isLocked=ph>curPhase;
+    let cls=isActive?'cur':isDone?'done-s':isLocked?'lock':'';
+    const tick=isDone?'✓':isLocked?'🔒':'';
+    return `<div class="pstep ${cls}" onclick="clickPhase(${ph})">
+      <div class="ps-eye">${PHASE_LABELS[ph]}</div>
+      <div class="ps-name">${phName(ph)}</div>
+      <div class="ps-prog">${phDone(ph)}/${phItems(ph).length} completati${phLaw(ph)?` · ${phLawDone(ph)}/${phLaw(ph)} obbligatori`:''}</div>
+      <div class="ps-tick">${tick}</div>
+    </div>`;
+  }).join('');
+  return `<div class="psb">
+    <div class="psb-trip">
+      <div class="psb-dest">🇳🇬 Nigeria — Lagos</div>
+      <div class="psb-meta">15–25 Mag 2026 · 10 giorni · <span class="rbadge ra" style="font-size:7px;padding:2px 6px;">ALTO</span></div>
+    </div>
+    <div class="psb-steps">${steps}</div>
+    <div class="psb-foot">
+      <div class="psb-foot-lbl">Avanzamento globale</div>
+      <div class="mpbar"><div class="mpbar-f" style="width:${pct}%"></div></div>
+      <div class="mpbar-c"><strong>${td}/${tt}</strong> attività · ${pct}%</div>
     </div>
   </div>`;
 }
 
-// ════════════ RESPONSABILE VIEWS ════════════
-function renderResponsabile(id, area) {
-  if (id === 'dashboard') area.innerHTML = cycleBanner() + dashboardResp();
-  else if (id === 'nuova-trasferta') area.innerHTML = cycleBanner() + nuovaTrasferta();
-  else if (id === 'checklist') area.innerHTML = cycleBanner() + checklistView();
-  else if (id === 'sitemap') area.innerHTML = sitemapView();
-  else if (id === 'paesi') area.innerHTML = paesiView();
-  else if (id === 'manuale') area.innerHTML = manualeView();
-  bindChecks();
-  bindDuties();
-  bindManual();
+function clickPhase(ph){
+  if(ph>curPhase)return;
+  curPhase=ph; refresh();
 }
 
-function dashboardResp() {
-  return `
-  <div class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-label">Responsabile Trasferte</div>
-        <div class="section-title">Dashboard <em>Operativa</em></div>
-      </div>
-      <button class="btn btn-gold" onclick="showTab('nuova-trasferta')">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        Nuova Trasferta
-      </button>
-    </div>
+/* PHASE CONTENT */
+function phaseContent(){
+  const ph=curPhase;
+  const its=phItems(ph);
+  const ld=phLawDone(ph),lt=phLaw(ph);
+  const allLawDone=lt===0||ld>=lt;
+  const done=phDone(ph);
 
-    <div class="stats-row">
-      <div class="stat-box"><div class="stat-val warn">3</div><div class="stat-lbl">Trasferte Attive</div></div>
-      <div class="stat-box"><div class="stat-val danger">1</div><div class="stat-lbl">Rischio Alto</div></div>
-      <div class="stat-box"><div class="stat-val ok">2</div><div class="stat-lbl">Conformi</div></div>
-      <div class="stat-box"><div class="stat-val">12</div><div class="stat-lbl">Paesi Monitorati</div></div>
-    </div>
-
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-head"><span class="card-title">Trasferte in Corso</span></div>
-        <div class="trip-row" onclick="showTab('checklist')">
-          <div class="trip-flag">🇳🇬</div>
-          <div class="trip-info">
-            <div class="trip-dest">Nigeria — Lagos</div>
-            <div class="trip-meta">Marco Bianchi · 10 gg · dal 15/05/2026</div>
-          </div>
-          <span class="risk-badge risk-alto">ALTO</span>
-          <span class="status-badge status-active">ON-TRIP</span>
-        </div>
-        <div class="trip-row">
-          <div class="trip-flag">🇩🇪</div>
-          <div class="trip-info">
-            <div class="trip-dest">Germania — Monaco</div>
-            <div class="trip-meta">Sara Conti · 3 gg · dal 10/05/2026</div>
-          </div>
-          <span class="risk-badge risk-basso">BASSO</span>
-          <span class="status-badge status-active">ON-TRIP</span>
-        </div>
-        <div class="trip-row">
-          <div class="trip-flag">🇸🇦</div>
-          <div class="trip-info">
-            <div class="trip-dest">Arabia Saudita — Riyadh</div>
-            <div class="trip-meta">Luca Ferri · 7 gg · dal 20/05/2026</div>
-          </div>
-          <span class="risk-badge risk-medio">MEDIO</span>
-          <span class="status-badge status-pending">PRE-TRIP</span>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-head"><span class="card-title">Azioni Richieste</span></div>
-        <div class="card-body" style="display:flex;flex-direction:column;gap:10px;">
-          <div class="alert-box danger">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:2px;color:var(--danger)"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 7v4M8 12v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <span><strong style="color:#ff9999;">Nigeria — L. Ferri</strong> — Assicurazione specifica per zona ad alto rischio non ancora attivata. Obbligatoria D.Lgs. 81/08.</span>
-          </div>
-          <div class="alert-box warn">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:2px;color:var(--warn)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v4M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <span><strong style="color:#ffcc99;">Arabia Saudita</strong> — Formazione specifica destinazione (art.37 D.Lgs. 81/08) non completata.</span>
-          </div>
-          <div class="alert-box warn">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;margin-top:2px;color:var(--warn)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v4M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-            <span><strong style="color:#ffcc99;">Nigeria</strong> — Verifica registrazione portale Farnesina MAECI non confermata.</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
-
-function nuovaTrasferta() {
-  return `
-  <div class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-label">PRE-TRIP — Modulo Creazione</div>
-        <div class="section-title">Nuova <em>Richiesta di Trasferta</em></div>
-      </div>
-    </div>
-
-    <div class="grid-2" style="align-items:start;">
-      <div>
-        <div class="card" style="margin-bottom:20px;">
-          <div class="card-head"><span class="card-title">Dati Destinazione</span></div>
-          <div class="card-body">
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label">Paese di destinazione</label>
-                <select class="form-select">
-                  <option>Nigeria</option>
-                  <option>Germania</option>
-                  <option>Arabia Saudita</option>
-                  <option>Giappone</option>
-                  <option>Argentina</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Città</label>
-                <input class="form-input" placeholder="es. Lagos" type="text"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Data partenza</label>
-                <input class="form-input" type="date"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Durata (giorni)</label>
-                <input class="form-input" placeholder="es. 10" type="number"/>
-              </div>
-              <div class="form-group full">
-                <label class="form-label">Scopo della trasferta</label>
-                <select class="form-select">
-                  <option>Commerciale / Meeting</option>
-                  <option>Tecnico / Installazione</option>
-                  <option>Sopralluogo</option>
-                  <option>Formazione</option>
-                  <option>Audit / Ispezione</option>
-                </select>
-              </div>
-              <div class="form-group full map-placeholder" style="cursor:pointer;" onclick="alert('Integrazione Google Maps attiva in produzione')">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--gold);opacity:0.5;"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-                <span>Clicca per localizzare su mappa<br/><small style="opacity:0.6;">Google Maps Integration</small></span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-head"><span class="card-title">Dati Viaggiatore</span></div>
-          <div class="card-body">
-            <div class="form-grid">
-              <div class="form-group">
-                <label class="form-label">Nome</label>
-                <input class="form-input" placeholder="Nome" type="text"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Cognome</label>
-                <input class="form-input" placeholder="Cognome" type="text"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Genere</label>
-                <select class="form-select">
-                  <option>M</option><option>F</option><option>Non binario</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Età</label>
-                <input class="form-input" placeholder="es. 35" type="number"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Ruolo aziendale</label>
-                <input class="form-input" placeholder="es. Tecnico Senior" type="text"/>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Email aziendale</label>
-                <input class="form-input" placeholder="nome@azienda.com" type="email"/>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="card" style="margin-bottom:20px;">
-          <div class="card-head">
-            <span class="card-title">Profilo di Rischio Paese</span>
-            <span class="risk-badge risk-alto">ALTO — Nigeria</span>
-          </div>
-          <div class="card-body">
-            <div style="margin-bottom:16px;">
-              <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:6px;">Sicurezza Generale</div>
-              <div style="display:flex;align-items:center;gap:10px;">
-                <div style="flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;"><div style="width:80%;height:100%;background:var(--danger);border-radius:2px;"></div></div>
-                <span style="font-size:11px;color:var(--danger);">4/5</span>
-              </div>
-            </div>
-            <div style="margin-bottom:16px;">
-              <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:6px;">Rischio Sanitario</div>
-              <div style="display:flex;align-items:center;gap:10px;">
-                <div style="flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;"><div style="width:65%;height:100%;background:var(--warn);border-radius:2px;"></div></div>
-                <span style="font-size:11px;color:var(--warn);">3/5</span>
-              </div>
-            </div>
-            <div style="margin-bottom:16px;">
-              <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:6px;">Rischio Criminale</div>
-              <div style="display:flex;align-items:center;gap:10px;">
-                <div style="flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;"><div style="width:75%;height:100%;background:var(--danger);border-radius:2px;"></div></div>
-                <span style="font-size:11px;color:var(--danger);">4/5</span>
-              </div>
-            </div>
-            <div class="alert-box danger" style="margin-top:12px;">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--danger);margin-top:2px;"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-              <span style="font-size:11px;">Destinazione classificata ALTO RISCHIO. Checklist di conformità estesa obbligatoria prima della partenza.</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-head"><span class="card-title">Prossimi passi</span></div>
-          <div class="card-body">
-            <div class="workflow-step">
-              <div class="step-num">1</div>
-              <div class="step-body">
-                <div class="step-title">Invio richiesta</div>
-                <div class="step-desc">Il sistema genera la checklist di conformità personalizzata per paese e durata.</div>
-              </div>
-            </div>
-            <div class="workflow-step">
-              <div class="step-num">2</div>
-              <div class="step-body">
-                <div class="step-title">Completamento obblighi legali</div>
-                <div class="step-desc">Assicurazione, formazione, registrazione Farnesina, vaccinazioni obbligatorie.</div>
-              </div>
-            </div>
-            <div class="workflow-step">
-              <div class="step-num">3</div>
-              <div class="step-body">
-                <div class="step-title">Accettazione viaggiatore</div>
-                <div class="step-desc">Il dipendente riceve la scheda trasferta e firma l'accettazione formale dell'incarico.</div>
-              </div>
-            </div>
-            <div class="workflow-step">
-              <div class="step-num">4</div>
-              <div class="step-body">
-                <div class="step-title">Booking voli</div>
-                <div class="step-desc">Attivato solo dopo conformità confermata. Link diretto al portale prenotazioni.</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:12px;margin-top:20px;">
-          <button class="btn btn-ghost" style="flex:1;justify-content:center;">Salva bozza</button>
-          <button class="btn btn-gold" style="flex:1;justify-content:center;" onclick="showTab('checklist')">
-            Invia e genera checklist →
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
-
-function checklistView() {
-  const items = {
-    pretrip: [
-      { title:'Valutazione idoneità alla mansione', desc:'Verifica medica del lavoratore per le attività previste nella destinazione.', tags:['law','med'], law:true },
-      { title:'Stipula assicurazione specifica per trasferta ad alto rischio', desc:'Polizza assicurativa specifica che copra: rimpatrio, assistenza sanitaria h24, invalidità permanente, morte. Obbligo D.Lgs. 81/08 art. 36-37 + normativa ad hoc trasferte internazionali.', tags:['law'], law:true },
-      { title:'Verifica visti e documenti di ingresso Nigeria', desc:'Controllo validità passaporto (min. 6 mesi), visto lavorativo, documenti aziendali richiesti dalle autorità nigeriane.', tags:['law','rec'], law:true },
-      { title:'Registrazione portale Farnesina MAECI', desc:'Obbligatoria per paese ad alto rischio. Permette ricezione avvisi su dispositivi mobili in caso di eventi critici. Direttiva Ippocampo 2006.', tags:['law'], law:true },
-      { title:'Vaccinazioni obbligatorie e raccomandate', desc:'Nigeria: febbre gialla (obbligatoria), meningite, tifo, epatite A/B, malaria (profilassi). Certificato medico del viaggiatore da allegare.', tags:['med','law'], law:true },
-      { title:'Elaborazione Scheda Paese Nigeria', desc:'Documento con: valutazione rischio aggiornata, zone a rischio, numeri di emergenza, normative locali rilevanti, raccomandazioni ad hoc per Lagos.', tags:['law'], law:true },
-      { title:'Erogazione formazione specifica destinazione (art. 37 D.Lgs. 81/08)', desc:'ATTENZIONE: La formazione NON è facoltativa. Il lavoratore non può rifiutarsi né partire senza averla completata. Deve rimanere traccia verificabile. Minimo: gestione emergenze, TRM base, protocolli locali.', tags:['law'], law:true },
-      { title:'Preparazione Contact Sheet su carta weatherproof', desc:'Numeri di emergenza (polizia, ambulanza, ambasciata IT Lagos, numero verde azienda) plastificati, da portare sempre con sé.', tags:['rec'] },
-      { title:'Allestimento zaino emergenze', desc:'Kit primo soccorso, torcia, copia documenti, piccola somma di denaro, coperta isotermica, fischietto, power bank, viveri secchi.', tags:['rec'] },
-      { title:'Comunicazione itinerario dettagliato', desc:'Hotel, meeting, spostamenti, numeri di contatto locali. I lavoratori devono comunicare TUTTI gli spostamenti e avvertire in caso di modifiche.', tags:['rec'] },
-      { title:'Verifica stato di salute pre-partenza', desc:'Colloquio medico di travel medicine declinando storia clinica del viaggiatore alla destinazione specifica (Nigeria). Medical Fitness Certification.', tags:['med','rec'] },
-      { title:'Attivazione Security Operation Centre (SOC)', desc:'Numero telefonico dedicato h24 7/7 per paesi ad alto rischio. Security check giornalieri per missioni in Nigeria.', tags:['rec'] },
-    ],
-    ontrip: [
-      { title:'Verifica situazione paese alla partenza', desc:'Aggiornamento in tempo reale: sicurezza, proteste, allerte. Trasmissione update al viaggiatore prima/durante il volo.', tags:['rec'] },
-      { title:'Monitoraggio itinerario viaggiatore', desc:'Conferma check-in hotel, safety check giornalieri, verifica spostamenti. Geolocalizzazione GPS attiva.', tags:['rec','law'] },
-      { title:'Attivazione assicurazione sanitaria', desc:'Conferma attivazione copertura assicurativa per la durata della missione.', tags:['law'] },
-      { title:'Contatti anagrafici viaggiatore disponibili', desc:'Numero cellulare nazionale, eventuale numero estero, email. Trattati in ottemperanza alle normative privacy.', tags:['law','rec'] },
-    ],
-    posttrip: [
-      { title:'Debriefing al rientro', desc:'Raccolta feedback su: adeguatezza supporto, misure adottate, gestione criticità. Essenziale per Nigeria per eventuali incidenti occorsi.', tags:['rec'] },
-      { title:'Follow-up medico', desc:'Check up stato di salute psicofisica. Nigeria: screening malaria e malattie tropicali. Costruzione terapie mediche specifiche se necessario.', tags:['med'] },
-      { title:'Valutazione stress trasferta-correlato', desc:'ISO 31030:2021 — L\'organizzazione deve considerare l\'impatto dei viaggi sulla salute. Verificare necessità di recupero (fuso orario, durata volo, intensità attività).', tags:['rec'] },
-      { title:'Aggiornamento DVR per trasferte internazionali', desc:'Sentenza Bonatti (confermata Cassazione 2024): modello organizzativo verificabile richiesto. Aggiornare la valutazione del rischio con lezioni apprese da questa missione.', tags:['law'] },
-      { title:'Chiusura pratiche assicurative', desc:'Eventuale reportistica sinistri, chiusura copertura specifica.', tags:['rec'] },
-    ]
+  // Intro per profilo e fase
+  const intros={
+    resp:{
+      0:`<div class="ab danger"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--danger);flex-shrink:0"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg><span>Obblighi in rosso = di legge. La partenza è <strong>bloccata</strong> finché non sono tutti completati. Fonte: D.Lgs. 81/08 art.36-37, ISO 31030, sentenza Bonatti 2024.</span></div>`,
+      1:`<div class="ab info"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:#88b4ff;flex-shrink:0"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v4M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Trasferta in corso. Mantieni il monitoraggio attivo: safety check giornalieri, aggiornamenti situazione paese, SOC h24 disponibile.</span></div>`,
+      2:`<div class="ab ok"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--ok);flex-shrink:0"><path d="M2 8l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Il viaggiatore è rientrato. Avvia le procedure di chiusura. ISO 31030:2021: il ciclo di miglioramento continuo si attiva qui.</span></div>`,
+    },
+    viag:{
+      0:`<div class="ab warn"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--warn);flex-shrink:0"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v4M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Destinazione ad <strong>ALTO RISCHIO</strong>. Completa tutti gli obblighi obbligatori (bordo rosso) prima che il Responsabile possa confermare la partenza.</span></div>`,
+      1:`<div class="ab info"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:#88b4ff;flex-shrink:0"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg><span>Sei in trasferta. Il tuo <strong>Duty of Loyalty è attivo</strong>: comunica ogni spostamento, rispondi ai safety check giornalieri, segui le raccomandazioni SafePass.</span></div>`,
+      2:`<div class="ab ok"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--ok);flex-shrink:0"><path d="M2 8l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Sei rientrato. Hai diritto al recupero post-trasferta (ISO 31030:2021). Completa il debriefing per il miglioramento del sistema.</span></div>`,
+    }
   };
 
-  const renderItems = (list) => list.map((item,i) => `
-    <div class="check-item">
-      <div class="check-box ${item.law?'mandatory':''}" onclick="toggleCheck(this)"></div>
-      <div class="check-content">
-        <div class="check-title">${item.title}</div>
-        <div class="check-desc">${item.desc}</div>
-        <div class="check-tags">
-          ${item.tags.includes('law') ? '<span class="check-tag tag-law">D.Lgs. 81/08</span>' : ''}
-          ${item.tags.includes('med') ? '<span class="check-tag tag-med">Sanitario</span>' : ''}
-          ${item.tags.includes('rec') ? '<span class="check-tag tag-rec">Best Practice ISO 31030</span>' : ''}
+  const itemsHtml=its.map(item=>{
+    const ck=itemState[item.id]?'ck':'';
+    const lawC=item.law&&!itemState[item.id]?'law':'';
+    const faded=itemState[item.id]?'faded':'';
+    const icon=itemState[item.id]?`<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`:'';
+    return `<div class="cli ${faded}">
+      <div class="chkbox ${ck} ${lawC}" onclick="toggle('${item.id}')">${icon}</div>
+      <div class="cli-body">
+        <div class="cli-t">${item.t}</div>
+        <div class="cli-d">${item.d}</div>
+        <div class="tags">
+          ${item.tags.includes('law')?'<span class="tag tlaw">D.Lgs. 81/08</span>':''}
+          ${item.tags.includes('med')?'<span class="tag tmed">Sanitario</span>':''}
+          ${item.tags.includes('rec')?'<span class="tag trec">ISO 31030</span>':''}
         </div>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
 
-  return `
-  <div class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-label">Checklist Conformità Obbligatoria</div>
-        <div class="section-title">Nigeria — Lagos · <em>10 giorni</em></div>
+  // Advance block
+  let advHtml='';
+  if(ph<2){
+    const nxtLabel=['Conferma partenza → Passa a ON-TRIP','Conferma rientro → Passa a POST-TRIP'][ph];
+    const canAdv=allLawDone;
+    advHtml=`<div class="adv">
+      <div class="adv-l">
+        <div class="adv-label">Obblighi di legge completati</div>
+        <div class="adv-count">${ld}/${lt}</div>
       </div>
-      <div style="display:flex;gap:10px;align-items:center;">
-        <span class="risk-badge risk-alto">RISCHIO ALTO</span>
-        <button class="btn btn-ghost" style="opacity:0.5;cursor:not-allowed;" title="Disponibile solo dopo conformità completa">
-          ✈ Booking voli (bloccato)
+      <div class="adv-r">
+        ${!canAdv?`<div class="adv-note">Completa prima tutti gli obblighi in rosso per procedere</div>`:''}
+        <button class="btn ${canAdv?'bok':'bgh bdis'}" ${canAdv?'':'disabled'} onclick="${canAdv?`advPhase()`:'void(0)'}">
+          ${nxtLabel} →
         </button>
       </div>
-    </div>
-
-    <div class="alert-box danger" style="margin-bottom:24px;">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--danger);margin-top:2px;"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 7v4M8 12v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <span>Gli elementi in rosso sono obblighi di legge (D.Lgs. 81/08, ISO 31030, Normativa MAECI). La partenza non è consentita senza il loro completamento. Fonte: Sentenza Bonatti 2019-2024 e giurisprudenza Cassazione.</span>
-    </div>
-
-    <div class="checklist-phase">
-      <div class="phase-header">
-        <div class="phase-header-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-        </div>
-        <span class="phase-header-title">PRE-TRIP — Pianificazione & Conformità</span>
-        <span class="phase-header-count">${items.pretrip.length} obblighi · ${items.pretrip.filter(i=>i.law).length} di legge</span>
+    </div>`;
+  } else {
+    const allDone=done>=its.length;
+    advHtml=`<div class="adv">
+      <div class="adv-l">
+        <div class="adv-label">Attività completate</div>
+        <div class="adv-count">${done}/${its.length}</div>
       </div>
-      <div class="phase-items">${renderItems(items.pretrip)}</div>
-    </div>
-
-    <div class="checklist-phase">
-      <div class="phase-header">
-        <div class="phase-header-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-3.314 3.134-6 7-6s7 2.686 7 6"/></svg>
-        </div>
-        <span class="phase-header-title">ON-TRIP — Esecuzione & Monitoraggio</span>
-        <span class="phase-header-count">${items.ontrip.length} obblighi</span>
-      </div>
-      <div class="phase-items">${renderItems(items.ontrip)}</div>
-    </div>
-
-    <div class="checklist-phase">
-      <div class="phase-header">
-        <div class="phase-header-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M5 7l1-3h12l1 3"/></svg>
-        </div>
-        <span class="phase-header-title">POST-TRIP — Debriefing & Miglioramento Continuo</span>
-        <span class="phase-header-count">${items.posttrip.length} obblighi</span>
-      </div>
-      <div class="phase-items">${renderItems(items.posttrip)}</div>
-    </div>
-
-    <div style="margin-top:24px;padding:20px;background:rgba(200,166,90,0.06);border:1px solid var(--line);border-radius:4px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
-      <div>
-        <div style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.5);margin-bottom:4px;">Completamento checklist</div>
-        <div style="font-size:22px;font-family:var(--serif);color:var(--gold-lt);" id="check-progress">0 / ${items.pretrip.length + items.ontrip.length + items.posttrip.length}</div>
-      </div>
-      <button class="btn btn-ok" style="opacity:0.5;cursor:not-allowed;" id="btn-booking">
-        ✈ Sblocca Booking Voli (completare obblighi)
+      <button class="btn ${allDone?'bg':'bgh bdis'}" ${allDone?'':'disabled'} onclick="${allDone?`alert('Trasferta archiviata correttamente.')`:'void(0)'}">
+        ${allDone?'✓ Archivia trasferta':'Completa tutte le attività'}
       </button>
-    </div>
-  </div>`;
-}
+    </div>`;
+  }
 
-function sitemapView() {
-  return `
-  <div class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-label">Architettura del Servizio</div>
-        <div class="section-title">Mappa del <em>Sito SafePass</em></div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-bottom:24px;">
-      <div class="card-head"><span class="card-title">Sitemap — Struttura Completa dell'Area Personale</span></div>
-      <div class="card-body">
-        <div class="sitemap-tree">
-
-          <div class="sm-branch">
-            <div class="sm-phase">
-              <div class="phase-header-icon" style="width:28px;height:28px;border-radius:50%;background:rgba(200,166,90,0.1);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;">
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="10" y="1" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="1" y="10" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/><rect x="10" y="10" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.4"/></svg>
-              </div>
-              <span class="sm-phase-label">Accesso e Profilo</span>
-            </div>
-            <div class="sm-items">
-              <div class="sm-item"><strong>Login Duale</strong><span>Menu tendina: Responsabile / Viaggiatore</span></div>
-              <div class="sm-item"><strong>Dashboard Personale</strong><span>Stato trasferte, alert attivi</span></div>
-              <div class="sm-item"><strong>Profilo Utente</strong><span>Dati, documenti, certificazioni</span></div>
-            </div>
-          </div>
-
-          <div class="sm-branch">
-            <div class="sm-phase">
-              <div class="phase-header-icon" style="width:28px;height:28px;border-radius:50%;background:rgba(200,166,90,0.1);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;">
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="3" y="4" width="10" height="10" rx="1" stroke="currentColor" stroke-width="1.3"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/></svg>
-              </div>
-              <span class="sm-phase-label">PRE-TRIP — Solo Responsabile</span>
-            </div>
-            <div class="sm-items">
-              <div class="sm-item"><strong>Nuova Richiesta</strong><span>Modulo + Google Maps + profilo rischio</span></div>
-              <div class="sm-item"><strong>Checklist Conformità</strong><span>Generata automaticamente per paese</span></div>
-              <div class="sm-item"><strong>Booking Voli</strong><span>Sbloccato solo dopo conformità</span></div>
-              <div class="sm-item"><strong>DVR Trasferte</strong><span>Documento Valutazione Rischi (D.Lgs.81)</span></div>
-            </div>
-          </div>
-
-          <div class="sm-branch">
-            <div class="sm-phase">
-              <div class="phase-header-icon" style="width:28px;height:28px;border-radius:50%;background:rgba(200,166,90,0.1);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;">
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M3 14c0-2.8 2.3-4.5 5-4.5s5 1.7 5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-              </div>
-              <span class="sm-phase-label">PRE-TRIP — Solo Viaggiatore</span>
-            </div>
-            <div class="sm-items">
-              <div class="sm-item"><strong>Scheda Trasferta</strong><span>Visualizzazione completa incarico</span></div>
-              <div class="sm-item"><strong>Accettazione Formale</strong><span>Firma digitale incarico</span></div>
-              <div class="sm-item"><strong>Diritti & Doveri</strong><span>Per fase: PRE / ON / POST</span></div>
-              <div class="sm-item"><strong>Formazione Obbligatoria</strong><span>E-learning + traccia completamento</span></div>
-            </div>
-          </div>
-
-          <div class="sm-branch">
-            <div class="sm-phase">
-              <div class="phase-header-icon" style="width:28px;height:28px;border-radius:50%;background:rgba(200,166,90,0.1);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;">
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 2l-6 3v5c0 4 6 5 6 5s6-1 6-5V5L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-              </div>
-              <span class="sm-phase-label">ON-TRIP — Entrambi i Profili</span>
-            </div>
-            <div class="sm-items">
-              <div class="sm-item"><strong>Monitor Sicurezza</strong><span>Alert paese in tempo reale</span></div>
-              <div class="sm-item"><strong>Safety Check-in</strong><span>Check giornaliero stato sicurezza</span></div>
-              <div class="sm-item"><strong>Segnala Incidente</strong><span>Procedura SOS + Run/Hide/Tell</span></div>
-              <div class="sm-item"><strong>SOC h24</strong><span>Numero verde Security Operations</span></div>
-            </div>
-          </div>
-
-          <div class="sm-branch">
-            <div class="sm-phase">
-              <div class="phase-header-icon" style="width:28px;height:28px;border-radius:50%;background:rgba(200,166,90,0.1);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;">
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M5 7l2 2 4-4"/><rect x="1" y="4" width="14" height="11" rx="1" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M3 4V3a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.3"/></svg>
-              </div>
-              <span class="sm-phase-label">POST-TRIP — Entrambi i Profili</span>
-            </div>
-            <div class="sm-items">
-              <div class="sm-item"><strong>Debriefing</strong><span>Questionario + raccolta feedback</span></div>
-              <div class="sm-item"><strong>Follow-up Medico</strong><span>Scheduling visita post-trasferta</span></div>
-              <div class="sm-item"><strong>Report Incidenti</strong><span>Archivio eventi per miglioramento</span></div>
-              <div class="sm-item"><strong>Aggiornamento DVR</strong><span>Lezioni apprese → nuovo ciclo</span></div>
-            </div>
-          </div>
-
-          <div class="sm-branch">
-            <div class="sm-phase">
-              <div class="phase-header-icon" style="width:28px;height:28px;border-radius:50%;background:rgba(200,166,90,0.1);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;">
-                <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg>
-              </div>
-              <span class="sm-phase-label">Risorse Condivise — Tutti</span>
-            </div>
-            <div class="sm-items">
-              <div class="sm-item"><strong>Schede Paese</strong><span>Database aggiornato tutti i paesi</span></div>
-              <div class="sm-item"><strong>Manuale Operativo</strong><span>Procedure per eventi specifici</span></div>
-              <div class="sm-item"><strong>Scenario Trainer</strong><span>Simulazioni emergenza (Nigeria/Tokyo/BA)</span></div>
-              <div class="sm-item"><strong>Normativa</strong><span>D.Lgs.81/08 · ISO 31030 · MAECI</span></div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-head"><span class="card-title">Workflow — Trasferta Nigeria 10 giorni (Marco Bianchi)</span></div>
-      <div class="card-body">
-        <div class="workflow-step">
-          <div class="step-num">1</div>
-          <div class="step-body">
-            <div class="step-title">Responsabile crea richiesta trasferta</div>
-            <div class="step-desc">Compila modulo: Nigeria/Lagos, 10 gg, commerciale, Marco Bianchi M/45. Il sistema interroga il database rischi paese → classifica ALTO RISCHIO.</div>
-          </div>
-        </div>
-        <div class="workflow-step">
-          <div class="step-num">2</div>
-          <div class="step-body">
-            <div class="step-title">Generazione automatica checklist conformità</div>
-            <div class="step-desc">Il sistema genera 12 obblighi PRE-TRIP (di cui 7 di legge), 4 ON-TRIP, 5 POST-TRIP. Il booking voli è BLOCCATO fino al completamento obblighi di legge.</div>
-          </div>
-        </div>
-        <div class="workflow-step">
-          <div class="step-num">3</div>
-          <div class="step-body">
-            <div class="step-title">Completamento obblighi legali</div>
-            <div class="step-desc">Responsabile: stipula assicurazione specifica, iscrive Bianchi alla formazione obbligatoria (art.37), avvia sorveglianza sanitaria (vaccini Nigeria: febbre gialla, malaria, tifo), registra al portale MAECI Farnesina.</div>
-          </div>
-        </div>
-        <div class="workflow-step">
-          <div class="step-num">4</div>
-          <div class="step-body">
-            <div class="step-title">Notifica al viaggiatore</div>
-            <div class="step-desc">Marco Bianchi riceve notifica sul suo profilo SafePass. Visualizza scheda trasferta completa con: destinazione, durata, profilo rischio, Scheda Paese Nigeria, Contact Sheet Lagos.</div>
-          </div>
-        </div>
-        <div class="workflow-step">
-          <div class="step-num">5</div>
-          <div class="step-body">
-            <div class="step-title">Accettazione formale incarico</div>
-            <div class="step-desc">Bianchi legge diritti e doveri (Duty of Loyalty), completa formazione e-learning obbligatoria e firma digitalmente l'accettazione. Traccia verificabile conservata.</div>
-          </div>
-        </div>
-        <div class="workflow-step">
-          <div class="step-num">6</div>
-          <div class="step-body">
-            <div class="step-title">Sblocco booking voli</div>
-            <div class="step-desc">Sistema verifica completamento checklist → sblocca link booking. Raccomandazione: voli diurni, alloggio vicino aeroporto per arrivi notturni (procedura sicurezza Nigeria).</div>
-          </div>
-        </div>
-        <div class="workflow-step">
-          <div class="step-num">7</div>
-          <div class="step-body">
-            <div class="step-title">ON-TRIP: monitoraggio attivo</div>
-            <div class="step-desc">SOC h24 attivato. Safety check giornalieri. Bianchi comunica tutti gli spostamenti. Responsabile monitora itinerario. Servizio scorta/autista raccomandato per Lagos.</div>
-          </div>
-        </div>
-        <div class="workflow-step">
-          <div class="step-num">8</div>
-          <div class="step-body">
-            <div class="step-title">POST-TRIP: debriefing e follow-up</div>
-            <div class="step-desc">Al rientro: questionario feedback Bianchi, visita medica (screening malaria/tropicale), valutazione stress trasferta-correlato (ISO 31030). Aggiornamento DVR con lezioni apprese.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
-
-function paesiView() {
-  const paesi = [
-    { flag:'🇳🇬', name:'Nigeria', region:'Africa Occidentale', risk:'high', nota:'Rischio sicurezza elevato. Lagos: criminalità, sequestri. Registrazione MAECI obbligatoria.' },
-    { flag:'🇸🇦', name:'Arabia Saudita', region:'Medio Oriente', risk:'med', nota:'Norme socio-culturali rigide. Visto lavorativo specifico. Restrizioni religiose.' },
-    { flag:'🇨🇳', name:'Cina', region:'Asia Orientale', risk:'med', nota:'Sorveglianza digitale. VPN vietata. Specifici requisiti visto di lavoro.' },
-    { flag:'🇩🇪', name:'Germania', region:'Europa', risk:'low', nota:'Paese a basso rischio. Standard sanitari elevati. Nessuna vaccinazione obbligatoria.' },
-    { flag:'🇧🇷', name:'Brasile', region:'Sud America', risk:'high', nota:'Criminalità urbana. Rio/São Paulo zone ad alto rischio. Non uscire da soli di notte.' },
-    { flag:'🇯🇵', name:'Giappone', region:'Asia Orientale', risk:'low', nota:'Rischio sismico. Protocollo terremoti obbligatorio. Norme comportamentali specifiche.' },
-    { flag:'🇦🇷', name:'Argentina', region:'Sud America', risk:'med', nota:'Instabilità economica. Buenos Aires: attenzione aggressioni/rapine. Vedi Scenario 2.' },
-    { flag:'🇸🇪', name:'Svezia', region:'Europa', risk:'low', nota:'Paese sicuro. Vedi Scenario 3 (attacco hotel Stoccolma). Protocollo Run/Hide/Tell.' },
-    { flag:'🇱🇾', name:'Libia', region:'Nord Africa', risk:'med', nota:'ESTREMO: sconsigliato. Sentenza Bonatti. Ambasciate europee chiuse/ridotte.' },
-    { flag:'🇮🇳', name:'India', region:'Asia del Sud', risk:'med', nota:'Rischio sanitario elevato. Vaccinazioni: tifo, epatite A. Traffico intenso, incidenti.' },
-    { flag:'🇲🇽', name:'Messico', region:'America Centrale', risk:'high', nota:'Cartelli droga alcune zone. Città del Messico moderata. Taxi solo prenotati.' },
-    { flag:'🇪🇹', name:'Etiopia', region:'Africa Orientale', risk:'high', nota:'Conflitti interni. Caso SO.RI.GE. / Caso Etiopia. Verifica sicurezza cantieri.' },
-  ];
-
-  return `
-  <div class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-label">Database Internazionale</div>
-        <div class="section-title">Schede <em>Paese</em></div>
-      </div>
-      <div style="display:flex;gap:8px;">
-        <span class="risk-badge risk-alto" style="align-self:center;">● Alto</span>
-        <span class="risk-badge risk-medio" style="align-self:center;">● Medio</span>
-        <span class="risk-badge risk-basso" style="align-self:center;">● Basso</span>
-      </div>
-    </div>
-    <div class="paesi-grid">
-      ${paesi.map(p => `
-        <div class="paese-card" onclick="alert('Scheda completa ${p.name}:\\n\\n${p.nota}\\n\\nIn produzione: rischio dettagliato, zone, numeri emergenza, normative locali, Contact Sheet stampabile.')">
-          <div class="paese-flag">${p.flag}</div>
-          <div class="paese-name">${p.name}</div>
-          <div class="paese-region">${p.region}</div>
-          <div class="paese-risk">
-            <div class="risk-bar"><div class="risk-fill ${p.risk}"></div></div>
-            <span class="risk-badge ${p.risk === 'high' ? 'risk-alto' : p.risk === 'med' ? 'risk-medio' : 'risk-basso'}" style="font-size:8px;padding:2px 7px;">${p.risk === 'high' ? 'ALTO' : p.risk === 'med' ? 'MEDIO' : 'BASSO'}</span>
-          </div>
-        </div>
-      `).join('')}
-    </div>
-  </div>`;
-}
-
-function manualeView() {
-  const sections = [
-    { id:'generali', label:'Raccomandazioni Generali', content:'generali' },
-    { id:'pretrip', label:'Prima della Trasferta', content:'pretrip' },
-    { id:'durante', label:'Durante la Trasferta', content:'durante' },
-    { id:'alloggi', label:'Alloggi & Spostamenti', content:'alloggi' },
-    { id:'incidente', label:'Incidente Stradale', content:'incidente' },
-    { id:'blackout', label:'Blackout', content:'blackout' },
-    { id:'incendio', label:'Incendi', content:'incendio' },
-    { id:'terremoto', label:'Terremoti', content:'terremoto' },
-    { id:'alluvione', label:'Alluvioni & Ondate Calore', content:'alluvione' },
-    { id:'manifestazioni', label:'Manifestazioni & Proteste', content:'manifestazioni' },
-    { id:'terrorismo', label:'Attacco Terroristico', content:'terrorismo' },
-    { id:'criminali', label:'Aggressione & Rapina', content:'criminali' },
-    { id:'neo', label:'Evacuazione NEO', content:'neo' },
-  ];
-
-  const contents = {
-    generali: `<h3>Raccomandazioni Generali e Sanitarie</h3>
-      <p>Prepara sempre una checklist prima della trasferta per salvaguardare la salute fisica e psicologica del viaggiatore.</p>
-      <h4>Note sui Medicinali</h4>
-      <div class="alert-box danger"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--danger);"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg><span>Non tutti i farmaci disponibili in Italia sono legali in altri Paesi. Alcuni possono essere sostanze controllate. Rischio confisca o arresto.</span></div>
-      <ul class="manual-list">
-        <li>Verificare legalità dei farmaci nel paese di destinazione</li>
-        <li>Conoscere il nome internazionale del principio attivo</li>
-        <li>Avere sempre copia della prescrizione medica</li>
-        <li>Portare medicinali essenziali: FANS, antidiarroici, farmaci salvavita</li>
-      </ul>`,
-    pretrip: `<h3>Prima della Trasferta</h3>
-      <ul class="manual-list">
-        <li>Valutare condizioni sanitarie e vaccinazioni con il medico competente</li>
-        <li>Informarsi su tragitti e mezzi tra alloggio e sito lavorativo</li>
-        <li>Registrarsi sul portale MAECI/Farnesina con tappe e periodi di permanenza</li>
-        <li>Stampare su carta weatherproof la Contact Sheet e copia del passaporto</li>
-      </ul>
-      <h4>Zaino delle Emergenze — Contenuto Obbligatorio</h4>
-      <ul class="manual-list">
-        <li>Kit primo soccorso · Torcia · Copia documenti</li>
-        <li>Piccola somma di denaro in contanti</li>
-        <li>Copia dei contatti di emergenza</li>
-        <li>Coperta isotermica · Fischietto · Acqua · Viveri secchi</li>
-        <li>Power bank per dispositivi mobili</li>
-      </ul>`,
-    durante: `<h3>Durante la Trasferta</h3>
-      <ul class="manual-list">
-        <li>Conformarsi agli usi e costumi locali</li>
-        <li>Usufruire solo di servizi di trasporto ufficiali e riconoscibili</li>
-        <li>Bere esclusivamente da contenitori sigillati acquistati</li>
-        <li>Evitare il consumo di cibi crudi</li>
-        <li>Portare sempre copia della tessera sanitaria con gruppo sanguigno</li>
-      </ul>`,
-    alloggi: `<h3>Raccomandazioni su Alloggi e Spostamenti</h3>
-      <h4>In Hotel</h4>
-      <ul class="manual-list">
-        <li>Non separarsi dai bagagli durante il check-in</li>
-        <li>Non dire ad alta voce il numero di stanza</li>
-        <li>Non lasciare incustoditi documenti personali</li>
-        <li>I documenti originali vanno sempre in cassaforte</li>
-      </ul>
-      <h4>Spostamenti</h4>
-      <ul class="manual-list">
-        <li>Comunicare TUTTI gli spostamenti: hotel, meeting, eventi</li>
-        <li>Transfer solo con servizi autorizzati, organizzati in anticipo</li>
-        <li>In taxi: appuntarsi targa, nome conducente, numero licenza</li>
-      </ul>`,
-    incidente: `<h3>Incidente Stradale</h3>
-      <ul class="manual-list">
-        <li>Contattare immediatamente il punto di noleggio e i servizi di emergenza</li>
-        <li>Mantenere atteggiamento distensivo con gli altri automobilisti</li>
-        <li>Rimandare qualsiasi discussione all'arrivo delle forze dell'ordine</li>
-        <li>Non ammettere responsabilità prima dell'arrivo delle autorità</li>
-      </ul>`,
-    blackout: `<h3>Blackout</h3>
-      <ul class="manual-list">
-        <li>Avere piano di continuità: batterie, cavi ricarica, copie cartacee numeri utili</li>
-        <li>Tenere disponibili cibo non deperibile, acqua, medicinali per più giorni</li>
-        <li>Conservare torce, batterie, radio in luoghi di rapido accesso</li>
-        <li>Identificare aree sicure: alberghi, ospedali, stazioni di polizia</li>
-        <li>Monitorare media locali e seguire istruzioni autorità</li>
-      </ul>`,
-    incendio: `<h3>Incendi</h3>
-      <h4>In Luogo Chiuso</h4>
-      <ul class="manual-list">
-        <li>Attivare immediatamente allarme antincendio e servizi emergenza</li>
-        <li>Seguire vie di fuga — non usare ascensori</li>
-        <li>Coprire naso e bocca per ridurre inalazione fumo</li>
-        <li>Non tornare per oggetti personali — raggiungere il punto di raccolta</li>
-      </ul>
-      <h4>Incendio All'Aperto/Boschivo</h4>
-      <ul class="manual-list">
-        <li>Cercare via di fuga sicura: strada o corso d'acqua</li>
-        <li>Stendersi a terra dove non c'è vegetazione incendiabile</li>
-        <li>Se costretto, attraversare il fuoco dove è meno intenso</li>
-        <li>Non sostare lungo la strada: intralceresti i soccorsi</li>
-      </ul>`,
-    terremoto: `<h3>Terremoti</h3>
-      <h4>Durante — Al Chiuso</h4>
-      <ul class="manual-list">
-        <li>Mettersi nel vano di una porta portante o sotto un tavolo resistente</li>
-        <li>Non precipitarsi fuori — attendere la fine della scossa</li>
-        <li>Evitare il centro della stanza (rischio caduta oggetti)</li>
-      </ul>
-      <h4>Durante — All'Aperto</h4>
-      <ul class="manual-list">
-        <li>Allontanarsi da edifici, alberi, lampioni, linee elettriche</li>
-        <li>Attenzione a conseguenze: crollo ponti, frane, perdite gas</li>
-      </ul>
-      <h4>Dopo il Terremoto</h4>
-      <ul class="manual-list">
-        <li>Verificare stato di salute delle persone vicine</li>
-        <li>In zona a rischio maremoto: allontanarsi dalla spiaggia verso zone elevate</li>
-        <li>Limitare uso del telefono e dell'auto</li>
-        <li>Raggiungere aree di attesa del Piano di protezione locale</li>
-      </ul>`,
-    alluvione: `<h3>Alluvioni, Maremoti e Ondate di Calore</h3>
-      <h4>Alluvione — Al Chiuso</h4>
-      <ul class="manual-list">
-        <li>Non scendere in cantine, seminterrati o garage</li>
-        <li>Salire ai piani superiori — non usare l'ascensore</li>
-        <li>Non bere acqua dal rubinetto: potrebbe essere contaminata</li>
-      </ul>
-      <h4>Alluvione — All'Aperto</h4>
-      <ul class="manual-list">
-        <li>Allontanarsi dalla zona allagata</li>
-        <li>Evitare sottopassi, argini, ponti</li>
-        <li>Non usare l'auto anche con pochi centimetri d'acqua</li>
-      </ul>
-      <h4>Ondata di Calore</h4>
-      <ul class="manual-list">
-        <li>Bere molti liquidi, evitare alcol e caffeina</li>
-        <li>Rinfrescarsi frequentemente, indossare abiti leggeri</li>
-        <li>Ridurre attività fisica nelle ore più calde</li>
-      </ul>`,
-    manifestazioni: `<h3>Manifestazioni e Proteste</h3>
-      <ul class="manual-list">
-        <li>Evitare aree con proteste, dimostrazioni o cortei</li>
-        <li>Non attraversare blocchi stradali dei manifestanti</li>
-        <li>Monitorare media locali e social media per aggiornamenti</li>
-        <li>Preferire percorsi principali — attenzione ai GPS non aggiornati</li>
-      </ul>`,
-    terrorismo: `<h3>Attacco Terroristico o Sparatoria</h3>
-      <div class="proc-box">
-        <div class="proc-title">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1L2 4v5c0 4 6 6 6 6s6-2 6-6V4L8 1z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-          Protocollo RUN · HIDE · TELL
-        </div>
-        <div class="proc-body">
-          <strong style="color:var(--danger);">RUN (Scappa)</strong> — Lascia l'area immediatamente se è sicuro farlo.<br/>
-          <strong style="color:var(--warn);">HIDE (Nasconditi)</strong> — Se non puoi scappare, cerca rifugio e barricati.<br/>
-          <strong style="color:var(--ok);">TELL (Comunica)</strong> — Una volta al sicuro, chiama le autorità locali con tutte le informazioni disponibili.
-        </div>
-      </div>
-      <ul class="manual-list">
-        <li>Evitare la zona dell'attacco se non coinvolti direttamente</li>
-        <li>Raggiungere un ospedale rapidamente se feriti</li>
-        <li>Comunicare la propria condizione ai referenti di viaggio</li>
-        <li>Rimanere informati sulla situazione tramite media locali</li>
-      </ul>`,
-    criminali: `<h3>Aggressione, Furto o Rapina</h3>
-      <h4>Prevenzione</h4>
-      <ul class="manual-list">
-        <li>Non uscire da solo di notte — spostarsi sempre in gruppo</li>
-        <li>Restare in zone ben illuminate, evitare vicoli</li>
-        <li>Non esibire orologi, gioielli, grandi quantità di contanti</li>
-        <li>Usare solo taxi prenotati tramite app o albergo</li>
-        <li>Mantenere attiva la geolocalizzazione GPS</li>
-      </ul>
-      <h4>Durante un'Aggressione</h4>
-      <div class="alert-box warn"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--warn);"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg><span><strong>Non reagire.</strong> Mantenere la calma e assecondare le richieste degli attaccanti. La resistenza può provocare violenza letale.</span></div>
-      <ul class="manual-list">
-        <li>Non opporre resistenza in caso di rapina — consegnare gli oggetti richiesti</li>
-        <li>Allontanarsi rapidamente verso luogo sicuro (polizia, ospedale)</li>
-        <li>Attenzione a criminali che si fingono poliziotti</li>
-        <li>Denunciare il reato alle autorità appena possibile</li>
-        <li>Farsi visitare da un medico anche per lesioni apparentemente lievi</li>
-      </ul>`,
-    neo: `<h3>Evacuazione Istituzionale (NEO)</h3>
-      <p>In situazioni di emergenza socio-politica, le istituzioni possono ordinare l'evacuazione del paese.</p>
-      <div class="proc-box">
-        <div class="proc-title">Fase 1 — Evacuazione con Mezzi Privati</div>
-        <div class="proc-body">Comunicazione ai cittadini tramite dispositivi mobili e media di evacuare con mezzi propri. Prerequisito: registrazione MAECI Farnesina attiva.</div>
-      </div>
-      <div class="proc-box">
-        <div class="proc-title">Fase 2 — Evacuazione Istituzionale (Direttiva Ippocampo, 2006)</div>
-        <div class="proc-body">Se impossibile evacuare con mezzi privati, l'Ambasciatore dichiara l'evacuazione. Il personale si riunisce autonomamente nei centri di raccolta comunicati dall'Ambasciata.</div>
-      </div>
-      <ul class="manual-list">
-        <li>Mantenersi in contatto con l'Ambasciata italiana</li>
-        <li>In mancanza, rivolgersi alle ambasciate UE (coordinamento con UK e Giappone)</li>
-        <li>Punto di evacuazione finale: solitamente aeroporto internazionale principale</li>
-      </ul>`,
+  const eyebrows={
+    resp:{0:'PRE-TRIP — Responsabile Trasferte',1:'ON-TRIP — Responsabile Trasferte',2:'POST-TRIP — Responsabile Trasferte'},
+    viag:{0:'PRE-TRIP — Viaggiatore',1:'ON-TRIP — Viaggiatore',2:'POST-TRIP — Viaggiatore'},
+  };
+  const titles={
+    resp:{0:'Pianificazione &<br/><em>Conformità Legale</em>',1:'Monitoraggio &<br/><em>Protezione Attiva</em>',2:'Debriefing &<br/><em>Miglioramento Continuo</em>'},
+    viag:{0:'Informazione &<br/><em>Preparazione alla Trasferta</em>',1:'Duty of Loyalty &<br/><em>Sicurezza in Campo</em>',2:'Rientro &<br/><em>Follow-up Post-Trasferta</em>'},
   };
 
-  const firstSection = Object.keys(contents)[0];
-  return `
-  <div class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-label">Documento Operativo</div>
-        <div class="section-title">Manuale <em>Operativo</em> — Ver. 0.3</div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="manual-grid">
-        <div class="manual-sidebar">
-          ${sections.map(s => `<div class="manual-sidebar-item ${s.id === firstSection ? 'active' : ''}" onclick="switchManual('${s.id}', this)">${s.label}</div>`).join('')}
+  const sectionTitle={
+    resp:{0:'Obblighi Legali & Operativi da Completare',1:'Attività di Monitoraggio ON-TRIP',2:'Attività di Chiusura POST-TRIP'},
+    viag:{0:'I Tuoi Obblighi & Diritti PRE-TRIP',1:'I Tuoi Doveri ON-TRIP (Duty of Loyalty)',2:'Le Tue Attività POST-TRIP'},
+  };
+
+  return `<div class="pcont">
+    <div class="peyebrow">${eyebrows[profile][ph]}</div>
+    <div class="ptitle" style="margin-bottom:16px;">${titles[profile][ph]}</div>
+    ${intros[profile][ph]}
+    <div class="cl-wrap">
+      <div class="cl-head">
+        <div class="cl-head-ico">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 5h12M2 8h8M2 11h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
         </div>
-        <div class="manual-content">
-          ${sections.map(s => `
-            <div class="manual-section ${s.id === firstSection ? 'active' : ''}" id="manual-${s.id}">
-              ${contents[s.content] || '<p>Contenuto in aggiornamento.</p>'}
-            </div>
-          `).join('')}
-        </div>
+        <span class="cl-head-title">${sectionTitle[profile][ph]}</span>
+        <span class="cl-head-cnt">${done}/${its.length} · ${lt} obbligatori</span>
       </div>
+      <div class="cl-list">${itemsHtml}</div>
     </div>
+    ${advHtml}
   </div>`;
 }
 
-// ════════════ VIAGGIATORE VIEWS ════════════
-function renderViaggiatore(id, area) {
-  if (id === 'dashboard') area.innerHTML = cycleBanner() + dashboardViag();
-  else if (id === 'accetta') area.innerHTML = cycleBanner() + accettaView();
-  else if (id === 'diritti-doveri') area.innerHTML = cycleBanner() + dirittiDoveri();
-  else if (id === 'paesi') area.innerHTML = paesiView();
-  else if (id === 'manuale') area.innerHTML = manualeView();
-  bindChecks();
-  bindDuties();
-  bindManual();
+function toggle(id){
+  itemState[id]=!itemState[id];
+  refresh();
+}
+function advPhase(){
+  if(curPhase<2){curPhase++;refresh();}
 }
 
-function dashboardViag() {
-  return `
-  <div class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-label">Viaggiatore — Marco Bianchi</div>
-        <div class="section-title">La Mia <em>Trasferta</em></div>
+/* RIGHT PANEL */
+function rightPanel(){
+  const td=totDone(),tt=totItems();
+  const pct=tt?Math.round(td/tt*100):0;
+
+  const groups=[0,1,2].map(ph=>{
+    const its=phItems(ph);
+    if(!its.length)return'';
+    const done=phDone(ph),total=its.length;
+    const isActive=ph===curPhase;
+    const isLocked=ph>curPhase;
+    const isDone=phComplete(ph);
+    let lcls=isActive?'phase-active':isDone?'phase-done':isLocked?'phase-lock':'';
+    return `<div class="rpg">
+      <div class="rpg-h">
+        <span class="rpg-label ${lcls}">${PHASE_LABELS[ph]} ${isDone?'✓':isLocked?'🔒':''}</span>
+        <span class="rpg-cnt">${done}/${total}</span>
+      </div>
+      ${its.map(item=>{
+        const ck=itemState[item.id];
+        const lk=ph>curPhase;
+        return `<div class="rpi">
+          <div class="rpi-chk ${ck?'ck':''} ${!ck&&item.law?'law':''} ${lk?'lock':''}">${ck?`<svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}</div>
+          <div class="rpi-txt ${ck?'ck':''} ${lk?'lock':''}">${item.t}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }).join('');
+
+  // booking for resp
+  const preLawOk=profile==='resp'&&phLawDone(0)>=phLaw(0);
+  const bookingHtml=profile==='resp'?`<div class="rpan-foot">
+    <button class="btn bk-btn ${preLawOk?'bg':'bgh bdis'}" ${preLawOk?`onclick="alert('Booking voli sbloccato! Link al portale prenotazioni.')"`:''}>
+      ${preLawOk?'✈ Booking Voli — SBLOCCATO':'✈ Booking (completa obblighi PRE)'}
+    </button>
+  </div>`:'';
+
+  return `<div class="rpan">
+    <div class="rpan-h">
+      <div class="rpan-title">Checklist Globale — Live</div>
+      <div class="rpan-prog">
+        <div class="rpbar"><div class="rpbar-f" style="width:${pct}%"></div></div>
+        <span class="rpbar-n">${td}/${tt}</span>
       </div>
     </div>
+    <div class="rpan-body">${groups}</div>
+    ${bookingHtml}
+  </div>`;
+}
 
-    <div class="grid-2" style="align-items:start;">
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Incarico Corrente</span>
-          <span class="status-badge status-pending">In Attesa Accettazione</span>
-        </div>
-        <div class="card-body">
-          <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-            <div style="font-size:48px;">🇳🇬</div>
-            <div>
-              <div style="font-family:var(--serif);font-size:24px;font-weight:300;color:#fff;">Nigeria — Lagos</div>
-              <div style="font-size:12px;color:rgba(255,255,255,0.35);margin-top:3px;">15 Maggio – 25 Maggio 2026 · 10 giorni</div>
-            </div>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-            <div style="background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:3px;padding:12px;">
-              <div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:4px;">Scopo</div>
-              <div style="font-size:13px;color:#fff;">Commerciale / Meeting</div>
-            </div>
-            <div style="background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:3px;padding:12px;">
-              <div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:4px;">Livello Rischio</div>
-              <div style="font-size:13px;color:var(--danger);font-weight:600;">ALTO</div>
-            </div>
-          </div>
-          <div class="alert-box danger" style="margin-bottom:16px;">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--danger);margin-top:2px;"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-            <span>Trasferta in paese ad ALTO RISCHIO. Prima di accettare, leggi la Scheda Paese Nigeria e completa la formazione obbligatoria.</span>
-          </div>
-          <button class="btn btn-gold btn-full" onclick="showTab('accetta')">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 8l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Accetta formalmente l'incarico
-          </button>
-        </div>
-      </div>
-
+/* ═══════════════════════════════
+   NUOVA TRASFERTA
+═══════════════════════════════ */
+function renderNuova(body){
+  body.innerHTML=`<div style="flex:1;overflow-y:auto;padding:28px 32px;">
+    <div class="peyebrow">Crea Nuova Trasferta</div>
+    <div class="ptitle" style="margin-bottom:22px;">Modulo Richiesta &<br/><em>Valutazione Rischio Paese</em></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;">
       <div>
-        <div class="card" style="margin-bottom:16px;">
-          <div class="card-head"><span class="card-title">Azioni da Completare</span></div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:8px;">
-            <div class="alert-box danger">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--danger);"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-              <span style="font-size:11px;"><strong style="color:#ff9999;">Formazione obbligatoria</strong> — Corso TRM Base + Destinazioni Alto Rischio non completato.</span>
-            </div>
-            <div class="alert-box warn">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--warn);"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg>
-              <span style="font-size:11px;"><strong style="color:#ffcc99;">Accettazione incarico</strong> — Non ancora formalizzata.</span>
-            </div>
-            <div class="alert-box warn">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--warn);"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg>
-              <span style="font-size:11px;"><strong style="color:#ffcc99;">Visita medica</strong> — Appuntamento con travel medicine da fissare.</span>
-            </div>
-          </div>
-        </div>
-
         <div class="card">
-          <div class="card-head"><span class="card-title">Contatti di Emergenza</span></div>
-          <div class="card-body" style="display:flex;flex-direction:column;gap:8px;">
-            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-              <span style="font-size:12px;color:rgba(255,255,255,0.4);">SOC h24</span>
-              <span style="font-size:12px;font-weight:600;color:var(--gold);">+39 800 XXX XXX</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-              <span style="font-size:12px;color:rgba(255,255,255,0.4);">Ambasciata IT Lagos</span>
-              <span style="font-size:12px;font-weight:600;color:var(--gold);">+234 XXX XXXX</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;padding:8px 0;">
-              <span style="font-size:12px;color:rgba(255,255,255,0.4);">Emergenze Nigeria</span>
-              <span style="font-size:12px;font-weight:600;color:var(--gold);">112 / 199</span>
+          <div class="card-h"><span class="card-t">Dati Destinazione</span></div>
+          <div class="card-b">
+            <div class="fgrid">
+              <div class="fg"><label class="flbl">Paese</label>
+                <select class="fsel" onchange="updRisk(this.value)">
+                  <option value="">—</option>
+                  <option value="nigeria">Nigeria</option>
+                  <option value="arabia">Arabia Saudita</option>
+                  <option value="germania">Germania</option>
+                  <option value="brasile">Brasile</option>
+                  <option value="giappone">Giappone</option>
+                </select>
+              </div>
+              <div class="fg"><label class="flbl">Città</label><input class="fi" placeholder="es. Lagos" type="text"/></div>
+              <div class="fg"><label class="flbl">Data partenza</label><input class="fi" type="date"/></div>
+              <div class="fg"><label class="flbl">Durata (giorni)</label><input class="fi" type="number" placeholder="10"/></div>
+              <div class="fg full"><label class="flbl">Scopo</label>
+                <select class="fsel"><option>Commerciale / Meeting</option><option>Tecnico / Installazione</option><option>Sopralluogo</option><option>Audit</option></select>
+              </div>
+              <div class="map-ph full" onclick="alert('Google Maps integration — attiva in produzione')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.2" opacity="0.35"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                <span>Localizza su mappa<br/><small style="opacity:.6">Google Maps Integration</small></span>
+              </div>
             </div>
           </div>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="card-t">Dati Viaggiatore</span></div>
+          <div class="card-b">
+            <div class="fgrid">
+              <div class="fg"><label class="flbl">Nome</label><input class="fi" placeholder="Nome" type="text"/></div>
+              <div class="fg"><label class="flbl">Cognome</label><input class="fi" placeholder="Cognome" type="text"/></div>
+              <div class="fg"><label class="flbl">Genere</label><select class="fsel"><option>M</option><option>F</option><option>Altro</option></select></div>
+              <div class="fg"><label class="flbl">Età</label><input class="fi" type="number" placeholder="35"/></div>
+              <div class="fg full"><label class="flbl">Ruolo aziendale</label><input class="fi" placeholder="es. Tecnico Senior" type="text"/></div>
+              <div class="fg full"><label class="flbl">Email aziendale</label><input class="fi" placeholder="nome@azienda.com" type="email"/></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" id="rc">
+          <div class="card-h"><span class="card-t">Profilo Rischio</span><span id="rlb" style="font-size:9px;color:rgba(255,255,255,.3);">seleziona paese</span></div>
+          <div class="card-b" id="rb"><div style="font-size:12px;color:rgba(255,255,255,.25);padding:12px 0;text-align:center;">Seleziona un paese per vedere il profilo di rischio</div></div>
+        </div>
+        <div class="rsrc-box">
+          <div class="rsrc-t">Fonti dati rischio paese</div>
+          <div class="rsrc-row"><div class="rsrc-dot"></div><div><strong style="color:rgba(255,255,255,.65);">MAECI Farnesina</strong> — viaggiaresicuri.mae.it · Fonte ufficiale italiana aggiornata dal Ministero degli Affari Esteri</div></div>
+          <div class="rsrc-row"><div class="rsrc-dot"></div><div><strong style="color:rgba(255,255,255,.65);">ACLED Conflict Index 2025</strong> — acleddata.com · Mappatura conflitti globali (citato nelle Slide TRM Base allegate)</div></div>
+          <div class="rsrc-row"><div class="rsrc-dot"></div><div><strong style="color:rgba(255,255,255,.65);">WEF Global Risk Report 2025</strong> — Risk landscape geopolitico, ambientale, tecnologico</div></div>
+          <div class="rsrc-row"><div class="rsrc-dot"></div><div><strong style="color:rgba(255,255,255,.65);">ISO 31030:2021</strong> — Standard internazionale Travel Risk Management</div></div>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn bgh" style="flex:1;justify-content:center;">Salva bozza</button>
+          <button class="btn bg" style="flex:1;justify-content:center;" onclick="showView('trip')">Crea & vai a checklist →</button>
         </div>
       </div>
     </div>
   </div>`;
 }
 
-function accettaView() {
-  return `
-  <div class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-label">PRE-TRIP — Accettazione Incarico</div>
-        <div class="section-title">Formalizzazione <em>Incarico</em></div>
+const RISK_DB={
+  nigeria:{l:'ALTO',c:'ra',s:4,san:3,cr:4,note:'Lagos: criminalità elevata, rischio sequestri. Solo trasporti ufficiali con scorta. Registrazione MAECI obbligatoria. ⚠ Fonte MAECI: viaggio non necessario sconsigliato.'},
+  arabia:{l:'MEDIO',c:'rm',s:3,san:2,cr:2,note:'Norme socio-culturali rigide. Visto lavorativo specifico. Fonte MAECI: prudenza elevata.'},
+  germania:{l:'BASSO',c:'rl',s:1,san:1,cr:1,note:'Paese a bassissimo rischio. Standard sanitari elevati. Fonte MAECI: nessuna restrizione.'},
+  brasile:{l:'ALTO',c:'ra',s:4,san:2,cr:4,note:'Rio/São Paulo: criminalità urbana elevata. Non uscire soli di notte. Fonte MAECI: prudenza massima.'},
+  giappone:{l:'BASSO',c:'rl',s:1,san:1,cr:1,note:'Rischio sismico. Ottimo sistema sanitario. Fonte MAECI: paese sicuro.'},
+};
+
+function updRisk(v){
+  const r=RISK_DB[v];if(!r)return;
+  document.getElementById('rlb').innerHTML=`<span class="rbadge ${r.c}">${r.l}</span>`;
+  const cols=['var(--danger)','var(--warn)','var(--ok)'];
+  const getC=n=>n>=4?cols[0]:n>=3?cols[1]:cols[2];
+  document.getElementById('rb').innerHTML=`
+    ${[['Sicurezza Generale',r.s],['Rischio Sanitario',r.san],['Rischio Criminale',r.cr]].map(([lbl,val])=>`
+      <div style="margin-bottom:12px;">
+        <div style="font-size:9px;color:rgba(255,255,255,.3);margin-bottom:4px;">${lbl}</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div style="flex:1;height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;">
+            <div style="width:${val*20}%;height:100%;background:${getC(val)};border-radius:2px;"></div>
+          </div>
+          <span style="font-size:10px;color:${getC(val)};font-weight:600;">${val}/5</span>
+        </div>
+      </div>`).join('')}
+    <div class="ab ${r.c==='ra'?'danger':'warn'}" style="margin-top:8px;">
+      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg>
+      <span style="font-size:11px;">${r.note}</span>
+    </div>`;
+}
+
+/* ═══════════════════════════════
+   SCHEDE PAESE
+═══════════════════════════════ */
+function renderPaesi(body){
+  const P=[
+    {f:'🇳🇬',n:'Nigeria',r:'Africa Occ.',risk:'h',src:'MAECI · ACLED 2025'},
+    {f:'🇸🇦',n:'Arabia Saudita',r:'Medio Oriente',risk:'m',src:'MAECI · WEF 2025'},
+    {f:'🇩🇪',n:'Germania',r:'Europa',risk:'l',src:'MAECI'},
+    {f:'🇧🇷',n:'Brasile',r:'Sud America',risk:'h',src:'MAECI · ACLED 2025'},
+    {f:'🇯🇵',n:'Giappone',r:'Asia',risk:'l',src:'MAECI'},
+    {f:'🇦🇷',n:'Argentina',r:'Sud America',risk:'m',src:'MAECI · ACLED 2025'},
+    {f:'🇸🇪',n:'Svezia',r:'Europa',risk:'l',src:'MAECI'},
+    {f:'🇨🇳',n:'Cina',r:'Asia',risk:'m',src:'MAECI · WEF 2025'},
+    {f:'🇱🇾',n:'Libia',r:'Nord Africa',risk:'h',src:'MAECI · ACLED 2025'},
+    {f:'🇮🇳',n:'India',r:'Asia del Sud',risk:'m',src:'MAECI'},
+    {f:'🇲🇽',n:'Messico',r:'America C.',risk:'h',src:'MAECI · ACLED 2025'},
+    {f:'🇪🇹',n:'Etiopia',r:'Africa Or.',risk:'h',src:'MAECI · ACLED 2025'},
+  ];
+  const rm={h:'ra ALTO',m:'rm MEDIO',l:'rl BASSO'};
+  body.innerHTML=`<div style="flex:1;overflow-y:auto;padding:28px 32px;">
+    <div class="peyebrow">Database Internazionale</div>
+    <div class="ptitle" style="margin-bottom:10px;">Schede <em>Paese</em></div>
+    <div class="rsrc-box" style="max-width:700px;margin-bottom:18px;">
+      <div class="rsrc-t">Fonti dati rischio utilizzate</div>
+      <div style="display:flex;gap:20px;flex-wrap:wrap;">
+        <div class="rsrc-row" style="margin:0"><div class="rsrc-dot"></div><span style="font-size:10px;color:rgba(255,255,255,.4);"><strong style="color:rgba(255,255,255,.6)">MAECI Farnesina</strong> (viaggiaresicuri.mae.it)</span></div>
+        <div class="rsrc-row" style="margin:0"><div class="rsrc-dot"></div><span style="font-size:10px;color:rgba(255,255,255,.4);"><strong style="color:rgba(255,255,255,.6)">ACLED Conflict Index 2025</strong></span></div>
+        <div class="rsrc-row" style="margin:0"><div class="rsrc-dot"></div><span style="font-size:10px;color:rgba(255,255,255,.4);"><strong style="color:rgba(255,255,255,.6)">WEF Global Risk Report 2025</strong></span></div>
       </div>
     </div>
-
-    <div class="accept-box">
-      <div class="section-label">Scheda Trasferta</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;">
-        <div><div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:4px;">Destinazione</div><div style="color:#fff;font-size:14px;">🇳🇬 Nigeria — Lagos</div></div>
-        <div><div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:4px;">Durata</div><div style="color:#fff;font-size:14px;">10 giorni</div></div>
-        <div><div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:4px;">Scopo</div><div style="color:#fff;font-size:14px;">Commerciale</div></div>
-        <div><div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:4px;">Date</div><div style="color:#fff;font-size:14px;">15–25 Maggio 2026</div></div>
-        <div><div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:4px;">Rischio paese</div><div style="color:var(--danger);font-size:14px;font-weight:600;">ALTO</div></div>
-        <div><div style="font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:4px;">Responsabile</div><div style="color:#fff;font-size:14px;">Giulia Fumagalli</div></div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-bottom:20px;">
-      <div class="card-head"><span class="card-title">Checklist Obbligatoria Viaggiatore — PRE-TRIP</span></div>
-      <div>
-        <div class="check-item">
-          <div class="check-box mandatory" onclick="toggleCheck(this)"></div>
-          <div class="check-content">
-            <div class="check-title">Ho letto e compreso la Scheda Paese Nigeria</div>
-            <div class="check-desc">Valutazione rischio, zone a rischio Lagos, numeri di emergenza, normative locali e raccomandazioni comportamentali.</div>
-            <div class="check-tags"><span class="check-tag tag-law">Obbligo Art. 36 D.Lgs. 81/08</span></div>
-          </div>
-        </div>
-        <div class="check-item">
-          <div class="check-box mandatory" onclick="toggleCheck(this)"></div>
-          <div class="check-content">
-            <div class="check-title">Ho completato la formazione obbligatoria (TRM Base + Alto Rischio)</div>
-            <div class="check-desc">La formazione NON è facoltativa e NON posso partire senza averla completata (art. 37 D.Lgs. 81/08). Traccia verificabile conservata nel sistema.</div>
-            <div class="check-tags"><span class="check-tag tag-law">Obbligo Art. 37 D.Lgs. 81/08</span></div>
-          </div>
-        </div>
-        <div class="check-item">
-          <div class="check-box mandatory" onclick="toggleCheck(this)"></div>
-          <div class="check-content">
-            <div class="check-title">Ho effettuato la visita medica pre-trasferta</div>
-            <div class="check-desc">Medical Fitness Certification, vaccinazioni obbligatorie Nigeria (febbre gialla, malaria), profilassi farmacologiche prescritte dal medico di travel medicine.</div>
-            <div class="check-tags"><span class="check-tag tag-med">Sanitario</span><span class="check-tag tag-law">Obbligo D.Lgs. 81/08</span></div>
-          </div>
-        </div>
-        <div class="check-item">
-          <div class="check-box mandatory" onclick="toggleCheck(this)"></div>
-          <div class="check-content">
-            <div class="check-title">Ho compreso i miei obblighi di Duty of Loyalty</div>
-            <div class="check-desc">Sono tenuto a comunicare tutti gli spostamenti, seguire le procedure TRM, non ignorare le raccomandazioni di sicurezza e non adottare comportamenti che aumentino il rischio.</div>
-            <div class="check-tags"><span class="check-tag tag-law">ISO 31030 — Duty of Loyalty</span></div>
-          </div>
-        </div>
-        <div class="check-item">
-          <div class="check-box" onclick="toggleCheck(this)"></div>
-          <div class="check-content">
-            <div class="check-title">Ho preparato lo zaino delle emergenze</div>
-            <div class="check-desc">Kit primo soccorso, torcia, copia documenti, piccola somma in contanti, coperta isotermica, fischietto, power bank, viveri secchi.</div>
-            <div class="check-tags"><span class="check-tag tag-rec">Best Practice</span></div>
-          </div>
-        </div>
-        <div class="check-item">
-          <div class="check-box" onclick="toggleCheck(this)"></div>
-          <div class="check-content">
-            <div class="check-title">Ho comunicato l'itinerario dettagliato</div>
-            <div class="check-desc">Hotel, meeting, ristoranti, spostamenti. Avvertirò tempestivamente in caso di modifiche al programma.</div>
-            <div class="check-tags"><span class="check-tag tag-rec">Best Practice</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="accept-warning">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--warn);margin-top:2px;"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v4M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <span>Firmando, dichiaro di aver preso visione della Scheda Paese Nigeria, completato la formazione obbligatoria e di essere consapevole dei rischi della destinazione. Mi impegno a rispettare le procedure SafePass e il Duty of Loyalty per tutta la durata della trasferta. Ai sensi dell'art. 20 D.Lgs. 81/08, sono tenuto a prendermi cura della propria sicurezza e di quella delle persone presenti sul luogo di lavoro.</span>
-    </div>
-
-    <div style="display:flex;gap:14px;">
-      <button class="btn btn-ghost">Rifiuta incarico</button>
-      <button class="btn btn-gold" style="flex:1;justify-content:center;" onclick="showTab('diritti-doveri')">
-        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 8l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        Firma e accetta l'incarico
-      </button>
+    <div class="pgrid">
+      ${P.map(p=>{const[bc,bl]=rm[p.risk].split(' ');return`
+        <div class="pc">
+          <div class="pc-f">${p.f}</div>
+          <div class="pc-n">${p.n}</div>
+          <div class="pc-r">${p.r}</div>
+          <div class="rbar"><div class="rbf ${p.risk}"></div></div>
+          <span class="rbadge ${bc}">${bl}</span>
+          <div class="pc-src">Fonte: ${p.src}</div>
+        </div>`;}).join('')}
     </div>
   </div>`;
 }
 
-function dirittiDoveri() {
-  return `
-  <div class="section">
-    <div class="section-header">
-      <div>
-        <div class="section-label">Guida Personale</div>
-        <div class="section-title">Diritti & <em>Doveri</em> del Viaggiatore</div>
-      </div>
+/* ═══════════════════════════════
+   MANUALE
+═══════════════════════════════ */
+const MAN_SECS=[
+  ['generali','Raccomandazioni Generali'],['pretrip','Prima della Trasferta'],['durante','Durante'],
+  ['alloggi','Alloggi & Spostamenti'],['incidente','Incidente Stradale'],['blackout','Blackout'],
+  ['incendio','Incendi'],['terremoto','Terremoti'],['alluvione','Alluvioni & Calore'],
+  ['manifestazioni','Manifestazioni'],['terrorismo','Attacco Terroristico'],['criminali','Aggressione & Rapina'],
+  ['neo','Evacuazione NEO'],
+];
+const MAN_BODY={
+  generali:`<h3>Raccomandazioni Generali</h3><p>Approntare sempre una checklist prima della trasferta per salvaguardare salute fisica e psicologica del viaggiatore.</p><h4>Note sui Medicinali</h4><div class="ab danger"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--danger)"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg><span>Non tutti i farmaci legali in Italia lo sono all'estero. Rischio confisca o arresto. Verificare: legalità, quantità consentita, documenti necessari.</span></div><ul class="mlist"><li>Conoscere il nome internazionale del principio attivo</li><li>Portare copia della prescrizione medica</li><li>Medicinali essenziali: FANS, antidiarroici, farmaci salvavita prescritti</li></ul>`,
+  pretrip:`<h3>Prima della Trasferta</h3><ul class="mlist"><li>Valutare condizioni sanitarie e vaccinazioni con il medico competente</li><li>Registrarsi sul portale MAECI con tappe e periodi di permanenza</li><li>Stampare su carta weatherproof la Contact Sheet e copia passaporto</li></ul><h4>Zaino delle Emergenze</h4><ul class="mlist"><li>Kit primo soccorso · Torcia · Copia documenti</li><li>Piccola somma di denaro · Coperta isotermica</li><li>Fischietto · Acqua · Viveri secchi · Power bank</li></ul>`,
+  durante:`<h3>Durante la Trasferta</h3><ul class="mlist"><li>Conformarsi agli usi e costumi locali</li><li>Usufruire solo di servizi di trasporto ufficiali</li><li>Bere esclusivamente da contenitori sigillati</li><li>Evitare cibi crudi</li><li>Portare sempre tessera sanitaria con gruppo sanguigno</li></ul>`,
+  alloggi:`<h3>Alloggi & Spostamenti</h3><h4>In Hotel</h4><ul class="mlist"><li>Non separarsi dai bagagli durante il check-in</li><li>Non dire ad alta voce il numero di stanza</li><li>Documenti originali sempre in cassaforte</li></ul><h4>Spostamenti</h4><ul class="mlist"><li>Comunicare TUTTI gli spostamenti al responsabile</li><li>Transfer solo con servizi autorizzati e prenotati</li><li>In taxi: annotare targa, nome conducente, numero licenza</li></ul>`,
+  incidente:`<h3>Incidente Stradale</h3><ul class="mlist"><li>Contattare immediatamente il punto di noleggio e i servizi di emergenza</li><li>Mantenere atteggiamento distensivo — non ammettere responsabilità</li><li>Rimandare qualsiasi discussione all'arrivo delle forze dell'ordine</li></ul>`,
+  blackout:`<h3>Blackout</h3><ul class="mlist"><li>Piano di continuità: batterie, cavi ricarica, copie cartacee numeri utili</li><li>Cibo non deperibile, acqua, medicinali per più giorni</li><li>Torce e radio in luoghi di rapido accesso</li><li>Identificare aree sicure: alberghi, ospedali, stazioni di polizia</li><li>Monitorare media locali e seguire istruzioni autorità</li></ul>`,
+  incendio:`<h3>Incendi</h3><h4>Al Chiuso</h4><ul class="mlist"><li>Attivare allarme antincendio e servizi emergenza</li><li>Seguire vie di fuga — non usare ascensori</li><li>Coprire naso e bocca durante l'evacuazione</li><li>Non tornare per oggetti personali</li></ul><h4>All'Aperto</h4><ul class="mlist"><li>Cercare via di fuga: strada o corso d'acqua</li><li>Stendersi a terra dove non c'è vegetazione incendiabile</li></ul>`,
+  terremoto:`<h3>Terremoti</h3><h4>Al Chiuso</h4><ul class="mlist"><li>Mettersi nel vano di una porta portante o sotto un tavolo resistente</li><li>Attendere la fine della scossa — non precipitarsi fuori</li></ul><h4>All'Aperto</h4><ul class="mlist"><li>Allontanarsi da edifici, alberi, lampioni, linee elettriche</li></ul><h4>Dopo</h4><ul class="mlist"><li>Verificare lo stato di salute delle persone vicine</li><li>In zona a rischio maremoto: allontanarsi verso zone elevate</li></ul>`,
+  alluvione:`<h3>Alluvioni & Ondate di Calore</h3><h4>Alluvione — Al Chiuso</h4><ul class="mlist"><li>Non scendere in cantine o garage</li><li>Salire ai piani superiori — non usare l'ascensore</li><li>Non bere acqua dal rubinetto: potrebbe essere contaminata</li></ul><h4>Ondata di Calore</h4><ul class="mlist"><li>Bere molti liquidi, evitare alcol e caffeina</li><li>Ridurre attività fisica nelle ore più calde</li></ul>`,
+  manifestazioni:`<h3>Manifestazioni e Proteste</h3><ul class="mlist"><li>Evitare aree con proteste, cortei, dimostrazioni</li><li>Non attraversare blocchi stradali dei manifestanti</li><li>Monitorare media locali per aggiornamenti</li><li>Preferire percorsi principali — attenzione ai GPS non aggiornati</li></ul>`,
+  terrorismo:`<h3>Attacco Terroristico</h3><div class="mproc"><div class="mproc-t">Protocollo RUN · HIDE · TELL</div><div class="mproc-b"><strong style="color:var(--danger)">RUN</strong> — Scappa rapidamente dall'area se è sicuro farlo.<br/><strong style="color:var(--warn)">HIDE</strong> — Nasconditi e barricati se non puoi scappare.<br/><strong style="color:var(--ok)">TELL</strong> — Al sicuro, chiama le autorità con tutte le informazioni.</div></div><ul class="mlist"><li>Evitare la zona dell'attacco se non coinvolti</li><li>Raggiungere un ospedale rapidamente se feriti</li><li>Rimanere informati tramite media locali ufficiali</li></ul>`,
+  criminali:`<h3>Aggressione, Furto o Rapina</h3><h4>Prevenzione</h4><ul class="mlist"><li>Non uscire da solo di notte</li><li>Non esibire orologi, gioielli, grandi quantità di denaro</li><li>Usare solo taxi prenotati tramite app o albergo</li></ul><div class="ab warn" style="margin-top:10px"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--warn)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg><span><strong>Non reagire.</strong> Consegnare gli oggetti richiesti. La resistenza può provocare violenza letale.</span></div>`,
+  neo:`<h3>Evacuazione NEO (Non-combat Evacuation)</h3><div class="mproc"><div class="mproc-t">Fase 1 — Evacuazione con Mezzi Privati</div><div class="mproc-b">Comunicazione ai cittadini tramite dispositivi mobili di evacuare autonomamente. Prerequisito: registrazione MAECI attiva.</div></div><div class="mproc"><div class="mproc-t">Fase 2 — Direttiva Ippocampo (2006)</div><div class="mproc-b">L'Ambasciatore dichiara l'evacuazione. Il personale raggiunge autonomamente i centri di raccolta comunicati dall'Ambasciata.</div></div><ul class="mlist"><li>Mantenersi in contatto con l'Ambasciata italiana</li><li>In assenza, rivolgersi alle ambasciate UE (coordinamento UK e Giappone)</li></ul>`,
+};
+
+function renderManuale(body){
+  const first=MAN_SECS[0][0];
+  body.innerHTML=`<div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+    <div style="padding:20px 28px 12px;flex-shrink:0;">
+      <div class="peyebrow">Documento Operativo Ver. 0.3</div>
+      <div class="ptitle">Manuale <em>Operativo</em></div>
     </div>
-
-    <div class="alert-box warn" style="margin-bottom:24px;">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--warn);margin-top:2px;"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg>
-      <span>Il viaggiatore deve essere consapevole dei rischi reali, di come identificarli e di come contribuire a una gestione efficace della sicurezza. Fonte: D.Lgs. 81/08, ISO 31030:2021, Slide TRM Base.</span>
-    </div>
-
-    <div class="grid-2" style="margin-bottom:24px;">
-      <div>
-        <div class="section-label" style="margin-bottom:16px;">PRE-TRIP — Prima di Partire</div>
-
-        <div class="duty-accordion">
-          <div class="duty-head" onclick="toggleDuty(this)">
-            <div class="duty-head-icon">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="duty-head-title">✅ I Tuoi Diritti PRE-TRIP</div>
-            <span class="duty-head-arrow">▼</span>
-          </div>
-          <div class="duty-body">
-            <div class="duty-item"><strong>Informazione completa sulla destinazione</strong>L'azienda è obbligata (art. 36 D.Lgs. 81/08) a fornirti la Scheda Paese con valutazione rischio, zone pericolose, numeri di emergenza e normative locali.</div>
-            <div class="duty-item"><strong>Formazione prima della partenza</strong>Hai diritto a ricevere formazione specifica (art. 37 D.Lgs. 81/08) sul Travel Risk Management e sui rischi della destinazione. In orario di lavoro, con traccia verificabile.</div>
-            <div class="duty-item"><strong>Sorveglianza sanitaria</strong>Hai diritto alla visita medica pre-trasferta, alla profilassi vaccinale e alla Medical Fitness Certification da parte di un medico di travel medicine.</div>
-            <div class="duty-item"><strong>Assicurazione specifica</strong>L'azienda deve stipulare un'assicurazione che copra: rimpatrio, assistenza sanitaria h24, invalidità permanente e morte durante la trasferta.</div>
-            <div class="duty-item"><strong>Rifiuto di partenza non conforme</strong>Se gli obblighi di legge non sono stati completati (formazione, assicurazione, visita medica), hai il diritto di non partire.</div>
-          </div>
+    <div class="card" style="flex:1;overflow:hidden;margin:0 28px 20px;display:flex;flex-direction:column;">
+      <div class="man-wrap" style="flex:1;overflow:hidden;">
+        <div class="man-sb">
+          ${MAN_SECS.map(([id,l])=>`<div class="man-sb-i ${id===first?'on':''}" onclick="swMan('${id}',this)">${l}</div>`).join('')}
         </div>
-
-        <div class="duty-accordion">
-          <div class="duty-head" onclick="toggleDuty(this)">
-            <div class="duty-head-icon">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2L2 6v4c0 4 6 5 6 5s6-1 6-5V6L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="duty-head-title">⚠ I Tuoi Doveri PRE-TRIP</div>
-            <span class="duty-head-arrow">▼</span>
-          </div>
-          <div class="duty-body">
-            <div class="duty-item"><strong>Completare la formazione obbligatoria</strong>Non puoi rifiutarti di effettuarla (art. 37). Non ti può essere consentita la partenza senza averla completata.</div>
-            <div class="duty-item"><strong>Presentarsi alla visita medica</strong>La sorveglianza sanitaria è obbligatoria. Informa il medico della tua storia clinica e dei farmaci che assumi regolarmente.</div>
-            <div class="duty-item"><strong>Comunicare l'itinerario completo</strong>Hotel, meeting, ristoranti, spostamenti. Con numeri di contatto locali aggiornati.</div>
-            <div class="duty-item"><strong>Conoscere le procedure SafePass</strong>Devi saper usare la Contact Sheet, conoscere i numeri di emergenza e le procedure per i principali scenari (incidente, terremoto, aggressione).</div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="section-label" style="margin-bottom:16px;">ON-TRIP — Durante la Trasferta</div>
-
-        <div class="duty-accordion">
-          <div class="duty-head" onclick="toggleDuty(this)">
-            <div class="duty-head-icon">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 8l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="duty-head-title">✅ I Tuoi Diritti ON-TRIP</div>
-            <span class="duty-head-arrow">▼</span>
-          </div>
-          <div class="duty-body">
-            <div class="duty-item"><strong>Assistenza h24</strong>Il Security Operations Centre (SOC) è attivo 24/7. Puoi chiamare in qualsiasi momento per supporto sicurezza o sanitario.</div>
-            <div class="duty-item"><strong>Aggiornamenti in tempo reale</strong>Hai diritto a ricevere aggiornamenti sulla situazione del paese durante tutta la missione.</div>
-            <div class="duty-item"><strong>Sospensione della trasferta</strong>In caso di deterioramento della situazione di sicurezza, l'azienda deve prendere le misure appropriate incluso il rimpatrio.</div>
-            <div class="duty-item"><strong>Recupero post-trasferta</strong>ISO 31030:2021 — Hai diritto al riposo necessario in base a durata del volo, fuso orario, intensità delle attività, livello di rischio della destinazione.</div>
-          </div>
-        </div>
-
-        <div class="duty-accordion">
-          <div class="duty-head" onclick="toggleDuty(this)">
-            <div class="duty-head-icon">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 2L2 6v4c0 4 6 5 6 5s6-1 6-5V6L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
-            </div>
-            <div class="duty-head-title">⚠ Duty of Loyalty — ON-TRIP</div>
-            <span class="duty-head-arrow">▼</span>
-          </div>
-          <div class="duty-body">
-            <div class="duty-item"><strong>Comunicare TUTTI gli spostamenti</strong>Hotel, meeting, ristoranti, escursioni. Avvisare immediatamente in caso di modifiche.</div>
-            <div class="duty-item"><strong>Seguire le raccomandazioni di sicurezza</strong>Non ignorare i consigli del responsabile trasferte, della Farnesina o delle autorità locali (caso Bonatti: ignorare le indicazioni dell'Ambasciata ha portato a condanne).</div>
-            <div class="duty-item"><strong>Non aumentare deliberatamente i rischi</strong>Non assumere comportamenti che espongano te o altri a pericoli evitabili. Non uscire da solo di notte in zone a rischio.</div>
-            <div class="duty-item"><strong>Geolocalizzazione attiva</strong>Mantenere attiva la geolocalizzazione GPS per tutta la durata della trasferta in paese ad alto rischio.</div>
-            <div class="duty-item"><strong>Safety check giornalieri</strong>Per Nigeria: rispondere ai check giornalieri del SOC per confermare il proprio stato di sicurezza.</div>
-          </div>
-        </div>
-
-        <div class="section-label" style="margin-bottom:16px;margin-top:24px;">POST-TRIP — Al Rientro</div>
-        <div class="duty-accordion">
-          <div class="duty-head" onclick="toggleDuty(this)">
-            <div class="duty-head-icon">
-              <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M5 7l2 2 4-4"/><rect x="1" y="4" width="14" height="11" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M3 4V3a1 1 0 011-1h8a1 1 0 011 1v1" stroke="currentColor" stroke-width="1.3"/></svg>
-            </div>
-            <div class="duty-head-title">✅ Diritti & ⚠ Doveri POST-TRIP</div>
-            <span class="duty-head-arrow">▼</span>
-          </div>
-          <div class="duty-body">
-            <div class="duty-item"><strong>DIRITTO — Follow-up medico</strong>Hai diritto a una visita medica post-trasferta. Per Nigeria: screening malaria, malattie tropicali, valutazione psicofisica.</div>
-            <div class="duty-item"><strong>DIRITTO — Riposo</strong>ISO 31030:2021 — L'organizzazione deve fornire chiarezza sul riposo e recupero a cui hai diritto dopo il viaggio (fuso orario Nigeria: +1h, 10 giorni, missione ad alto stress).</div>
-            <div class="duty-item"><strong>DOVERE — Debriefing</strong>Partecipare al debriefing post-trasferta e fornire feedback onesto sull'adeguatezza del supporto ricevuto e sulla gestione delle eventuali criticità.</div>
-            <div class="duty-item"><strong>DOVERE — Segnalazione incidenti</strong>Segnalare tempestivamente qualsiasi incidente o evento anomalo verificatosi durante la trasferta, inclusi episodi di malessere fisico o psicologico.</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-head"><span class="card-title">Scenari di Emergenza — Nigeria (Estratti dal Manuale)</span></div>
-      <div class="card-body">
-        <div class="scenario-box">
-          <span class="scenario-tag">SCENARIO CRIMINALE</span>
-          <div class="scenario-loc">Buenos Aires, Argentina</div>
-          <div class="scenario-time">Situazione analoga: aggressione a scopo di rapina</div>
-          <div class="scenario-text">Tre uomini a viso scoperto si avvicinano rapidamente. Uno estrae una pistola e chiede denaro. I tuoi colleghi vengono afferrati. Uno tenta di reagire e viene malmenato.</div>
-          <div style="margin-top:16px;padding:14px;background:rgba(200,166,90,0.05);border-radius:4px;">
-            <div style="font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;">Risposta corretta</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;">Non reagire. Consegnare gli oggetti richiesti. Non opporre resistenza — i rapinatori erano armati. Allontanarsi verso luogo sicuro appena possibile. Chiamare SOC h24 e denunciare alle autorità.</div>
-          </div>
+        <div class="man-body">
+          ${MAN_SECS.map(([id])=>`<div class="ms ${id===first?'on':''}" id="ms-${id}">${MAN_BODY[id]||'<p>In aggiornamento.</p>'}</div>`).join('')}
         </div>
       </div>
     </div>
   </div>`;
 }
-
-// ════════════ UTILS ════════════
-function toggleCheck(el) {
-  el.classList.toggle('checked');
-  if (el.classList.contains('checked')) {
-    el.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-  } else {
-    el.innerHTML = '';
-  }
-  updateProgress();
-}
-
-function updateProgress() {
-  const total = document.querySelectorAll('.check-box').length;
-  const done = document.querySelectorAll('.check-box.checked').length;
-  const prog = document.getElementById('check-progress');
-  if (prog) prog.textContent = done + ' / ' + total;
-  const btn = document.getElementById('btn-booking');
-  const mandatory = document.querySelectorAll('.check-box.mandatory').length;
-  const mandatoryDone = document.querySelectorAll('.check-box.mandatory.checked').length;
-  if (btn && mandatoryDone >= mandatory) {
-    btn.style.opacity = '1';
-    btn.style.cursor = 'pointer';
-    btn.textContent = '✈ Booking Voli — SBLOCCATO';
-    btn.classList.remove('btn-ok');
-    btn.classList.add('btn-ok');
-  }
-}
-
-function bindChecks() {
-  // already handled via onclick in HTML
-}
-
-function toggleDuty(head) {
-  const body = head.nextElementSibling;
-  const arrow = head.querySelector('.duty-head-arrow');
-  if (body.classList.contains('open')) {
-    body.classList.remove('open');
-    if (arrow) arrow.textContent = '▼';
-  } else {
-    body.classList.add('open');
-    if (arrow) arrow.textContent = '▲';
-  }
-}
-
-function bindDuties() {
-  // handled by onclick in HTML
-}
-
-function switchManual(id, el) {
-  document.querySelectorAll('.manual-sidebar-item').forEach(i => i.classList.remove('active'));
-  document.querySelectorAll('.manual-section').forEach(s => s.classList.remove('active'));
-  el.classList.add('active');
-  const sec = document.getElementById('manual-' + id);
-  if (sec) sec.classList.add('active');
-}
-
-function bindManual() {
-  // handled by onclick
+function swMan(id,el){
+  document.querySelectorAll('.man-sb-i').forEach(i=>i.classList.remove('on'));
+  document.querySelectorAll('.ms').forEach(s=>s.classList.remove('on'));
+  el.classList.add('on');
+  const s=document.getElementById('ms-'+id);if(s)s.classList.add('on');
 }
 </script>
 </body>
