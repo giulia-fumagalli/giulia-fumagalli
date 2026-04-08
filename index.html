@@ -1063,7 +1063,7 @@
        COMPETENZE CON ICONE
     ══════════════════════════════ */
     #competenze {
-      background: var(--navy);
+      background: var(--cream);
       position: relative;
       overflow: hidden;
     }
@@ -1071,18 +1071,14 @@
     #competenze::before {
       content: '';
       position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        -60deg,
-        transparent, transparent 60px,
-        rgba(196,163,90,0.015) 60px,
-        rgba(196,163,90,0.015) 61px
-      );
+      background-image: radial-gradient(rgba(196,163,90,0.06) 1px, transparent 1px);
+      background-size: 32px 32px;
       pointer-events: none;
     }
 
-    #competenze .eyebrow { color: var(--gold-lt); }
+    #competenze .eyebrow { color: var(--gold); }
     #competenze .eyebrow::after {
-      background: linear-gradient(to right, rgba(223,192,126,0.5), transparent);
+      background: linear-gradient(to right, rgba(196,163,90,0.45), transparent);
     }
 
     .comp-intro {
@@ -1095,7 +1091,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(36px, 4vw, 52px);
       font-weight: 300;
-      color: var(--white);
+      color: var(--navy);
       line-height: 1.08;
       max-width: 560px;
     }
@@ -1108,18 +1104,18 @@
     .comp-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
+      gap: 18px;
       position: relative;
       z-index: 1;
     }
 
     .comp-card {
       padding: 44px 36px;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--line);
+      background: var(--white);
       position: relative;
       overflow: hidden;
-      transition: background 0.35s, border-color 0.35s;
+      transition: background 0.35s, border-color 0.35s, box-shadow 0.35s, transform 0.35s;
       cursor: default;
     }
 
@@ -1127,12 +1123,12 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(196,163,90,0.07) 0%, transparent 60%);
+      background: linear-gradient(135deg, rgba(196,163,90,0.06) 0%, transparent 60%);
       opacity: 0;
       transition: opacity 0.4s;
     }
 
-    .comp-card:hover { background: rgba(196,163,90,0.04); border-color: rgba(196,163,90,0.22); }
+    .comp-card:hover { background: var(--white); border-color: rgba(196,163,90,0.35); box-shadow: 0 12px 40px rgba(15,26,46,0.08); transform: translateY(-3px); }
     .comp-card:hover::before { opacity: 1; }
 
     /* top-left gold corner line on hover */
@@ -1166,7 +1162,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 21px;
       font-weight: 400;
-      color: var(--white);
+      color: var(--navy);
       margin-bottom: 12px;
       position: relative;
       z-index: 1;
@@ -1175,7 +1171,7 @@
 
     .comp-desc {
       font-size: 13px;
-      color: rgba(255,255,255,0.38);
+      color: var(--muted);
       line-height: 1.75;
       position: relative;
       z-index: 1;
@@ -1241,7 +1237,7 @@
     <div class="nav-logo">Giulia <em>Fumagalli</em></div>
     <ul class="nav-links">
       <li><a href="#profilo">Profilo</a></li>
-      <li><a href="#competenze">Competenze</a></li>
+      <li><a href="#competenze">Aree</a></li>
       <li><a href="#servizi">Servizi</a></li>
       <li><a href="#store" class="n-store">Store</a></li>
     </ul>
@@ -1259,7 +1255,6 @@
     </div>
 
     <div class="h-text">
-      <div class="h-tag">Consulente &amp; Specialist</div>
       <h1 class="h-name fi">
         Giulia
         <em>Fumagalli</em>
@@ -1331,67 +1326,42 @@
     </div>
   </section>
 
-  <!-- GOLD BAND 2 -->
-  <div class="gold-band"></div>
-
   <!-- COMPETENZE CON ICONE -->
   <section id="competenze">
     <div class="shell">
-      <div class="eyebrow">Aree di Specializzazione</div>
+      <div class="eyebrow">Cosa faccio</div>
       <div class="comp-intro fi">
-        <h2>Competenze al servizio<br />della tua <em>sicurezza</em></h2>
+        <h2>Le aree in cui<br />posso <em>aiutarti</em></h2>
       </div>
 
       <div class="comp-grid">
 
-        <!-- Enterprise Risk -->
+        <!-- Enterprise Risk Management -->
         <div class="comp-card fi">
           <div class="comp-icon">
             <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-              <!-- scudo con occhio -->
               <path d="M26 6L10 13v13c0 11 7 20 16 23 9-3 16-12 16-23V13L26 6z"/>
-              <circle cx="26" cy="26" r="5"/>
-              <path d="M14 26c0 0 4-7 12-7s12 7 12 7"/>
-              <path d="M14 26c0 0 4 7 12 7s12-7 12-7"/>
+              <circle cx="26" cy="27" r="5"/>
+              <path d="M16 27c0 0 4-6 10-6s10 6 10 6"/>
+              <path d="M16 27c0 0 4 6 10 6s10-6 10-6"/>
             </svg>
           </div>
           <div class="comp-title">Enterprise Risk<br />Management</div>
-          <p class="comp-desc">Analisi, valutazione e trattamento del rischio aziendale secondo gli standard internazionali ISO 31000.</p>
+          <p class="comp-desc">Analisi, valutazione e trattamento del rischio aziendale secondo gli standard internazionali ISO 31000 e UNI 10459:2017.</p>
           <span class="comp-tag">◆ Risk Assessment</span>
         </div>
 
-        <!-- Security Management -->
+        <!-- Travel Risk Management -->
         <div class="comp-card fi">
           <div class="comp-icon">
             <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-              <!-- lucchetto elegante -->
-              <rect x="13" y="24" width="26" height="20" rx="3"/>
-              <path d="M18 24V18a8 8 0 0116 0v6"/>
-              <circle cx="26" cy="35" r="3"/>
-              <line x1="26" y1="38" x2="26" y2="42"/>
-              <!-- linee ornamentali -->
-              <line x1="8" y1="34" x2="11" y2="34" opacity="0.4"/>
-              <line x1="41" y1="34" x2="44" y2="34" opacity="0.4"/>
-            </svg>
-          </div>
-          <div class="comp-title">Security<br />Management</div>
-          <p class="comp-desc">Progettazione di sistemi di sicurezza integrati per aziende e infrastrutture critiche. Certificazione UNI 10459:2017.</p>
-          <span class="comp-tag">◆ UNI 10459:2017</span>
-        </div>
-
-        <!-- Travel Risk -->
-        <div class="comp-card fi">
-          <div class="comp-icon">
-            <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-              <!-- globo con rotta -->
               <circle cx="26" cy="26" r="18"/>
-              <path d="M26 8c0 0-8 8-8 18s8 18 8 18"/>
-              <path d="M26 8c0 0 8 8 8 18s-8 18-8 18"/>
+              <path d="M26 8c0 0-7 8-7 18s7 18 7 18"/>
+              <path d="M26 8c0 0 7 8 7 18s-7 18-7 18"/>
               <line x1="8" y1="26" x2="44" y2="26"/>
-              <line x1="10" y1="18" x2="42" y2="18"/>
-              <line x1="10" y1="34" x2="42" y2="34"/>
-              <!-- aereo stilizzato sopra -->
-              <path d="M30 10l4-4-1 6-3-2z" fill="currentColor" opacity="0.6"/>
+              <line x1="10" y1="19" x2="42" y2="19"/>
+              <line x1="10" y1="33" x2="42" y2="33"/>
+              <path d="M32 11l3-3-1 5-2-2z" fill="currentColor" stroke="none" opacity="0.7"/>
             </svg>
           </div>
           <div class="comp-title">Travel Risk<br />Management</div>
@@ -1403,65 +1373,87 @@
         <div class="comp-card fi">
           <div class="comp-icon">
             <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-              <!-- libro aperto con stella -->
-              <path d="M26 42V16"/>
-              <path d="M10 16h16V42H10a2 2 0 01-2-2V18a2 2 0 012-2z"/>
-              <path d="M42 16H26V42h16a2 2 0 002-2V18a2 2 0 00-2-2z"/>
-              <path d="M14 22h8M14 27h8M14 32h5"/>
-              <path d="M30 22h8M30 27h8M30 32h5"/>
-              <!-- stellina ornamentale -->
-              <path d="M26 10l1.5 3 3.5.5-2.5 2.5.5 3.5L26 18l-3 1.5.5-3.5L21 13.5l3.5-.5z" fill="currentColor" opacity="0.5" stroke="none"/>
+              <!-- cappello accademico -->
+              <path d="M26 14L8 22l18 8 18-8-18-8z"/>
+              <path d="M14 26v10c0 0 4 6 12 6s12-6 12-6V26"/>
+              <line x1="44" y1="22" x2="44" y2="33"/>
+              <circle cx="44" cy="34" r="2" fill="currentColor" stroke="none" opacity="0.7"/>
             </svg>
           </div>
           <div class="comp-title">Formazione<br />Professionale</div>
-          <p class="comp-desc">Progettazione e conduzione di percorsi formativi per Security Manager e figure specializzate nel settore.</p>
-          <span class="comp-tag">◆ Training & Education</span>
+          <p class="comp-desc">Progettazione e conduzione di percorsi formativi per Security Manager, aziende e figure specializzate nel settore della sicurezza.</p>
+          <span class="comp-tag">◆ Training &amp; Education</span>
         </div>
 
-        <!-- Investigazione -->
+        <!-- Web Design -->
         <div class="comp-card fi">
           <div class="comp-icon">
             <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-              <!-- lente d'ingrandimento con dettagli -->
-              <circle cx="22" cy="22" r="13"/>
-              <line x1="31" y1="31" x2="44" y2="44"/>
-              <circle cx="22" cy="22" r="7" opacity="0.35"/>
-              <!-- linee di analisi interne -->
-              <line x1="18" y1="19" x2="26" y2="19" opacity="0.6"/>
-              <line x1="18" y1="22" x2="26" y2="22" opacity="0.6"/>
-              <line x1="18" y1="25" x2="23" y2="25" opacity="0.6"/>
-            </svg>
-          </div>
-          <div class="comp-title">Scienze<br />Criminologiche</div>
-          <p class="comp-desc">Analisi criminologica applicata alla security, con focus su violenza, prevenzione e comportamenti devianti.</p>
-          <span class="comp-tag">◆ Criminal Analysis</span>
-        </div>
-
-        <!-- Digital & AI -->
-        <div class="comp-card fi">
-          <div class="comp-icon">
-            <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
-              <!-- chip / digital forensic -->
-              <rect x="16" y="16" width="20" height="20" rx="3"/>
-              <rect x="20" y="20" width="12" height="12" rx="1" opacity="0.5"/>
-              <!-- pin esterni -->
-              <line x1="16" y1="21" x2="10" y2="21"/>
-              <line x1="16" y1="26" x2="10" y2="26"/>
-              <line x1="16" y1="31" x2="10" y2="31"/>
-              <line x1="36" y1="21" x2="42" y2="21"/>
-              <line x1="36" y1="26" x2="42" y2="26"/>
-              <line x1="36" y1="31" x2="42" y2="31"/>
-              <line x1="21" y1="16" x2="21" y2="10"/>
-              <line x1="26" y1="16" x2="26" y2="10"/>
-              <line x1="31" y1="16" x2="31" y2="10"/>
-              <line x1="21" y1="36" x2="21" y2="42"/>
+              <!-- monitor con design -->
+              <rect x="8" y="10" width="36" height="26" rx="3"/>
+              <line x1="8" y1="18" x2="44" y2="18"/>
+              <!-- pallini browser -->
+              <circle cx="13" cy="14" r="1.5" fill="currentColor" stroke="none" opacity="0.5"/>
+              <circle cx="18" cy="14" r="1.5" fill="currentColor" stroke="none" opacity="0.5"/>
+              <circle cx="23" cy="14" r="1.5" fill="currentColor" stroke="none" opacity="0.5"/>
+              <!-- layout wireframe dentro -->
+              <rect x="13" y="22" width="10" height="10" rx="1" opacity="0.5"/>
+              <line x1="26" y1="24" x2="38" y2="24" opacity="0.6"/>
+              <line x1="26" y1="28" x2="38" y2="28" opacity="0.6"/>
+              <line x1="26" y1="32" x2="33" y2="32" opacity="0.6"/>
+              <!-- piedistallo -->
               <line x1="26" y1="36" x2="26" y2="42"/>
-              <line x1="31" y1="36" x2="31" y2="42"/>
+              <line x1="18" y1="42" x2="34" y2="42"/>
             </svg>
           </div>
-          <div class="comp-title">Digital Forensic<br />&amp; AI Security</div>
-          <p class="comp-desc">Analisi delle minacce digitali, manipolazione di immagini con IA e tecniche di forensic investigation.</p>
-          <span class="comp-tag">◆ IACA Certified</span>
+          <div class="comp-title">Web Design<br />&amp; Digital Identity</div>
+          <p class="comp-desc">Realizzazione di siti web eleganti e funzionali per privati e professionisti. Dal concept alla pubblicazione, curati in ogni dettaglio.</p>
+          <span class="comp-tag">◆ Web &amp; Brand</span>
+        </div>
+
+        <!-- Prodotti di Sicurezza -->
+        <div class="comp-card fi">
+          <div class="comp-icon">
+            <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <!-- negozio / store -->
+              <path d="M10 22h32l-3 18H13L10 22z"/>
+              <path d="M8 22l3-10h30l3 10"/>
+              <line x1="8" y1="22" x2="44" y2="22"/>
+              <!-- finestra negozio -->
+              <rect x="20" y="28" width="12" height="12" rx="1"/>
+              <!-- lucchetto piccolo sopra porta -->
+              <circle cx="26" cy="27" r="2"/>
+            </svg>
+          </div>
+          <div class="comp-title">Prodotti<br />di Sicurezza</div>
+          <p class="comp-desc">Selezione e fornitura di prodotti professionali per la sicurezza domestica, personale e aziendale. Qualità certificata.</p>
+          <span class="comp-tag">◆ Safety Store</span>
+        </div>
+
+        <!-- Droni e Sopralluoghi -->
+        <div class="comp-card fi">
+          <div class="comp-icon">
+            <svg viewBox="0 0 52 52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+              <!-- drone -->
+              <circle cx="26" cy="26" r="5"/>
+              <!-- bracci -->
+              <line x1="26" y1="21" x2="26" y2="14"/>
+              <line x1="26" y1="31" x2="26" y2="38"/>
+              <line x1="21" y1="26" x2="14" y2="26"/>
+              <line x1="31" y1="26" x2="38" y2="26"/>
+              <!-- rotori -->
+              <ellipse cx="26" cy="11" rx="7" ry="2.5"/>
+              <ellipse cx="26" cy="41" rx="7" ry="2.5"/>
+              <ellipse cx="11" cy="26" rx="2.5" ry="7"/>
+              <ellipse cx="41" cy="26" rx="2.5" ry="7"/>
+              <!-- camera sotto -->
+              <rect x="23" y="28" width="6" height="4" rx="1"/>
+              <circle cx="26" cy="30" r="1.2" fill="currentColor" stroke="none" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="comp-title">Sopralluoghi<br />&amp; Drone Survey</div>
+          <p class="comp-desc">Ispezioni aeree con drone per analisi del territorio, valutazione di siti e sopralluoghi tecnici di sicurezza ad alta precisione.</p>
+          <span class="comp-tag">◆ Aerial Inspection</span>
         </div>
 
       </div>
