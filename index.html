@@ -42,7 +42,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: 
+      background:
         radial-gradient(ellipse 60% 80% at 70% 50%, rgba(26,37,64,0.04) 0%, transparent 70%),
         repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(26,37,64,0.03) 80px);
       pointer-events: none;
@@ -255,7 +255,6 @@
       line-height: 1.5;
     }
 
-    /* Editorial */
     .editorial-card {
       background: var(--navy);
       color: var(--white);
@@ -300,7 +299,6 @@
       line-height: 1.6;
     }
 
-    /* Courses */
     .course-item {
       display: flex;
       gap: 16px;
@@ -324,7 +322,7 @@
       line-height: 1.5;
     }
 
-    /* ── AZIENDE ── */
+    /* ── SERVIZI DIGITALI ── */
     .aziende {
       background: var(--navy);
       padding: 100px 80px;
@@ -400,17 +398,6 @@
 
     .azienda-card:hover::before { opacity: 1; }
 
-    .azienda-logo {
-      max-width: 180px;
-      max-height: 70px;
-      object-fit: contain;
-      filter: brightness(0) invert(1);
-      opacity: 0.85;
-      transition: opacity 0.3s;
-    }
-
-    .azienda-card:hover .azienda-logo { opacity: 1; }
-
     .azienda-access {
       font-size: 11px;
       font-weight: 500;
@@ -420,6 +407,265 @@
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+
+    /* ══════════════════════════════════════
+       STORE SECTION — area dedicata
+    ══════════════════════════════════════ */
+    .store-section {
+      background: var(--cream);
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .store-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 580px;
+    }
+
+    /* Pannello sinistro scuro */
+    .store-panel-left {
+      background: linear-gradient(150deg, #0f1c33 0%, #1a2540 50%, #1f2f50 100%);
+      padding: 72px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* cerchi decorativi */
+    .store-panel-left::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      border: 1px solid rgba(184,148,63,0.08);
+      top: -160px;
+      right: -180px;
+      pointer-events: none;
+    }
+    .store-panel-left::after {
+      content: '';
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      border: 1px solid rgba(184,148,63,0.06);
+      bottom: -80px;
+      left: -80px;
+      pointer-events: none;
+    }
+
+    .store-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 1;
+    }
+    .store-eyebrow::before {
+      content: '';
+      width: 28px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .store-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(44px, 4.5vw, 68px);
+      font-weight: 300;
+      line-height: 1.02;
+      color: var(--white);
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .store-heading em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .store-desc {
+      font-size: 14px;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.75;
+      max-width: 340px;
+      margin-bottom: 44px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .store-numbers {
+      display: flex;
+      gap: 36px;
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .store-num {
+      border-left: 1px solid rgba(184,148,63,0.3);
+      padding-left: 16px;
+    }
+
+    .store-num-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 34px;
+      font-weight: 300;
+      color: var(--gold-light);
+      line-height: 1;
+    }
+
+    .store-num-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-top: 5px;
+    }
+
+    .store-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 32px;
+      background: var(--gold);
+      color: var(--navy);
+      font-family: 'Outfit', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 3px;
+      transition: background 0.25s, gap 0.2s;
+      align-self: flex-start;
+      position: relative;
+      z-index: 1;
+    }
+    .store-btn:hover {
+      background: var(--gold-light);
+      gap: 18px;
+    }
+    .store-btn svg { flex-shrink: 0; }
+
+    /* Pannello destro chiaro — categorie */
+    .store-panel-right {
+      background: var(--white);
+      padding: 72px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .store-cat-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .store-cat-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(26,37,64,0.1);
+    }
+
+    .store-cat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .store-cat-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 16px;
+      border: 1px solid rgba(26,37,64,0.08);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    .store-cat-item:hover {
+      border-color: rgba(184,148,63,0.45);
+      box-shadow: 0 6px 20px rgba(26,37,64,0.07);
+      transform: translateY(-2px);
+    }
+
+    .store-cat-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .store-cat-item:hover .store-cat-icon {
+      background: rgba(184,148,63,0.12);
+    }
+    .store-cat-icon svg {
+      color: var(--gold);
+    }
+
+    .store-cat-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--navy);
+      line-height: 1.3;
+    }
+    .store-cat-count {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .store-coming {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--gold);
+      letter-spacing: 0.06em;
+      background: rgba(184,148,63,0.08);
+      border: 1px solid rgba(184,148,63,0.2);
+      padding: 10px 16px;
+      border-radius: 4px;
+    }
+
+    .store-coming-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: storePulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes storePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
     }
 
     /* ── FOOTER ── */
@@ -462,6 +708,10 @@
       .profile { padding: 60px 32px; }
       .profile-grid { grid-template-columns: 1fr; gap: 48px; }
       .aziende { padding: 60px 32px; }
+      .store-inner { grid-template-columns: 1fr; }
+      .store-panel-left { padding: 52px 32px; }
+      .store-panel-right { padding: 48px 32px; }
+      .store-cat-grid { grid-template-columns: 1fr; }
       footer { flex-direction: column; gap: 12px; padding: 32px; }
     }
   </style>
@@ -482,7 +732,7 @@
         Consulente specializzata in Enterprise Risk &amp; Security Management, Travel Risk Management e progettazione di percorsi formativi per la certificazione professionale UNI 10459:2017.
       </p>
       <div class="scroll-cue" onclick="document.querySelector('.profile').scrollIntoView({behavior:'smooth'})">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           <path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
         Scopri il profilo
@@ -515,7 +765,6 @@
           <p class="thesis">Tesi: "Famiglie negligenti e lavoro di prevenzione"</p>
         </div>
 
-        <!-- Contributo editoriale -->
         <div class="editorial-card fade-in">
           <div class="pub">Contributo Editoriale · Alpes Italia, 2023</div>
           <h3>"Dal disagio psichico alla salute mentale: Il lavoro relazionale e la promozione del benessere"</h3>
@@ -551,7 +800,7 @@
     </div>
   </section>
 
-  <!-- AZIENDE -->
+  <!-- SERVIZI DIGITALI — solo Il Professionista e SafePass -->
   <section class="aziende" id="aziende">
     <div class="aziende-inner">
       <div class="section-label">Area Riservata</div>
@@ -562,42 +811,172 @@
         <a href="login.html" class="azienda-card fade-in">
           <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
             <div style="width:60px;height:60px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(184,148,63,0.4);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--gold-light)">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M14 2L4 7v7c0 5.5 4 10.5 10 12 6-1.5 10-6.5 10-12V7L14 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M9.5 14l3 3 6-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <path d="M14 2L4 7v7c0 5.5 4 10.5 10 12 6-1.5 10-6.5 10-12V7L14 2z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                <path d="M9.5 14l3 3 6-6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
             <div style="text-align:center;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:rgba(255,255,255,0.9);line-height:1.4">Il Professionista<br/>di Security</div>
           </div>
           <div class="azienda-access">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 5V3.5a2.5 2.5 0 015 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <rect x="1" y="5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M3.5 5V3.5a2.5 2.5 0 015 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
             Accedi
-          </div>
-        </a>
-
-        <a href="store.html" class="azienda-card fade-in">
-          <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
-            <div style="width:60px;height:60px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(184,148,63,0.4);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--gold-light)">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M4 7h20l-2 12H6L4 7z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M4 7L3 3H1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><circle cx="10" cy="23" r="1.5" stroke="currentColor" stroke-width="1.3"/><circle cx="20" cy="23" r="1.5" stroke="currentColor" stroke-width="1.3"/></svg>
-            </div>
-            <div style="text-align:center;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:rgba(255,255,255,0.9);line-height:1.4">Store<br/>Security Shop</div>
-          </div>
-          <div class="azienda-access">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 5V3.5a2.5 2.5 0 015 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-            Esplora
           </div>
         </a>
 
         <a href="safepass.html" class="azienda-card fade-in">
           <div style="display:flex;flex-direction:column;align-items:center;gap:14px">
             <div style="width:60px;height:60px;background:rgba(255,255,255,0.08);border:1.5px solid rgba(184,148,63,0.4);border-radius:14px;display:flex;align-items:center;justify-content:center;color:var(--gold-light)">
-              <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M25 5L3 14l8 3.5L14 25l3.5-5L25 5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M11 17.5L16 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <path d="M25 5L3 14l8 3.5L14 25l3.5-5L25 5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                <path d="M11 17.5L16 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
             </div>
             <div style="text-align:center;font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:rgba(255,255,255,0.9);line-height:1.4">SafePass<br/>Travel Security</div>
           </div>
           <div class="azienda-access">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 5V3.5a2.5 2.5 0 015 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <rect x="1" y="5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M3.5 5V3.5a2.5 2.5 0 015 0V5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
             Accedi
           </div>
         </a>
       </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       STORE — Sezione dedicata e accattivante
+  ══════════════════════════════════════════ -->
+  <section class="store-section" id="store">
+    <div class="store-inner">
+
+      <!-- Pannello sinistro: pitch -->
+      <div class="store-panel-left fade-in">
+        <div class="store-eyebrow">Safety Store</div>
+        <h2 class="store-heading">Tutto ciò<br />che serve per<br />stare al <em>sicuro</em></h2>
+        <p class="store-desc">
+          Prodotti professionali per la sicurezza domestica, personale e aziendale. Selezionati, certificati, consegnati.
+        </p>
+        <div class="store-numbers">
+          <div class="store-num">
+            <div class="store-num-val">40+</div>
+            <div class="store-num-label">Prodotti</div>
+          </div>
+          <div class="store-num">
+            <div class="store-num-val">6</div>
+            <div class="store-num-label">Categorie</div>
+          </div>
+          <div class="store-num">
+            <div class="store-num-val">Pro</div>
+            <div class="store-num-label">Qualità</div>
+          </div>
+        </div>
+        <a href="store.html" class="store-btn">
+          Entra nello Store
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Pannello destro: categorie -->
+      <div class="store-panel-right fade-in">
+        <div class="store-cat-label">Esplora le categorie</div>
+        <div class="store-cat-grid">
+
+          <a href="store.html" class="store-cat-item">
+            <div class="store-cat-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9.5L12 3l9 6.5V21H3V9.5z"/>
+                <rect x="9" y="14" width="6" height="7"/>
+              </svg>
+            </div>
+            <div>
+              <div class="store-cat-name">Casa &amp; Abitazione</div>
+              <div class="store-cat-count">12 prodotti</div>
+            </div>
+          </a>
+
+          <a href="store.html" class="store-cat-item">
+            <div class="store-cat-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+                <line x1="12" y1="12" x2="12" y2="16"/>
+                <line x1="10" y1="14" x2="14" y2="14"/>
+              </svg>
+            </div>
+            <div>
+              <div class="store-cat-name">Kit di Emergenza</div>
+              <div class="store-cat-count">8 prodotti</div>
+            </div>
+          </a>
+
+          <a href="store.html" class="store-cat-item">
+            <div class="store-cat-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
+            <div>
+              <div class="store-cat-name">Sicurezza Personale</div>
+              <div class="store-cat-count">7 prodotti</div>
+            </div>
+          </a>
+
+          <a href="store.html" class="store-cat-item">
+            <div class="store-cat-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 8v4l3 3"/>
+              </svg>
+            </div>
+            <div>
+              <div class="store-cat-name">Antincendio</div>
+              <div class="store-cat-count">6 prodotti</div>
+            </div>
+          </a>
+
+          <a href="store.html" class="store-cat-item">
+            <div class="store-cat-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 10l5-5-5-5v3H4v4h11v3z"/>
+                <circle cx="12" cy="17" r="3"/>
+                <path d="M5 17H3M21 17h-2"/>
+              </svg>
+            </div>
+            <div>
+              <div class="store-cat-name">Sorveglianza</div>
+              <div class="store-cat-count">9 prodotti</div>
+            </div>
+          </a>
+
+          <a href="store.html" class="store-cat-item">
+            <div class="store-cat-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+              </svg>
+            </div>
+            <div>
+              <div class="store-cat-name">Formazione</div>
+              <div class="store-cat-count">4 prodotti</div>
+            </div>
+          </a>
+
+        </div>
+
+        <div class="store-coming">
+          <div class="store-coming-dot"></div>
+          Store in allestimento — disponibile a breve
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -608,7 +987,6 @@
   </footer>
 
   <script>
-    // Intersection Observer per le animazioni fade-in
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
