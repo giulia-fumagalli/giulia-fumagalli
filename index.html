@@ -131,28 +131,60 @@
     }
 
     /* ══════════════════════════════════
-       SCENE 1 — HERO FULL COVER
+       SCENE 1 — HERO EDITORIALE
     ══════════════════════════════════ */
     .scene-hero {
       min-height: 100svh;
+      display: grid;
+      grid-template-columns: 55% 45%;
       position: relative;
-      overflow: hidden;
-      display: flex;
-      align-items: flex-end;
     }
 
-    /* FOTO — full background */
-    .hero-bg {
+    /* ─ COLONNA SINISTRA: testo ─ */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 80px 64px 72px 72px;
+      background: var(--ink);
+      overflow: hidden;
+    }
+
+    /* pattern diagonale sottile */
+    .hero-content::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(
+        -52deg, transparent, transparent 90px,
+        rgba(200,169,110,0.016) 90px, rgba(200,169,110,0.016) 91px
+      );
+    }
+
+    /* bordo dorato a destra del testo */
+    .hero-content::after {
+      content: '';
       position: absolute;
-      inset: 0;
-      z-index: 0;
+      right: 0; top: 15%; bottom: 15%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(200,169,110,0.35), transparent);
+    }
+
+    /* ─ COLONNA DESTRA: foto ─ */
+    .hero-bg {
+      position: relative;
+      overflow: hidden;
+      background: var(--ink-mid);
     }
     .hero-bg img {
+      position: absolute;
+      inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
-      object-position: center top;
+      object-position: 35% top;
       display: block;
-      filter: grayscale(20%) contrast(1.08) brightness(0.72);
+      filter: grayscale(15%) contrast(1.06) brightness(0.78);
       transform: scale(1.04);
       animation: heroZoom 14s ease-out forwards;
     }
@@ -161,66 +193,54 @@
       to   { transform: scale(1.00); }
     }
 
-    /* overlay: scuro a sinistra e in basso, foto visibile a destra */
+    /* vignetta: più scura in basso e sul bordo sinistro */
     .hero-bg::after {
       content: '';
-      position: absolute; inset: 0;
+      position: absolute; inset: 0; pointer-events: none;
       background:
-        linear-gradient(105deg,
-          rgba(8,15,28,0.92) 0%,
-          rgba(8,15,28,0.75) 40%,
-          rgba(8,15,28,0.20) 70%,
-          transparent 100%),
-        linear-gradient(to top,
-          rgba(8,15,28,0.85) 0%,
-          rgba(8,15,28,0.30) 40%,
-          transparent 70%);
+        linear-gradient(to right, rgba(8,15,28,0.38) 0%, transparent 40%),
+        linear-gradient(to top,   rgba(8,15,28,0.55) 0%, transparent 45%),
+        linear-gradient(to bottom,rgba(8,15,28,0.20) 0%, transparent 30%);
     }
 
-    /* linea ornamentale dorata verticale — 60% destra */
-    .hero-divider {
+    /* credit in basso nella foto */
+    .hero-photo-label {
       position: absolute;
-      left: 58%; top: 15%; bottom: 15%;
-      width: 1px;
-      background: linear-gradient(to bottom,
-        transparent 0%,
-        rgba(200,169,110,0.4) 30%,
-        rgba(200,169,110,0.4) 70%,
-        transparent 100%);
-      z-index: 2;
+      bottom: 28px; right: 28px;
+      z-index: 3;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.22);
+      writing-mode: vertical-rl;
     }
 
-    /* TESTO — ancorato in basso a sinistra */
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 680px;
-      padding: 0 60px 72px;
-    }
+    /* separatore decorativo — NON serve più come div separato */
+    .hero-divider { display: none; }
 
     .hero-tag {
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 500;
       letter-spacing: 3.5px;
       text-transform: uppercase;
       color: var(--gold);
-      margin-bottom: 20px;
+      margin-bottom: 22px;
       display: flex;
       align-items: center;
       gap: 12px;
       opacity: 0;
       animation: fadeUp 0.8s 0.4s forwards;
     }
-    .hero-tag::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+    .hero-tag::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
 
     .hero-name {
       font-family: var(--serif);
-      font-size: clamp(52px, 11vw, 120px);
+      font-size: clamp(48px, 7vw, 96px);
       font-weight: 300;
-      line-height: 0.9;
+      line-height: 0.92;
       color: #fff;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
       opacity: 0;
       animation: fadeUp 0.9s 0.6s forwards;
       letter-spacing: -0.01em;
@@ -228,13 +248,13 @@
     .hero-name em { display: block; font-style: italic; color: var(--gold-lt); }
 
     .hero-role {
-      font-size: clamp(13px, 2vw, 16px);
+      font-size: clamp(12px, 1.3vw, 14px);
       font-weight: 300;
-      color: rgba(255,255,255,0.55);
-      letter-spacing: 0.06em;
-      line-height: 1.7;
-      max-width: 480px;
-      margin-bottom: 44px;
+      color: rgba(255,255,255,0.48);
+      letter-spacing: 0.04em;
+      line-height: 1.75;
+      max-width: 380px;
+      margin-bottom: 48px;
       opacity: 0;
       animation: fadeUp 0.9s 0.8s forwards;
     }
@@ -249,79 +269,69 @@
     }
 
     .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 28px;
-      background: var(--gold);
-      color: var(--ink);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      text-decoration: none;
-      border-radius: 2px;
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 26px;
+      background: var(--gold); color: var(--ink);
+      font-size: 9px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
+      text-decoration: none; border-radius: 2px;
       transition: background 0.25s, gap 0.2s;
     }
     .btn-primary:hover { background: var(--gold-lt); gap: 16px; }
 
     .btn-ghost {
-      font-size: 10px;
-      font-weight: 500;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: color 0.25s;
+      font-size: 9px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); text-decoration: none;
+      display: flex; align-items: center; gap: 8px; transition: color 0.25s;
     }
     .btn-ghost:hover { color: #fff; }
 
     /* scroll indicator */
     .scroll-ind {
       position: absolute;
-      bottom: 32px;
-      right: 40px;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      opacity: 0;
-      animation: fadeIn 1s 1.4s forwards;
+      bottom: 32px; left: 72px;
+      z-index: 3;
+      display: flex; align-items: center; gap: 10px;
+      opacity: 0; animation: fadeIn 1s 1.4s forwards;
     }
     .scroll-ind span {
-      font-size: 8px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.25);
-      writing-mode: vertical-rl;
+      font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(255,255,255,0.22);
     }
     .scroll-ind-line {
-      width: 1px;
-      height: 60px;
-      background: linear-gradient(to bottom, var(--gold-dk), transparent);
-      animation: lineGrow 1.5s 1.8s ease-out infinite;
+      width: 40px; height: 1px;
+      background: linear-gradient(to right, var(--gold-dk), transparent);
+      animation: lineGrow 2s 1.8s ease-out infinite;
     }
     @keyframes lineGrow {
-      0%   { transform: scaleY(0); transform-origin: top; }
-      50%  { transform: scaleY(1); transform-origin: top; }
-      51%  { transform: scaleY(1); transform-origin: bottom; }
-      100% { transform: scaleY(0); transform-origin: bottom; }
+      0%   { transform: scaleX(0); transform-origin: left; }
+      50%  { transform: scaleX(1); transform-origin: left; }
+      51%  { transform: scaleX(1); transform-origin: right; }
+      100% { transform: scaleX(0); transform-origin: right; }
     }
 
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(30px); }
+      from { opacity: 0; transform: translateY(28px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
+      from { opacity: 0; } to { opacity: 1; }
     }
 
-    /* ══════════════════════════════════
+    /* MOBILE */
+    @media (max-width: 780px) {
+      .scene-hero { grid-template-columns: 1fr; grid-template-rows: 52vh auto; }
+      .hero-bg { grid-row: 1; }
+      .hero-bg img { object-position: center 20%; }
+      .hero-content {
+        grid-row: 2;
+        padding: 44px 28px 60px;
+        justify-content: flex-start;
+      }
+      .hero-content::after { display: none; }
+      .scroll-ind { left: 28px; bottom: 20px; }
+    }
+
+        /* ══════════════════════════════════
        SCENE 2 — PROFILO (off-white)
     ══════════════════════════════════ */
     .scene-profilo {
@@ -873,8 +883,7 @@
        RESPONSIVE
     ══════════════════════════════════ */
     @media (max-width: 860px) {
-      .hero-content { padding: 0 28px 56px; max-width: 100%; }
-      .hero-divider { display: none; }
+
       .profilo-inner, .aree-inner, .servizi-inner, .store-inner { padding: 72px 24px; }
       .profilo-split { grid-template-columns: 1fr; gap: 52px; }
       .aree-header { grid-template-columns: 1fr; gap: 20px; margin-bottom: 48px; }
@@ -917,10 +926,6 @@
 
   <!-- ══ HERO ══ -->
   <section class="scene-hero" id="home">
-    <div class="hero-bg">
-      <img src="foto.png" alt="Giulia Fumagalli"/>
-    </div>
-    <div class="hero-divider"></div>
 
     <div class="hero-content">
       <div class="hero-tag">Security &amp; Safety Specialist</div>
@@ -942,6 +947,11 @@
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
+    </div>
+
+    <div class="hero-bg">
+      <img src="foto.png" alt="Giulia Fumagalli"/>
+      <div class="hero-photo-label">Security &amp; Safety</div>
     </div>
 
     <div class="scroll-ind">
