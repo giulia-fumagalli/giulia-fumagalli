@@ -38,20 +38,22 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 200;
-      padding: 0 32px;
-      height: 58px;
+      padding: 0 48px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       transition: background 0.5s;
     }
-    .nav.solid { background: rgba(8,15,28,0.95); backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); }
+    .nav { background: rgba(8,15,28,0.96); backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); }
+    .nav.solid { background: rgba(8,15,28,0.96); }
 
     .nav-logo {
       font-family: var(--serif);
-      font-size: 15px;
+      font-size: 16px;
       letter-spacing: 0.06em;
       color: #fff;
+      white-space: nowrap;
     }
     .nav-logo em { font-style: italic; color: var(--gold); }
 
@@ -123,6 +125,7 @@
     .mobile-menu a em { font-style: italic; color: var(--gold); }
 
     @media (max-width: 700px) {
+      .nav { padding: 0 24px; height: 56px; }
       .nav-links { display: none; }
       .nav-burger { display: flex; }
     }
@@ -145,7 +148,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 120px 56px 80px 48px;
+      padding: 100px 52px 72px 48px;
       background: var(--ink);
     }
 
@@ -537,18 +540,20 @@
     .area-card:hover { background: #1f2e4a; border-color: rgba(200,169,110,0.25); }
     .area-card:hover::after { width: 100%; }
 
-    /* numero grande */
+    /* numero grande — in alto a destra */
     .area-num {
+      position: absolute;
+      top: 20px; right: 22px;
       font-family: var(--serif);
-      font-size: 64px;
+      font-size: 38px;
       font-weight: 300;
-      color: rgba(255,255,255,0.10);
+      color: rgba(200,169,110,0.30);
       line-height: 1;
-      margin-bottom: -10px;
-      transition: color 0.4s;
+      letter-spacing: -0.02em;
+      transition: color 0.35s;
       user-select: none;
     }
-    .area-card:hover .area-num { color: rgba(200,169,110,0.22); }
+    .area-card:hover .area-num { color: rgba(200,169,110,0.60); }
 
     .area-icon {
       width: 44px; height: 44px;
@@ -1225,7 +1230,7 @@
     // ── Nav solid on scroll
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
-      nav.classList.toggle('solid', window.scrollY > 60);
+      nav.classList.add('solid'); // sempre visibile con sfondo
     });
 
     // ── Mobile menu
