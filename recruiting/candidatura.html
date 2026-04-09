@@ -3,530 +3,385 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title id="pageTitle">Candidatura — Recruiting</title>
+  <title id="pageTitle">Candidatura — SIES Recruiting</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root{
-      --ink:#080f1c;--ink-mid:#101928;--gold:#c8a96e;--gold-lt:#e2c88a;
-      --gold-dk:#8c7040;--off:#f2ede4;--line:rgba(200,169,110,0.22);
-      --sans:'Inter',sans-serif;--serif:'Cormorant Garamond',serif;
+      --navy:#1a2e4a; --navy-mid:#2c4a6e; --navy-lt:#3d6494; --navy-pale:#eef2f7;
+      --red:#c0392b; --white:#ffffff; --off:#f8f9fa; --border:#e2e8f0; --border-dk:#cbd5e0;
+      --text:#2d3748; --text-mid:#4a5568; --text-light:#718096;
+      --green:#27ae60; --sans:'Montserrat',sans-serif; --body:'Open Sans',sans-serif;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
-    body{font-family:var(--sans);background:var(--ink);color:#fff;min-height:100svh;}
+    body{font-family:var(--body);background:var(--off);color:var(--text);min-height:100svh;}
 
     /* NAV */
-    .nav{height:60px;display:flex;align-items:center;background:rgba(8,15,28,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);padding:0 48px;position:sticky;top:0;z-index:100;}
-    .nav-logo{font-family:var(--serif);font-size:15px;letter-spacing:0.06em;color:#fff;}
-    .nav-logo em{font-style:italic;color:var(--gold);}
-    .nav-tag{font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-left:auto;}
+    .nav{height:64px;background:var(--navy);display:flex;align-items:center;padding:0 40px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.15);}
+    .nav-logo{font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff;}
+    .nav-divider{width:1px;height:20px;background:rgba(255,255,255,0.2);margin:0 16px;}
+    .nav-tag{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);}
+    .nav-dot{width:8px;height:8px;border-radius:50%;background:var(--red);margin-left:auto;}
 
-    /* HERO OFFERTA */
-    .job-hero{background:var(--ink-mid);border-bottom:1px solid var(--line);padding:64px 48px 52px;position:relative;overflow:hidden;}
-    .job-hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(-52deg,transparent,transparent 90px,rgba(200,169,110,0.012) 90px,rgba(200,169,110,0.012) 91px);}
-    .job-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,var(--gold-dk),transparent);}
-    .hero-inner{max-width:760px;margin:0 auto;position:relative;z-index:1;}
-    .job-company{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;display:flex;align-items:center;gap:10px;}
-    .job-company::before{content:'';width:20px;height:1px;background:var(--gold);}
-    .job-title{font-family:var(--serif);font-size:clamp(32px,5vw,54px);font-weight:300;line-height:1.0;color:#fff;margin-bottom:20px;}
-    .job-meta-row{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:28px;}
-    .job-meta-item{display:flex;align-items:center;gap:7px;font-size:12px;color:rgba(255,255,255,0.45);}
-    .job-meta-item svg{color:var(--gold-dk);flex-shrink:0;}
-    .job-badges{display:flex;flex-wrap:wrap;gap:8px;}
-    .jbadge{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:2px;border:1px solid var(--line);color:rgba(255,255,255,0.55);}
-    .jbadge.active{border-color:rgba(200,169,110,0.4);color:var(--gold-lt);background:rgba(200,169,110,0.06);}
+    /* HERO */
+    .job-hero{background:var(--navy);padding:52px 40px 44px;position:relative;overflow:hidden;}
+    .job-hero::before{content:'';position:absolute;right:-60px;top:-60px;width:280px;height:280px;border-radius:50%;background:rgba(255,255,255,0.04);}
+    .job-hero::after{content:'';position:absolute;bottom:-40px;left:30%;width:200px;height:200px;border-radius:50%;background:rgba(192,57,43,0.08);}
+    .hero-inner{max-width:780px;margin:0 auto;position:relative;z-index:1;}
+    .hero-tag{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+    .hero-tag::before{content:'';width:24px;height:2px;background:var(--red);}
+    .hero-title{font-family:var(--sans);font-size:clamp(26px,4vw,42px);font-weight:700;color:#fff;line-height:1.1;margin-bottom:18px;}
+    .hero-meta{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:20px;}
+    .hero-meta-item{display:flex;align-items:center;gap:7px;font-size:12px;color:rgba(255,255,255,0.55);}
+    .hero-badges{display:flex;flex-wrap:wrap;gap:8px;}
+    .hbadge{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.6);}
+    .hbadge.active{border-color:rgba(192,57,43,0.5);color:#fff;background:rgba(192,57,43,0.2);}
 
-    /* LAYOUT PRINCIPALE */
-    .main-wrap{max-width:760px;margin:0 auto;padding:48px 48px 80px;}
+    /* MAIN */
+    .main-wrap{max-width:780px;margin:0 auto;padding:40px 40px 80px;}
 
-    /* SEZIONE DESCRIZIONE */
-    .section-block{margin-bottom:44px;}
-    .section-block h3{font-family:var(--serif);font-size:22px;font-weight:300;color:#fff;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid var(--line);}
-    .section-block p{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.8;margin-bottom:12px;}
-    .req-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
-    .req-list li{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;display:flex;gap:12px;}
-    .req-list li::before{content:'→';color:var(--gold-dk);flex-shrink:0;margin-top:1px;}
+    /* SEZIONI */
+    .section-block{margin-bottom:36px;}
+    .section-block h3{font-family:var(--sans);font-size:17px;font-weight:700;color:var(--navy);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px;}
+    .section-block h3::before{content:'';width:4px;height:18px;background:var(--red);border-radius:2px;}
+    .section-block p{font-size:14px;color:var(--text-mid);line-height:1.8;margin-bottom:10px;}
+    .req-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .req-list li{font-size:13px;color:var(--text-mid);line-height:1.6;display:flex;gap:10px;padding:8px 12px;background:#fff;border-radius:5px;border:1px solid var(--border);}
+    .req-list li::before{content:'→';color:var(--red);flex-shrink:0;font-weight:700;}
 
     /* FORM */
-    .form-card{background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:6px;padding:40px;position:relative;}
-    .form-card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:50%;height:1px;background:linear-gradient(to right,transparent,var(--gold-dk),transparent);}
-    .form-title{font-family:var(--serif);font-size:26px;font-weight:300;color:#fff;margin-bottom:6px;}
-    .form-sub{font-size:12px;color:rgba(255,255,255,0.32);margin-bottom:32px;line-height:1.6;}
+    .form-card{background:#fff;border:1px solid var(--border);border-radius:10px;padding:36px;box-shadow:0 2px 12px rgba(0,0,0,0.06);}
+    .form-header{margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+    .form-tag{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:8px;}
+    .form-title{font-family:var(--sans);font-size:22px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+    .form-sub{font-size:13px;color:var(--text-light);}
 
     .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-    .field{margin-bottom:20px;}
-    .field label{display:block;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:8px;}
-    .field label .req{color:var(--gold-dk);}
-    .field input,.field select,.field textarea{width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.18);border-radius:3px;color:#fff;font-size:13px;font-family:var(--sans);outline:none;transition:border-color .25s;}
-    .field input::placeholder,.field textarea::placeholder{color:rgba(255,255,255,0.18);}
-    .field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(200,169,110,0.5);}
-    .field select option{background:var(--ink);color:#fff;}
+    .field{margin-bottom:18px;}
+    .field label{display:block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-mid);margin-bottom:7px;}
+    .field label .req{color:var(--red);}
+    .field input,.field select,.field textarea{width:100%;padding:11px 13px;background:var(--off);border:1.5px solid var(--border);border-radius:6px;color:var(--text);font-size:13px;font-family:var(--body);outline:none;transition:border-color .2s;}
+    .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--navy-lt);background:#fff;}
+    .field input::placeholder,.field textarea::placeholder{color:var(--text-light);}
+    .field select option{background:#fff;color:var(--text);}
     .field textarea{resize:vertical;min-height:90px;line-height:1.6;}
 
-    /* Upload CV */
-    .cv-drop{border:1px dashed rgba(200,169,110,0.3);border-radius:4px;padding:32px;text-align:center;cursor:pointer;transition:border-color .25s,background .25s;position:relative;}
-    .cv-drop:hover,.cv-drop.drag{border-color:rgba(200,169,110,0.6);background:rgba(200,169,110,0.03);}
+    /* CV Upload */
+    .cv-drop{border:2px dashed var(--border-dk);border-radius:8px;padding:28px;text-align:center;cursor:pointer;transition:all .25s;position:relative;}
+    .cv-drop:hover,.cv-drop.drag{border-color:var(--navy-lt);background:var(--navy-pale);}
     .cv-drop input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;}
-    .cv-drop-icon{color:var(--gold-dk);margin-bottom:10px;}
-    .cv-drop p{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.6;}
-    .cv-drop p strong{color:var(--gold-lt);}
-    .cv-drop p small{font-size:11px;color:rgba(255,255,255,0.22);}
-    .cv-chosen{font-size:12px;color:var(--gold-lt);margin-top:10px;display:none;}
+    .cv-drop-icon{color:var(--navy-lt);margin-bottom:10px;}
+    .cv-drop p{font-size:13px;color:var(--text-light);line-height:1.6;}
+    .cv-drop p strong{color:var(--navy);font-weight:600;}
+    .cv-drop p small{font-size:11px;}
+    .cv-chosen{font-size:12px;color:var(--green);margin-top:10px;display:none;font-weight:600;}
 
-    /* Sezione questionario */
-    .q-divider{display:flex;align-items:center;gap:14px;margin:28px 0 24px;}
-    .q-divider span{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.28);white-space:nowrap;}
-    .q-divider::before,.q-divider::after{content:'';flex:1;height:1px;background:var(--line);}
+    /* Questionario */
+    .q-divider{display:flex;align-items:center;gap:14px;margin:24px 0 20px;}
+    .q-divider::before,.q-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+    .q-divider span{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--navy);white-space:nowrap;background:#fff;padding:0 12px;}
 
-    /* Checkbox/radio custom */
+    /* Radio/checkbox */
     .radio-group{display:flex;flex-wrap:wrap;gap:8px;}
     .radio-opt{position:relative;}
     .radio-opt input{position:absolute;opacity:0;pointer-events:none;}
-    .radio-opt label{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid rgba(200,169,110,0.18);border-radius:3px;font-size:12px;color:rgba(255,255,255,0.5);cursor:pointer;transition:all .2s;}
-    .radio-opt input:checked + label{border-color:rgba(200,169,110,0.5);color:var(--gold-lt);background:rgba(200,169,110,0.06);}
+    .radio-opt label{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1.5px solid var(--border);border-radius:5px;font-size:12px;color:var(--text-mid);cursor:pointer;transition:all .2s;font-weight:500;}
+    .radio-opt input:checked + label{border-color:var(--navy);color:var(--navy);background:var(--navy-pale);font-weight:700;}
 
     /* Privacy */
-    .privacy-row{display:flex;align-items:flex-start;gap:12px;margin-top:8px;}
-    .privacy-row input[type=checkbox]{margin-top:2px;accent-color:var(--gold);flex-shrink:0;width:15px;height:15px;cursor:pointer;}
-    .privacy-row label{font-size:11px;color:rgba(255,255,255,0.3);line-height:1.6;cursor:pointer;}
-    .privacy-row a{color:var(--gold-dk);}
+    .privacy-row{display:flex;align-items:flex-start;gap:12px;margin-top:8px;padding:16px;background:var(--off);border-radius:6px;border:1px solid var(--border);}
+    .privacy-row input[type=checkbox]{margin-top:2px;accent-color:var(--navy);flex-shrink:0;width:16px;height:16px;cursor:pointer;}
+    .privacy-row label{font-size:11px;color:var(--text-mid);line-height:1.7;cursor:pointer;}
 
     /* Submit */
-    .btn-submit{width:100%;padding:15px;background:var(--gold);color:var(--ink);font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;border:none;border-radius:3px;cursor:pointer;margin-top:24px;transition:background .25s;font-family:var(--sans);display:flex;align-items:center;justify-content:center;gap:10px;}
-    .btn-submit:hover{background:var(--gold-lt);}
+    .btn-submit{width:100%;padding:15px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;border-radius:6px;cursor:pointer;margin-top:20px;transition:background .2s;font-family:var(--sans);display:flex;align-items:center;justify-content:center;gap:10px;}
+    .btn-submit:hover{background:var(--navy-mid);}
     .btn-submit:disabled{opacity:0.4;cursor:not-allowed;}
 
-    /* Stato invio */
-    .form-status{margin-top:20px;padding:16px;border-radius:4px;font-size:13px;text-align:center;display:none;}
-    .form-status.success{background:rgba(30,120,70,0.15);border:1px solid rgba(30,180,80,0.2);color:#6eda9a;}
-    .form-status.error{background:rgba(160,30,30,0.15);border:1px solid rgba(200,60,60,0.2);color:#e08080;}
+    /* Status */
+    .form-status{margin-top:16px;padding:14px;border-radius:6px;font-size:13px;text-align:center;display:none;}
+    .form-status.error{background:#fff5f5;border:1px solid #feb2b2;color:var(--red);}
 
-    /* Success state */
+    /* Successo */
     .success-screen{display:none;text-align:center;padding:60px 20px;}
-    .success-icon{width:64px;height:64px;border:1px solid rgba(200,169,110,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;color:var(--gold);}
-    .success-screen h2{font-family:var(--serif);font-size:32px;font-weight:300;color:#fff;margin-bottom:12px;}
-    .success-screen p{font-size:14px;color:rgba(255,255,255,0.4);line-height:1.8;max-width:380px;margin:0 auto;}
+    .success-icon{width:72px;height:72px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;color:#fff;}
+    .success-screen h2{font-family:var(--sans);font-size:28px;font-weight:700;color:var(--navy);margin-bottom:12px;}
+    .success-screen p{font-size:14px;color:var(--text-mid);line-height:1.8;max-width:420px;margin:0 auto 24px;}
+    .success-note{background:var(--navy-pale);border:1px solid var(--border-dk);border-radius:8px;padding:16px 20px;max-width:420px;margin:0 auto;font-size:13px;color:var(--navy-mid);line-height:1.7;}
+
+    /* Stati caricamento */
+    #loadingState{text-align:center;padding:80px 24px;}
+    .not-found{text-align:center;padding:80px 24px;display:none;}
+    .not-found h2{font-family:var(--sans);font-size:24px;font-weight:600;color:var(--text-mid);margin-bottom:10px;}
 
     /* Footer */
-    .page-footer{border-top:1px solid var(--line);padding:24px 48px;display:flex;align-items:center;justify-content:space-between;}
-    .page-footer p{font-size:11px;color:rgba(255,255,255,0.18);}
-
-    /* Stato "offerta non trovata" */
-    .not-found{text-align:center;padding:80px 24px;display:none;}
-    .not-found h2{font-family:var(--serif);font-size:28px;font-weight:300;color:rgba(255,255,255,0.4);margin-bottom:12px;}
+    .page-footer{background:var(--navy);padding:20px 40px;display:flex;align-items:center;justify-content:space-between;}
+    .page-footer p{font-size:11px;color:rgba(255,255,255,0.35);}
 
     @media(max-width:640px){
-      .nav{padding:0 20px;}
-      .job-hero{padding:44px 20px 36px;}
-      .main-wrap{padding:32px 20px 60px;}
-      .form-card{padding:28px 20px;}
-      .form-row{grid-template-columns:1fr;}
-      .page-footer{padding:20px;}
+      .nav{padding:0 20px;}.job-hero{padding:36px 20px 28px;}.main-wrap{padding:28px 20px 60px;}.form-card{padding:24px 20px;}.form-row{grid-template-columns:1fr;}.page-footer{padding:16px 20px;flex-direction:column;gap:8px;}
     }
   </style>
 </head>
 <body>
 
   <nav class="nav">
-    <div class="nav-logo">Giulia <em>Fumagalli</em></div>
+    <div class="nav-logo">SIES</div>
+    <div class="nav-divider"></div>
     <div class="nav-tag">Recruiting Platform</div>
+    <div class="nav-dot"></div>
   </nav>
 
-  <!-- Stato di caricamento -->
-  <div id="loadingState" style="text-align:center;padding:80px 24px;">
-    <p style="font-size:13px;color:rgba(255,255,255,0.3);">Caricamento offerta…</p>
-  </div>
+  <div id="loadingState"><p style="font-size:13px;color:var(--text-light)">Caricamento offerta…</p></div>
+  <div class="not-found" id="notFound"><h2>Offerta non disponibile</h2><p style="font-size:13px;color:var(--text-light)">Questa posizione potrebbe essere stata chiusa o il link non è valido.</p></div>
 
-  <!-- Offerta non trovata -->
-  <div class="not-found" id="notFound">
-    <h2>Offerta non disponibile</h2>
-    <p style="font-size:13px;color:rgba(255,255,255,0.3);">Questa posizione potrebbe essere stata chiusa o il link non è valido.</p>
-  </div>
-
-  <!-- Contenuto principale (mostrato dopo il caricamento) -->
-  <div id="mainContent" style="display:none;">
+  <div id="mainContent" style="display:none">
     <div class="job-hero">
       <div class="hero-inner">
-        <div class="job-company">Posizione Aperta</div>
-        <h1 class="job-title" id="jobTitle">—</h1>
-        <div class="job-meta-row">
-          <div class="job-meta-item">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5S12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5z"/><circle cx="8" cy="6" r="1.5"/></svg>
-            <span id="jobLocation">—</span>
-          </div>
-          <div class="job-meta-item">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="3" width="13" height="11" rx="1.5"/><path d="M5 3V1.5M11 3V1.5M1.5 7h13"/></svg>
-            <span id="jobDate">—</span>
-          </div>
-          <div class="job-meta-item">
-            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 12V5l6-3 6 3v7l-6 3-6-3z"/><path d="M8 2v13M2 5l6 3 6-3"/></svg>
-            <span id="jobType">—</span>
-          </div>
+        <div class="hero-tag">Posizione aperta</div>
+        <h1 class="hero-title" id="jobTitle">—</h1>
+        <div class="hero-meta">
+          <div class="hero-meta-item"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M8 1.5C5.5 1.5 3.5 3.5 3.5 6c0 3.5 4.5 8.5 4.5 8.5S12.5 9.5 12.5 6C12.5 3.5 10.5 1.5 8 1.5z"/><circle cx="8" cy="6" r="1.5"/></svg><span id="jobLocation">—</span></div>
+          <div class="hero-meta-item"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="3" width="13" height="11" rx="1.5"/><path d="M5 3V1.5M11 3V1.5M1.5 7h13"/></svg><span id="jobDate">—</span></div>
+          <div class="hero-meta-item"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 12V5l6-3 6 3v7l-6 3-6-3z"/></svg><span id="jobType">—</span></div>
         </div>
-        <div class="job-badges">
-          <span class="jbadge active" id="jobSector">—</span>
-          <span class="jbadge" id="jobContract">—</span>
-        </div>
+        <div class="hero-badges"><span class="hbadge active" id="jobSector">—</span><span class="hbadge" id="jobContract">—</span></div>
       </div>
     </div>
 
     <div class="main-wrap">
-      <!-- Descrizione -->
       <div class="section-block" id="descBlock">
-        <h3>Descrizione della posizione</h3>
+        <h3>La posizione</h3>
         <div id="jobDescription"></div>
       </div>
-
-      <!-- Requisiti -->
       <div class="section-block" id="reqBlock" style="display:none">
         <h3>Requisiti</h3>
         <ul class="req-list" id="jobRequirements"></ul>
       </div>
 
-      <!-- FORM CANDIDATURA -->
+      <!-- FORM -->
       <div class="form-card" id="applicationForm">
-        <h2 class="form-title">Candidati ora</h2>
-        <p class="form-sub">Tutti i campi contrassegnati con <span style="color:var(--gold-dk)">*</span> sono obbligatori.<br/>Il CV deve essere in formato PDF o DOCX, max 5MB.</p>
-
-        <div class="form-row">
-          <div class="field">
-            <label>Nome <span class="req">*</span></label>
-            <input type="text" id="fNome" placeholder="Mario"/>
-          </div>
-          <div class="field">
-            <label>Cognome <span class="req">*</span></label>
-            <input type="text" id="fCognome" placeholder="Rossi"/>
-          </div>
+        <div class="form-header">
+          <div class="form-tag">Candidatura</div>
+          <h2 class="form-title">Invia la tua candidatura</h2>
+          <p class="form-sub">Tutti i campi con <span style="color:var(--red)">*</span> sono obbligatori. CV in formato PDF o DOCX, max 5MB.</p>
         </div>
 
         <div class="form-row">
-          <div class="field">
-            <label>Email <span class="req">*</span></label>
-            <input type="email" id="fEmail" placeholder="mario.rossi@email.it"/>
-          </div>
-          <div class="field">
-            <label>Telefono</label>
-            <input type="tel" id="fTelefono" placeholder="+39 333 0000000"/>
-          </div>
+          <div class="field"><label>Nome <span class="req">*</span></label><input type="text" id="fNome" placeholder="Mario"/></div>
+          <div class="field"><label>Cognome <span class="req">*</span></label><input type="text" id="fCognome" placeholder="Rossi"/></div>
         </div>
-
-        <div class="field">
-          <label>Città di residenza</label>
-          <input type="text" id="fCitta" placeholder="Milano"/>
+        <div class="form-row">
+          <div class="field"><label>Email <span class="req">*</span></label><input type="email" id="fEmail" placeholder="mario.rossi@email.it"/></div>
+          <div class="field"><label>Telefono</label><input type="tel" id="fTelefono" placeholder="+39 333 0000000"/></div>
         </div>
+        <div class="field"><label>Città di residenza</label><input type="text" id="fCitta" placeholder="Milano"/></div>
 
-        <!-- Upload CV -->
         <div class="field">
           <label>Curriculum Vitae <span class="req">*</span></label>
           <div class="cv-drop" id="cvDrop">
             <input type="file" id="cvFile" accept=".pdf,.doc,.docx" onchange="handleFileSelect(this)"/>
-            <div class="cv-drop-icon">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
-            </div>
-            <p><strong>Trascina qui il tuo CV</strong> oppure clicca per selezionarlo<br/><small>PDF o DOCX — massimo 5 MB</small></p>
+            <div class="cv-drop-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg></div>
+            <p><strong>Trascina il CV qui</strong> oppure clicca per selezionarlo<br/><small>PDF o DOCX — massimo 5 MB</small></p>
           </div>
           <div class="cv-chosen" id="cvChosen">✓ File selezionato: <span id="cvFilename"></span></div>
         </div>
 
-        <!-- QUESTIONARIO SPECIFICO SECURITY -->
         <div class="q-divider"><span>Questionario di candidatura</span></div>
 
         <div class="field">
           <label>Anni di esperienza nel settore security <span class="req">*</span></label>
-          <select id="qEsperienza">
-            <option value="">— Seleziona —</option>
-            <option value="0-2">Meno di 2 anni</option>
-            <option value="2-5">Da 2 a 5 anni</option>
-            <option value="5-10">Da 5 a 10 anni</option>
-            <option value="10+">Oltre 10 anni</option>
-          </select>
+          <select id="qEsperienza"><option value="">— Seleziona —</option><option value="0-2">Meno di 2 anni</option><option value="2-5">Da 2 a 5 anni</option><option value="5-10">Da 5 a 10 anni</option><option value="10+">Oltre 10 anni</option></select>
         </div>
 
         <div class="field">
           <label>Possiedi la certificazione UNI 10459? <span class="req">*</span></label>
           <div class="radio-group">
-            <div class="radio-opt">
-              <input type="radio" name="uni10459" id="uni_si" value="si"/>
-              <label for="uni_si">✓ Sì, certificato</label>
-            </div>
-            <div class="radio-opt">
-              <input type="radio" name="uni10459" id="uni_corso" value="in_corso"/>
-              <label for="uni_corso">⏳ In corso di ottenimento</label>
-            </div>
-            <div class="radio-opt">
-              <input type="radio" name="uni10459" id="uni_no" value="no"/>
-              <label for="uni_no">✗ Non ancora</label>
-            </div>
+            <div class="radio-opt"><input type="radio" name="uni10459" id="uni_si" value="si"/><label for="uni_si">✓ Sì, certificato</label></div>
+            <div class="radio-opt"><input type="radio" name="uni10459" id="uni_corso" value="in_corso"/><label for="uni_corso">⏳ In corso</label></div>
+            <div class="radio-opt"><input type="radio" name="uni10459" id="uni_no" value="no"/><label for="uni_no">✗ Non ancora</label></div>
           </div>
         </div>
 
         <div class="field">
-          <label>Settori in cui hai operato (puoi selezionare più voci)</label>
+          <label>Settori in cui hai operato</label>
           <div class="radio-group" id="settoriGroup">
             <div class="radio-opt"><input type="checkbox" id="s_retail" value="retail"/><label for="s_retail">Retail / GDO</label></div>
             <div class="radio-opt"><input type="checkbox" id="s_banca" value="bancario"/><label for="s_banca">Bancario / Finance</label></div>
             <div class="radio-opt"><input type="checkbox" id="s_eventi" value="eventi"/><label for="s_eventi">Eventi / Spettacolo</label></div>
-            <div class="radio-opt"><input type="checkbox" id="s_industria" value="industria"/><label for="s_industria">Industria / Produzione</label></div>
+            <div class="radio-opt"><input type="checkbox" id="s_industria" value="industria"/><label for="s_industria">Industria</label></div>
             <div class="radio-opt"><input type="checkbox" id="s_pa" value="PA"/><label for="s_pa">Pubblica Amministrazione</label></div>
-            <div class="radio-opt"><input type="checkbox" id="s_logistica" value="logistica"/><label for="s_logistica">Logistica / Trasporti</label></div>
+            <div class="radio-opt"><input type="checkbox" id="s_logistica" value="logistica"/><label for="s_logistica">Logistica</label></div>
             <div class="radio-opt"><input type="checkbox" id="s_altro" value="altro"/><label for="s_altro">Altro</label></div>
           </div>
         </div>
 
         <div class="field">
-          <label>Esperienza con sistemi di videosorveglianza e/o controllo accessi</label>
-          <select id="qVideosorveglianza">
-            <option value="">— Seleziona —</option>
-            <option value="nessuna">Nessuna esperienza</option>
-            <option value="base">Base (utilizzo)</option>
-            <option value="avanzata">Avanzata (configurazione e gestione)</option>
-            <option value="progettazione">Progettazione e installazione</option>
-          </select>
+          <label>Esperienza con videosorveglianza / controllo accessi</label>
+          <select id="qVideosorveglianza"><option value="">— Seleziona —</option><option value="nessuna">Nessuna</option><option value="base">Base (utilizzo)</option><option value="avanzata">Avanzata (gestione)</option><option value="progettazione">Progettazione e installazione</option></select>
         </div>
 
         <div class="field">
           <label>Disponibilità a trasferte</label>
           <div class="radio-group">
-            <div class="radio-opt"><input type="radio" name="trasferte" id="tr_si" value="si"/><label for="tr_si">Sì, piena disponibilità</label></div>
+            <div class="radio-opt"><input type="radio" name="trasferte" id="tr_si" value="si"/><label for="tr_si">Sì, piena</label></div>
             <div class="radio-opt"><input type="radio" name="trasferte" id="tr_parziale" value="parziale"/><label for="tr_parziale">Parziale</label></div>
             <div class="radio-opt"><input type="radio" name="trasferte" id="tr_no" value="no"/><label for="tr_no">No</label></div>
           </div>
         </div>
 
         <div class="form-row">
-          <div class="field">
-            <label>Patente di guida</label>
-            <select id="qPatente">
-              <option value="">— Seleziona —</option>
-              <option value="B_automunito">B — automunito</option>
-              <option value="B_no_auto">B — senza auto</option>
-              <option value="altro">Altra categoria</option>
-              <option value="nessuna">Nessuna</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Esperienza FF.OO. / Militare</label>
-            <select id="qFfoo">
-              <option value="">— Seleziona —</option>
-              <option value="si_attivo">Sì — in servizio attivo</option>
-              <option value="si_congedato">Sì — in congedo</option>
-              <option value="no">No</option>
-            </select>
-          </div>
+          <div class="field"><label>Patente di guida</label><select id="qPatente"><option value="">— Seleziona —</option><option value="B_automunito">B — automunito</option><option value="B_no_auto">B — senza auto</option><option value="altro">Altra categoria</option><option value="nessuna">Nessuna</option></select></div>
+          <div class="field"><label>Esperienza FF.OO. / Militare</label><select id="qFfoo"><option value="">— Seleziona —</option><option value="si_attivo">Sì — in servizio</option><option value="si_congedato">Sì — in congedo</option><option value="no">No</option></select></div>
         </div>
 
         <div class="field">
           <label>Conoscenza normativa GDPR applicata alla security</label>
           <div class="radio-group">
-            <div class="radio-opt"><input type="radio" name="gdpr" id="gdpr_si" value="si"/><label for="gdpr_si">Sì, buona conoscenza</label></div>
-            <div class="radio-opt"><input type="radio" name="gdpr" id="gdpr_base" value="base"/><label for="gdpr_base">Conoscenza di base</label></div>
+            <div class="radio-opt"><input type="radio" name="gdpr" id="gdpr_si" value="si"/><label for="gdpr_si">Sì, buona</label></div>
+            <div class="radio-opt"><input type="radio" name="gdpr" id="gdpr_base" value="base"/><label for="gdpr_base">Di base</label></div>
             <div class="radio-opt"><input type="radio" name="gdpr" id="gdpr_no" value="no"/><label for="gdpr_no">Da approfondire</label></div>
           </div>
         </div>
 
-        <div class="field">
-          <label>Lettera di presentazione / Note aggiuntive</label>
-          <textarea id="fNote" placeholder="Presentati brevemente, motivazioni, o qualsiasi informazione aggiuntiva che ritieni utile…"></textarea>
-        </div>
+        <div class="field"><label>Lettera di presentazione / Note</label><textarea id="fNote" placeholder="Presentati brevemente, motivazioni, informazioni aggiuntive…"></textarea></div>
 
         <div class="privacy-row">
           <input type="checkbox" id="privacyCheck"/>
-          <label for="privacyCheck">Acconsento al trattamento dei miei dati personali ai sensi del D.Lgs. 196/2003 e del Reg. UE 2016/679 (GDPR) per le finalità di selezione del personale. I dati saranno conservati per un periodo non superiore a 24 mesi.</label>
+          <label for="privacyCheck">Acconsento al trattamento dei miei dati personali ai sensi del D.Lgs. 196/2003 e del Reg. UE 2016/679 (GDPR) per finalità di selezione del personale. I dati saranno conservati per un periodo non superiore a 24 mesi.</label>
         </div>
 
         <button class="btn-submit" id="submitBtn" onclick="submitApplication()">
-          Invia la candidatura
+          Invia candidatura
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="form-status" id="formStatus"></div>
       </div>
 
-      <!-- Schermata successo -->
+      <!-- SUCCESSO -->
       <div class="success-screen" id="successScreen">
-        <div class="success-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-        </div>
+        <div class="success-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
         <h2>Candidatura inviata</h2>
-        <p>Grazie per il tuo interesse. La tua candidatura è stata ricevuta e sarà esaminata dal nostro team.<br/><br/>Ti contatteremo qualora il tuo profilo risultasse in linea con le nostre esigenze.</p>
+        <p>Grazie per il tuo interesse in SIES. La tua candidatura è stata ricevuta e verrà esaminata dal nostro team.</p>
+        <div class="success-note">
+          <strong>📧 Riceverai una email di conferma</strong> all'indirizzo che hai indicato nel modulo.<br/>
+          Ti contatteremo qualora il tuo profilo risultasse in linea con le nostre esigenze.
+        </div>
       </div>
     </div>
   </div>
 
   <footer class="page-footer">
-    <p>© 2026 Giulia Fumagalli — Recruiting Platform</p>
-    <p>I dati sono trattati in conformità al GDPR</p>
+    <p>© 2026 Scuola Internazionale Etica & Sicurezza — Recruiting Platform</p>
+    <p>Dati trattati in conformità al GDPR · Reg. UE 2016/679</p>
   </footer>
 
   <script>
-    // ─── CONFIGURAZIONE SUPABASE ──────────────────────────────────────────
     const SUPABASE_URL = 'https://dpfjautqowbzndgkrjnp.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwZmphdXRxb3diem5kZ2tyam5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MzI5NzcsImV4cCI6MjA5MTMwODk3N30.7ppWIWJHootC2EQbWT0z30DPehFO5P-v_fB_b6YNxT4';
-    // ─────────────────────────────────────────────────────────────────────
-
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
     let currentJobId = null;
 
-    // Leggi l'ID offerta dall'URL: ?job=XXXX
-    async function loadJob() {
+    async function loadJob(){
       const params = new URLSearchParams(window.location.search);
       const jobId = params.get('job');
-
-      if (!jobId) { showNotFound(); return; }
-
-      const { data: job, error } = await sb
-        .from('job_positions')
-        .select('*')
-        .eq('id', jobId)
-        .eq('is_active', true)
-        .single();
-
-      if (error || !job) { showNotFound(); return; }
-
-      currentJobId = job.id;
-
-      // Popola la pagina
-      document.getElementById('pageTitle').textContent = job.title + ' — Recruiting';
-      document.getElementById('jobTitle').textContent = job.title;
-      document.getElementById('jobLocation').textContent = job.location || 'Da definire';
-      document.getElementById('jobDate').textContent = 'Pubblicata il ' + formatDate(job.created_at);
-      document.getElementById('jobType').textContent = job.job_type || 'Full Time';
-      document.getElementById('jobSector').textContent = job.sector || 'Security';
-      document.getElementById('jobContract').textContent = job.contract_type || 'Contratto da definire';
-
-      // Descrizione
-      const descEl = document.getElementById('jobDescription');
-      (job.description || '').split('\n').filter(l => l.trim()).forEach(line => {
-        const p = document.createElement('p'); p.textContent = line; descEl.appendChild(p);
-      });
-
-      // Requisiti
-      if (job.requirements && job.requirements.length) {
-        document.getElementById('reqBlock').style.display = '';
-        const ul = document.getElementById('jobRequirements');
-        job.requirements.forEach(r => {
-          const li = document.createElement('li'); li.textContent = r; ul.appendChild(li);
-        });
+      if(!jobId){showNotFound();return;}
+      const{data:job,error}=await sb.from('job_positions').select('*').eq('id',jobId).eq('is_active',true).single();
+      if(error||!job){showNotFound();return;}
+      currentJobId=job.id;
+      document.getElementById('pageTitle').textContent=job.title+' — SIES Recruiting';
+      document.getElementById('jobTitle').textContent=job.title;
+      document.getElementById('jobLocation').textContent=job.location||'Da definire';
+      document.getElementById('jobDate').textContent='Pubblicata il '+formatDate(job.created_at);
+      document.getElementById('jobType').textContent=job.job_type||'Full Time';
+      document.getElementById('jobSector').textContent=job.sector||'Security';
+      document.getElementById('jobContract').textContent=job.contract_type||'Da definire';
+      const descEl=document.getElementById('jobDescription');
+      (job.description||'').split('\n').filter(l=>l.trim()).forEach(line=>{const p=document.createElement('p');p.textContent=line;descEl.appendChild(p);});
+      if(job.requirements&&job.requirements.length){
+        document.getElementById('reqBlock').style.display='';
+        const ul=document.getElementById('jobRequirements');
+        job.requirements.forEach(r=>{const li=document.createElement('li');li.textContent=r;ul.appendChild(li);});
       }
-
-      document.getElementById('loadingState').style.display = 'none';
-      document.getElementById('mainContent').style.display = '';
+      document.getElementById('loadingState').style.display='none';
+      document.getElementById('mainContent').style.display='';
     }
+    function showNotFound(){document.getElementById('loadingState').style.display='none';document.getElementById('notFound').style.display='';}
+    function formatDate(iso){if(!iso)return'—';return new Date(iso).toLocaleDateString('it-IT',{day:'2-digit',month:'long',year:'numeric'});}
+    function handleFileSelect(input){const f=input.files[0];if(!f)return;document.getElementById('cvFilename').textContent=f.name;document.getElementById('cvChosen').style.display='block';}
 
-    function showNotFound() {
-      document.getElementById('loadingState').style.display = 'none';
-      document.getElementById('notFound').style.display = '';
-    }
+    async function submitApplication(){
+      const nome=document.getElementById('fNome').value.trim();
+      const cognome=document.getElementById('fCognome').value.trim();
+      const email=document.getElementById('fEmail').value.trim();
+      const cvFile=document.getElementById('cvFile').files[0];
+      const uni=document.querySelector('input[name="uni10459"]:checked');
+      const esperienza=document.getElementById('qEsperienza').value;
+      const privacy=document.getElementById('privacyCheck').checked;
 
-    function formatDate(iso) {
-      if (!iso) return '—';
-      return new Date(iso).toLocaleDateString('it-IT', { day:'2-digit', month:'long', year:'numeric' });
-    }
+      if(!nome||!cognome||!email){showError('Compila nome, cognome ed email.');return;}
+      if(!cvFile){showError('Il CV è obbligatorio.');return;}
+      if(!esperienza){showError('Indica gli anni di esperienza.');return;}
+      if(!uni){showError('Indica se possiedi la certificazione UNI 10459.');return;}
+      if(!privacy){showError('È necessario accettare l\'informativa privacy.');return;}
+      if(cvFile.size>5*1024*1024){showError('Il CV non può superare 5 MB.');return;}
 
-    function handleFileSelect(input) {
-      const file = input.files[0];
-      if (!file) return;
-      document.getElementById('cvFilename').textContent = file.name;
-      document.getElementById('cvChosen').style.display = 'block';
-    }
+      const btn=document.getElementById('submitBtn');
+      btn.disabled=true;btn.textContent='Invio in corso…';
 
-    async function submitApplication() {
-      // Validazione
-      const nome = document.getElementById('fNome').value.trim();
-      const cognome = document.getElementById('fCognome').value.trim();
-      const email = document.getElementById('fEmail').value.trim();
-      const cvFile = document.getElementById('cvFile').files[0];
-      const uni = document.querySelector('input[name="uni10459"]:checked');
-      const esperienza = document.getElementById('qEsperienza').value;
-      const privacy = document.getElementById('privacyCheck').checked;
-      const status = document.getElementById('formStatus');
+      try{
+        // Controllo duplicati
+        const{data:existing}=await sb.from('applications').select('id').eq('job_id',currentJobId).eq('email',email).maybeSingle();
+        if(existing){showError('Hai già inviato una candidatura per questa posizione con questa email.');btn.disabled=false;btn.innerHTML='Invia candidatura <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';return;}
 
-      if (!nome || !cognome || !email) { showError('Compila nome, cognome ed email.'); return; }
-      if (!cvFile) { showError('Il CV è obbligatorio.'); return; }
-      if (!esperienza) { showError('Indica gli anni di esperienza.'); return; }
-      if (!uni) { showError('Indica se possiedi la certificazione UNI 10459.'); return; }
-      if (!privacy) { showError('È necessario accettare l\'informativa privacy.'); return; }
-      if (cvFile.size > 5 * 1024 * 1024) { showError('Il CV non può superare 5 MB.'); return; }
+        // Upload CV
+        const ext=cvFile.name.split('.').pop();
+        const fileName=`${Date.now()}_${nome}_${cognome}.${ext}`.replace(/\s+/g,'_');
+        const{error:uploadError}=await sb.storage.from('cvs').upload(fileName,cvFile,{contentType:cvFile.type});
+        if(uploadError)throw uploadError;
 
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
-      btn.innerHTML = 'Invio in corso… <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity=".3"/><path d="M12 2a10 10 0 010 20" stroke-linecap="round"/></svg>';
+        const settori=[...document.querySelectorAll('#settoriGroup input:checked')].map(c=>c.value);
 
-      try {
-        // 1. Carica CV su Supabase Storage
-        const ext = cvFile.name.split('.').pop();
-        const fileName = `${Date.now()}_${nome}_${cognome}.${ext}`.replace(/\s+/g,'_');
-        const { data: uploadData, error: uploadError } = await sb.storage
-          .from('cvs')
-          .upload(fileName, cvFile, { contentType: cvFile.type });
-
-        if (uploadError) throw uploadError;
-
-        // URL pubblico del CV
-        const { data: { publicUrl } } = sb.storage.from('cvs').getPublicUrl(fileName);
-
-        // 2. Raccogli settori selezionati
-        const settori = [...document.querySelectorAll('#settoriGroup input:checked')].map(c => c.value);
-
-        // 3. Salva candidatura nel DB
-        const payload = {
-          job_id: currentJobId,
-          nome, cognome, email,
-          telefono: document.getElementById('fTelefono').value.trim(),
-          citta: document.getElementById('fCitta').value.trim(),
-          cv_url: publicUrl,
-          cv_filename: cvFile.name,
-          // Questionario
-          q_esperienza: esperienza,
-          q_uni10459: uni.value,
-          q_settori: settori,
-          q_videosorveglianza: document.getElementById('qVideosorveglianza').value,
-          q_trasferte: document.querySelector('input[name="trasferte"]:checked')?.value || null,
-          q_patente: document.getElementById('qPatente').value,
-          q_ffoo: document.getElementById('qFfoo').value,
-          q_gdpr: document.querySelector('input[name="gdpr"]:checked')?.value || null,
-          note: document.getElementById('fNote').value.trim(),
-          stato: 'candidato',
-          ai_fit_score: null,
-          created_at: new Date().toISOString()
+        const payload={
+          job_id:currentJobId, nome, cognome, email,
+          telefono:document.getElementById('fTelefono').value.trim(),
+          citta:document.getElementById('fCitta').value.trim(),
+          cv_url:fileName, cv_filename:cvFile.name,
+          q_esperienza:esperienza, q_uni10459:uni.value, q_settori:settori,
+          q_videosorveglianza:document.getElementById('qVideosorveglianza').value,
+          q_trasferte:document.querySelector('input[name="trasferte"]:checked')?.value||null,
+          q_patente:document.getElementById('qPatente').value,
+          q_ffoo:document.getElementById('qFfoo').value,
+          q_gdpr:document.querySelector('input[name="gdpr"]:checked')?.value||null,
+          note:document.getElementById('fNote').value.trim(),
+          stato:'candidato', ai_fit_score:null,
+          created_at:new Date().toISOString()
         };
 
-        const { error: dbError } = await sb.from('applications').insert(payload);
-        if (dbError) throw dbError;
+        const{error:dbError}=await sb.from('applications').insert(payload);
+        if(dbError)throw dbError;
 
-        // 4. Mostra schermata successo
-        document.getElementById('applicationForm').style.display = 'none';
-        document.getElementById('successScreen').style.display = '';
-        document.querySelector('.section-block').style.display = 'none';
-        document.getElementById('reqBlock').style.display = 'none';
+        document.getElementById('applicationForm').style.display='none';
+        document.getElementById('successScreen').style.display='';
+        document.getElementById('descBlock').style.display='none';
+        document.getElementById('reqBlock').style.display='none';
 
-      } catch (e) {
+      }catch(e){
         console.error(e);
         showError('Si è verificato un errore. Riprova o contatta l\'amministratore.');
-        btn.disabled = false;
-        btn.innerHTML = 'Invia la candidatura <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        btn.disabled=false;
+        btn.innerHTML='Invia candidatura <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       }
     }
 
-    function showError(msg) {
-      const s = document.getElementById('formStatus');
-      s.className = 'form-status error';
-      s.style.display = 'block';
-      s.textContent = msg;
-      s.scrollIntoView({ behavior:'smooth', block:'nearest' });
-    }
+    function showError(msg){const s=document.getElementById('formStatus');s.className='form-status error';s.style.display='block';s.textContent=msg;s.scrollIntoView({behavior:'smooth',block:'nearest'});}
 
-    // Drag & drop CV
-    const drop = document.getElementById('cvDrop');
-    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag'); });
-    drop.addEventListener('dragleave', () => drop.classList.remove('drag'));
-    drop.addEventListener('drop', e => {
-      e.preventDefault(); drop.classList.remove('drag');
-      const f = e.dataTransfer.files[0];
-      if (f) { document.getElementById('cvFile').files = e.dataTransfer.files; handleFileSelect({files:[f]}); }
-    });
+    const drop=document.getElementById('cvDrop');
+    drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag');});
+    drop.addEventListener('dragleave',()=>drop.classList.remove('drag'));
+    drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag');const f=e.dataTransfer.files[0];if(f){document.getElementById('cvFile').files=e.dataTransfer.files;handleFileSelect({files:[f]});}});
 
     loadJob();
   </script>
