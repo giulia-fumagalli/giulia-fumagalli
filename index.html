@@ -45,12 +45,11 @@
     }
     .nav-inner {
       width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding-left: 56px;
+      padding-right: 56px;
     }
     .nav { background: rgba(8,15,28,0.96); backdrop-filter: blur(20px); border-bottom: 1px solid var(--line); }
     .nav.solid { background: rgba(8,15,28,0.96); }
@@ -196,8 +195,8 @@
       z-index: 2;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      padding: 100px 72px 80px 64px;
+      justify-content: flex-end;
+      padding: 80px 72px 80px 64px;
       background: var(--ink);
       overflow: hidden;
     }
@@ -1207,7 +1206,9 @@
   </footer>
 
   <script>
-
+    // ── Scroll sempre in cima al caricamento
+    history.scrollRestoration = "manual";
+    window.addEventListener("load", () => window.scrollTo(0,0));
 
     // ── Nav solid on scroll
     const nav = document.getElementById('nav');
