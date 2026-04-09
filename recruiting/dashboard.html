@@ -9,182 +9,161 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root{
-      --ink:#080f1c;--ink-mid:#101928;--ink-card:#111c2e;
-      --gold:#c8a96e;--gold-lt:#e2c88a;--gold-dk:#8c7040;
-      --line:rgba(200,169,110,0.18);
-      --sans:'Inter',sans-serif;--serif:'Cormorant Garamond',serif;
-      --sidebar:220px;
+      --ink:#080f1c; --ink-mid:#101928; --gold:#c8a96e; --gold-lt:#e2c88a;
+      --gold-dk:#8c7040; --off:#f2ede4; --line:rgba(200,169,110,0.22);
+      --sans:'Inter',sans-serif; --serif:'Cormorant Garamond',serif;
+      --sidebar:230px;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{font-size:14px;}
     body{font-family:var(--sans);background:var(--ink);color:#fff;display:flex;min-height:100svh;overflow-x:hidden;}
+    body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(-52deg,transparent,transparent 90px,rgba(200,169,110,0.016) 90px,rgba(200,169,110,0.016) 91px);}
 
-    /* SIDEBAR */
-    .sidebar{width:var(--sidebar);flex-shrink:0;background:var(--ink-mid);border-right:1px solid var(--line);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;}
-    .sb-logo{padding:24px 20px 20px;border-bottom:1px solid var(--line);}
-    .sb-logo-name{font-family:var(--serif);font-size:15px;color:#fff;letter-spacing:0.04em;}
+    .sidebar{width:var(--sidebar);flex-shrink:0;background:rgba(8,15,28,0.97);backdrop-filter:blur(20px);border-right:1px solid var(--line);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;}
+    .sb-logo{padding:28px 24px 22px;border-bottom:1px solid var(--line);}
+    .sb-logo-name{font-family:var(--serif);font-size:17px;color:#fff;letter-spacing:0.05em;}
     .sb-logo-name em{font-style:italic;color:var(--gold);}
-    .sb-logo-tag{font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-top:3px;}
-    .sb-nav{flex:1;padding:12px 0;overflow-y:auto;}
-    .sb-section{font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.18);padding:14px 20px 6px;}
-    .sb-link{display:flex;align-items:center;gap:10px;padding:9px 20px;font-size:12px;color:rgba(255,255,255,0.45);cursor:pointer;border-left:2px solid transparent;transition:all .2s;text-decoration:none;}
-    .sb-link:hover{color:rgba(255,255,255,0.8);background:rgba(255,255,255,0.03);}
-    .sb-link.active{color:#fff;border-left-color:var(--gold);background:rgba(200,169,110,0.06);}
-    .sb-link svg{flex-shrink:0;opacity:.6;}
+    .sb-logo-tag{font-size:9px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-top:5px;}
+    .sb-nav{flex:1;padding:16px 0;overflow-y:auto;}
+    .sb-section{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.2);padding:16px 24px 8px;}
+    .sb-link{display:flex;align-items:center;gap:10px;padding:10px 24px;font-size:12px;color:rgba(255,255,255,0.45);cursor:pointer;border-left:2px solid transparent;transition:all .25s;text-decoration:none;}
+    .sb-link:hover{color:rgba(255,255,255,0.85);background:rgba(200,169,110,0.04);}
+    .sb-link.active{color:#fff;border-left-color:var(--gold);background:rgba(200,169,110,0.07);}
+    .sb-link svg{flex-shrink:0;opacity:.55;}
     .sb-link.active svg{opacity:1;}
-    .sb-badge{margin-left:auto;font-size:10px;font-weight:600;background:rgba(200,169,110,0.15);color:var(--gold-lt);border-radius:20px;padding:2px 7px;}
-    .sb-bottom{padding:16px 20px;border-top:1px solid var(--line);}
-    .sb-user{font-size:11px;color:rgba(255,255,255,0.28);margin-bottom:10px;}
-    .sb-logout{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.22);background:none;border:1px solid rgba(255,255,255,0.08);padding:6px 12px;border-radius:3px;cursor:pointer;width:100%;transition:all .2s;}
-    .sb-logout:hover{color:rgba(255,100,100,0.8);border-color:rgba(255,100,100,0.2);}
+    .sb-badge{margin-left:auto;font-size:10px;font-weight:600;background:rgba(200,169,110,0.15);color:var(--gold-lt);border-radius:20px;padding:2px 8px;}
+    .sb-bottom{padding:16px 24px 20px;border-top:1px solid var(--line);}
+    .sb-user{font-size:11px;color:rgba(255,255,255,0.35);margin-bottom:12px;word-break:break-all;line-height:1.6;}
+    .sb-logout{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);background:none;border:1px solid rgba(255,255,255,0.1);padding:7px 14px;border-radius:2px;cursor:pointer;width:100%;transition:all .25s;font-family:var(--sans);}
+    .sb-logout:hover{color:rgba(220,80,80,0.9);border-color:rgba(220,80,80,0.3);}
 
-    /* MAIN */
-    .main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100svh;}
-    .topbar{height:56px;background:var(--ink-mid);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:40;}
-    .topbar-title{font-family:var(--serif);font-size:18px;font-weight:300;color:#fff;flex:1;}
-    .topbar-title em{font-style:italic;color:var(--gold-lt);}
-    .btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:3px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;font-family:var(--sans);text-decoration:none;}
+    .main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100svh;position:relative;z-index:1;}
+    .topbar{height:64px;background:rgba(8,15,28,0.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 36px;gap:16px;position:sticky;top:0;z-index:40;}
+    .topbar-title{font-family:var(--serif);font-size:22px;font-weight:300;color:#fff;flex:1;letter-spacing:0.02em;}
+
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:2px;font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .25s;font-family:var(--sans);text-decoration:none;}
     .btn-gold{background:var(--gold);color:var(--ink);border:none;}
     .btn-gold:hover{background:var(--gold-lt);}
-    .btn-ghost{background:transparent;color:rgba(255,255,255,0.45);border:1px solid var(--line);}
-    .btn-ghost:hover{color:#fff;border-color:rgba(200,169,110,0.4);}
-    .btn-sm{padding:5px 12px;font-size:10px;}
+    .btn-ghost{background:transparent;color:rgba(255,255,255,0.4);border:1px solid var(--line);}
+    .btn-ghost:hover{color:var(--gold-lt);border-color:rgba(200,169,110,0.4);}
+    .btn-sm{padding:6px 14px;}
 
-    .content{padding:28px;flex:1;position:relative;}
-    .content::before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(-52deg,transparent,transparent 90px,rgba(200,169,110,0.013) 90px,rgba(200,169,110,0.013) 91px);z-index:0;}
-    .content > *{position:relative;z-index:1;}
+    .content{padding:32px 36px;flex:1;}
 
-    /* METRICHE */
-    .metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
-    .metric{background:#0f1d30;border:1px solid var(--line);border-radius:5px;padding:18px 20px;}
-    .metric-label{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:8px;}
-    .metric-value{font-family:var(--serif);font-size:32px;font-weight:300;line-height:1;color:#fff;}
+    .metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px;}
+    .metric{background:var(--ink-mid);border:1px solid var(--line);border-radius:4px;padding:22px 22px 18px;position:relative;overflow:hidden;transition:border-color .3s;}
+    .metric::after{content:'';position:absolute;top:0;left:0;width:0;height:2px;background:var(--gold);transition:width .4s ease;}
+    .metric:hover{border-color:rgba(200,169,110,0.35);}
+    .metric:hover::after{width:100%;}
+    .metric-label{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.32);margin-bottom:14px;}
+    .metric-value{font-family:var(--serif);font-size:44px;font-weight:300;line-height:1;color:#fff;}
     .metric-value.gold{color:var(--gold-lt);}
-    .metric-value.warn{color:#e8b04a;}
-    .metric-value.ok{color:#5ec989;}
-    .metric-sub{font-size:10px;color:rgba(255,255,255,0.22);margin-top:6px;}
+    .metric-value.warn{color:#e8c84a;}
+    .metric-value.ok{color:#7dd9a8;}
+    .metric-sub{font-size:10px;color:rgba(255,255,255,0.28);margin-top:10px;font-style:italic;font-family:var(--serif);}
 
-    /* SEZIONI */
-    .section-card{background:#0f1d30;border:1px solid var(--line);border-radius:5px;margin-bottom:20px;}
-    .sc-header{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;}
-    .sc-title{font-family:var(--serif);font-size:17px;font-weight:300;color:#fff;flex:1;}
-    .sc-sub{font-size:10px;color:rgba(255,255,255,0.28);}
-    .sc-body{padding:20px;}
+    .section-card{background:var(--ink-mid);border:1px solid var(--line);border-radius:4px;margin-bottom:20px;overflow:hidden;}
+    .sc-header{padding:18px 24px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;}
+    .sc-label{font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold-dk);margin-bottom:5px;}
+    .sc-title{font-family:var(--serif);font-size:20px;font-weight:300;color:#fff;flex:1;}
+    .sc-sub{font-size:11px;color:rgba(255,255,255,0.28);font-style:italic;margin-top:2px;}
+    .sc-body{padding:22px 24px;}
 
-    /* TAB */
-    .tabs{display:flex;gap:4px;background:rgba(255,255,255,0.03);border-radius:4px;padding:3px;}
-    .tab-btn{padding:6px 14px;border-radius:3px;font-size:11px;font-weight:500;cursor:pointer;color:rgba(255,255,255,0.4);border:none;background:transparent;transition:all .2s;font-family:var(--sans);}
-    .tab-btn.active{background:rgba(200,169,110,0.12);color:var(--gold-lt);border:1px solid rgba(200,169,110,0.2);}
+    .tabs{display:flex;gap:3px;padding:3px;background:rgba(255,255,255,0.03);border-radius:3px;border:1px solid var(--line);}
+    .tab-btn{padding:5px 14px;border-radius:2px;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;color:rgba(255,255,255,0.35);border:none;background:transparent;transition:all .2s;font-family:var(--sans);}
+    .tab-btn.active{background:rgba(200,169,110,0.1);color:var(--gold-lt);border:1px solid rgba(200,169,110,0.25);}
+    .tab-btn:hover:not(.active){color:rgba(255,255,255,.7);}
 
-    /* TABELLA CANDIDATI */
     .table-wrap{overflow-x:auto;}
     table{width:100%;border-collapse:collapse;font-size:12px;}
-    th{padding:9px 14px;text-align:left;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.25);border-bottom:1px solid var(--line);white-space:nowrap;}
-    td{padding:12px 14px;border-bottom:1px solid rgba(200,169,110,0.06);vertical-align:middle;}
+    th{padding:10px 16px;text-align:left;font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.28);border-bottom:1px solid var(--line);white-space:nowrap;}
+    td{padding:13px 16px;border-bottom:1px solid rgba(200,169,110,0.06);vertical-align:middle;}
     tr:last-child td{border-bottom:none;}
-    tr:hover td{background:rgba(255,255,255,0.02);}
+    tr:hover td{background:rgba(200,169,110,0.03);}
     .candidate-name{font-weight:500;color:#fff;font-size:13px;}
     .candidate-email{font-size:11px;color:rgba(255,255,255,0.32);margin-top:2px;}
 
-    /* Stato badge */
-    .stato{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.5px;cursor:pointer;border:none;font-family:var(--sans);transition:opacity .2s;}
-    .stato:hover{opacity:.8;}
-    .stato-candidato{background:rgba(59,130,246,0.15);color:#7db5f5;border:1px solid rgba(59,130,246,0.2);}
-    .stato-colloquiato{background:rgba(234,179,8,0.12);color:#e8c84a;border:1px solid rgba(234,179,8,0.2);}
-    .stato-accettato{background:rgba(34,197,94,0.12);color:#5ec989;border:1px solid rgba(34,197,94,0.2);}
-    .stato-rifiutato{background:rgba(239,68,68,0.12);color:#e08080;border:1px solid rgba(239,68,68,0.2);}
-    .stato-sospeso{background:rgba(156,163,175,0.12);color:#9ca3af;border:1px solid rgba(156,163,175,0.2);}
+    .stato{display:inline-flex;align-items:center;padding:4px 10px;border-radius:2px;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;border:none;font-family:var(--sans);transition:opacity .2s;outline:none;}
+    .stato-candidato{background:rgba(59,130,246,0.12);color:#93c5fd;border:1px solid rgba(59,130,246,0.2);}
+    .stato-colloquiato{background:rgba(200,169,110,0.12);color:var(--gold-lt);border:1px solid rgba(200,169,110,0.25);}
+    .stato-accettato{background:rgba(34,197,94,0.1);color:#7dd9a8;border:1px solid rgba(34,197,94,0.2);}
+    .stato-rifiutato{background:rgba(239,68,68,0.1);color:#fca5a5;border:1px solid rgba(239,68,68,0.2);}
+    .stato-sospeso{background:rgba(156,163,175,0.1);color:#d1d5db;border:1px solid rgba(156,163,175,0.2);}
 
-    /* Fit bar */
-    .fit-wrap{display:flex;align-items:center;gap:8px;min-width:100px;}
-    .fit-track{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
-    .fit-fill{height:100%;border-radius:2px;transition:width .6s ease;}
-    .fit-pct{font-size:11px;font-weight:600;min-width:30px;text-align:right;}
-    .fit-high .fit-fill{background:#5ec989;} .fit-high .fit-pct{color:#5ec989;}
-    .fit-mid .fit-fill{background:#e8b04a;}  .fit-mid .fit-pct{color:#e8b04a;}
-    .fit-low .fit-fill{background:#e08080;}  .fit-low .fit-pct{color:#e08080;}
-    .fit-none .fit-pct{color:rgba(255,255,255,0.2);}
+    .fit-wrap{display:flex;align-items:center;gap:8px;min-width:90px;}
+    .fit-track{flex:1;height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;}
+    .fit-fill{height:100%;border-radius:2px;}
+    .fit-pct{font-size:11px;font-weight:500;min-width:28px;text-align:right;}
+    .fit-high .fit-fill{background:var(--gold);} .fit-high .fit-pct{color:var(--gold-lt);}
+    .fit-mid .fit-fill{background:#e8b04a;} .fit-mid .fit-pct{color:#e8c84a;}
+    .fit-low .fit-fill{background:#e08080;} .fit-low .fit-pct{color:#fca5a5;}
 
-    /* CV link */
     .cv-link{color:var(--gold-dk);font-size:11px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:color .2s;}
     .cv-link:hover{color:var(--gold-lt);}
 
-    /* Torta SVG */
-    .pie-area{display:flex;align-items:center;gap:24px;padding:8px 0;}
-    .pie-legend{display:flex;flex-direction:column;gap:9px;}
-    .pie-item{display:flex;align-items:center;gap:9px;font-size:12px;color:rgba(255,255,255,0.6);}
-    .pie-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
-    .pie-item strong{color:#fff;}
-    .ai-avg{margin-left:auto;text-align:right;}
-    .ai-avg-label{font-size:10px;color:rgba(255,255,255,0.28);margin-bottom:4px;}
-    .ai-avg-value{font-family:var(--serif);font-size:28px;font-weight:300;color:#5ec989;}
+    .pie-area{display:flex;align-items:center;gap:28px;padding:4px 0;}
+    .pie-legend{display:flex;flex-direction:column;gap:10px;}
+    .pie-item{display:flex;align-items:center;gap:9px;font-size:12px;color:rgba(255,255,255,0.55);}
+    .pie-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .pie-item strong{color:#fff;font-weight:500;}
+    .ai-avg{margin-left:auto;text-align:right;border-left:1px solid var(--line);padding-left:24px;}
+    .ai-avg-label{font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:8px;}
+    .ai-avg-value{font-family:var(--serif);font-size:38px;font-weight:300;color:var(--gold-lt);}
 
-    /* Offerte */
     .job-list{display:flex;flex-direction:column;gap:10px;}
-    .job-row{background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:4px;padding:16px 18px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:border-color .25s,background .25s;}
-    .job-row:hover,.job-row.selected{border-color:rgba(200,169,110,0.35);background:rgba(200,169,110,0.03);}
-    .job-row.selected{border-left:2px solid var(--gold);}
-    .job-row-info{flex:1;}
-    .job-row-title{font-family:var(--serif);font-size:16px;color:#fff;margin-bottom:3px;}
-    .job-row-meta{font-size:11px;color:rgba(255,255,255,0.3);display:flex;gap:14px;}
-    .job-row-stats{display:flex;gap:14px;align-items:center;}
+    .job-row{background:rgba(255,255,255,0.02);border:1px solid var(--line);border-radius:3px;padding:16px 20px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+    .job-row::before{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--gold);transition:width .4s ease;}
+    .job-row:hover,.job-row.selected{background:rgba(200,169,110,0.04);border-color:rgba(200,169,110,0.3);}
+    .job-row:hover::before,.job-row.selected::before{width:100%;}
+    .job-row-info{flex:1;min-width:0;}
+    .job-row-title{font-family:var(--serif);font-size:17px;color:#fff;margin-bottom:4px;}
+    .job-row-meta{font-size:11px;color:rgba(255,255,255,0.3);display:flex;gap:14px;flex-wrap:wrap;}
+    .job-row-stats{display:flex;gap:20px;align-items:center;flex-shrink:0;}
     .jrs{text-align:center;}
-    .jrs-v{font-family:var(--serif);font-size:20px;font-weight:300;color:var(--gold-lt);}
-    .jrs-l{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.22);}
-    .job-active-dot{width:7px;height:7px;border-radius:50%;background:#5ec989;box-shadow:0 0 6px rgba(94,201,137,0.4);}
+    .jrs-v{font-family:var(--serif);font-size:22px;font-weight:300;color:var(--gold-lt);}
+    .jrs-l{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.22);margin-top:2px;}
+    .job-active-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px rgba(200,169,110,0.5);}
     .job-inactive-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.15);}
 
-    /* Nuova offerta modal */
-    .modal-overlay{position:fixed;inset:0;background:rgba(8,15,28,0.88);z-index:200;display:none;align-items:center;justify-content:center;padding:24px;}
+    .copy-chip{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--line);padding:5px 12px;border-radius:2px;font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);cursor:pointer;transition:all .2s;font-family:var(--sans);flex-shrink:0;}
+    .copy-chip:hover{border-color:rgba(200,169,110,0.4);color:var(--gold-lt);}
+
+    .modal-overlay{position:fixed;inset:0;background:rgba(8,15,28,0.9);backdrop-filter:blur(10px);z-index:200;display:none;align-items:center;justify-content:center;padding:24px;}
     .modal-overlay.open{display:flex;}
-    .modal{background:#0f1c30;border:1px solid var(--line);border-radius:6px;width:100%;max-width:600px;max-height:90svh;overflow-y:auto;}
-    .modal-head{padding:24px 28px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
-    .modal-title{font-family:var(--serif);font-size:22px;font-weight:300;color:#fff;}
-    .modal-close{background:none;border:none;color:rgba(255,255,255,0.3);font-size:20px;cursor:pointer;padding:4px;line-height:1;transition:color .2s;}
-    .modal-close:hover{color:#fff;}
+    .modal{background:var(--ink-mid);border:1px solid var(--line);border-radius:4px;width:100%;max-width:580px;max-height:90svh;overflow-y:auto;position:relative;}
+    .modal::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:40%;height:1px;background:linear-gradient(to right,transparent,var(--gold-dk),transparent);}
+    .modal-head{padding:26px 28px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;}
+    .modal-title{font-family:var(--serif);font-size:26px;font-weight:300;color:#fff;}
+    .modal-close{background:none;border:none;color:rgba(255,255,255,0.3);font-size:24px;cursor:pointer;padding:4px;line-height:1;transition:color .2s;}
+    .modal-close:hover{color:var(--gold-lt);}
     .modal-body{padding:28px;}
-    .field{margin-bottom:18px;}
-    .field label{display:block;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.32);margin-bottom:7px;}
-    .field input,.field select,.field textarea{width:100%;padding:10px 13px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.18);border-radius:3px;color:#fff;font-size:13px;font-family:var(--sans);outline:none;transition:border-color .25s;}
+    .modal-foot{padding:16px 28px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px;}
+
+    .field{margin-bottom:20px;}
+    .field label{display:block;font-size:9px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.32);margin-bottom:8px;}
+    .field input,.field select,.field textarea{width:100%;padding:10px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.18);border-radius:2px;color:#fff;font-size:13px;font-family:var(--sans);outline:none;transition:border-color .25s;}
     .field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(200,169,110,0.5);}
     .field select option{background:var(--ink);}
     .field textarea{resize:vertical;min-height:100px;line-height:1.7;}
-    .field small{font-size:11px;color:rgba(255,255,255,0.22);margin-top:5px;display:block;line-height:1.5;}
-    .modal-foot{padding:16px 28px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px;}
+    .field small{font-size:11px;color:rgba(255,255,255,0.22);margin-top:5px;display:block;line-height:1.5;font-style:italic;}
+    .form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 
-    /* Database */
-    .db-filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
-    .db-filters input,.db-filters select{padding:8px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.15);border-radius:3px;color:#fff;font-size:12px;font-family:var(--sans);outline:none;transition:border-color .2s;}
+    .db-filters{display:flex;gap:10px;flex-wrap:wrap;padding:16px 24px;border-bottom:1px solid var(--line);}
+    .db-filters input,.db-filters select{padding:8px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.15);border-radius:2px;color:#fff;font-size:12px;font-family:var(--sans);outline:none;transition:border-color .2s;}
     .db-filters input:focus,.db-filters select:focus{border-color:rgba(200,169,110,0.4);}
     .db-filters input{flex:1;min-width:160px;}
+    .db-filters input::placeholder{color:rgba(255,255,255,0.22);}
     .db-filters select option{background:var(--ink);}
 
-    /* Chip link copia */
-    .copy-chip{display:inline-flex;align-items:center;gap:6px;background:rgba(200,169,110,0.07);border:1px solid rgba(200,169,110,0.2);padding:5px 11px;border-radius:3px;font-size:10px;color:var(--gold-dk);cursor:pointer;transition:all .2s;font-family:var(--sans);}
-    .copy-chip:hover{background:rgba(200,169,110,0.13);color:var(--gold-lt);}
-
-    /* Toast */
-    .toast{position:fixed;bottom:24px;right:24px;background:#1a2f1a;border:1px solid rgba(94,201,137,0.3);border-radius:4px;padding:12px 18px;font-size:12px;color:#5ec989;z-index:500;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;}
+    .toast{position:fixed;bottom:28px;right:28px;background:var(--ink-mid);border:1px solid rgba(200,169,110,0.35);border-radius:3px;padding:12px 22px;font-size:13px;color:var(--gold-lt);z-index:500;opacity:0;transform:translateY(8px);transition:all .3s;pointer-events:none;font-family:var(--serif);}
     .toast.show{opacity:1;transform:translateY(0);}
 
-    /* Spinner */
-    .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;}
-    @keyframes spin{to{transform:rotate(360deg)}}
-
-    /* Empty state */
-    .empty-state{text-align:center;padding:44px 20px;color:rgba(255,255,255,0.2);}
-    .empty-state p{font-size:13px;line-height:1.7;}
-
-    @media(max-width:900px){
-      .sidebar{transform:translateX(-100%);}
-      .main{margin-left:0;}
-      .metrics-row{grid-template-columns:repeat(2,1fr);}
-    }
+    .empty-state{text-align:center;padding:48px 20px;}
+    .empty-state p{font-size:14px;color:rgba(255,255,255,0.22);line-height:1.7;font-style:italic;font-family:var(--serif);}
   </style>
 </head>
 <body>
 
-  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="sb-logo">
       <div class="sb-logo-name">Giulia <em>Fumagalli</em></div>
@@ -192,286 +171,170 @@
     </div>
     <nav class="sb-nav">
       <div class="sb-section">Principale</div>
-      <a class="sb-link active" onclick="showView('dashboard')">
+      <a class="sb-link active" onclick="showView('dashboard',this)">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="9" y="1.5" width="5.5" height="5.5" rx="1"/><rect x="1.5" y="9" width="5.5" height="5.5" rx="1"/><rect x="9" y="9" width="5.5" height="5.5" rx="1"/></svg>
         Dashboard
       </a>
-      <a class="sb-link" onclick="showView('offerte')">
+      <a class="sb-link" onclick="showView('offerte',this)">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="1.5" y="2" width="13" height="12" rx="1.5"/><line x1="5" y1="6" x2="11" y2="6"/><line x1="5" y1="9" x2="9" y2="9"/></svg>
         Offerte attive
         <span class="sb-badge" id="sbOfferteCount">0</span>
       </a>
-      <a class="sb-link" onclick="showView('candidature')">
+      <a class="sb-link" onclick="showView('candidature',this)">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="7" cy="5" r="3"/><path d="M2 14v-1a5 5 0 0110 0v1"/><line x1="12" y1="7" x2="15" y2="7"/><line x1="13.5" y1="5.5" x2="13.5" y2="8.5"/></svg>
         Candidature
         <span class="sb-badge" id="sbCandCount">0</span>
       </a>
       <div class="sb-section">Archivio</div>
-      <a class="sb-link" onclick="showView('database')">
+      <a class="sb-link" onclick="showView('database',this)">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><ellipse cx="8" cy="4" rx="5.5" ry="2"/><path d="M2.5 4v3c0 1.1 2.46 2 5.5 2s5.5-.9 5.5-2V4"/><path d="M2.5 7v3c0 1.1 2.46 2 5.5 2s5.5-.9 5.5-2V7"/><path d="M2.5 10v2c0 1.1 2.46 2 5.5 2s5.5-.9 5.5-2v-2"/></svg>
         Database
       </a>
     </nav>
     <div class="sb-bottom">
+      <div style="height:1px;background:linear-gradient(to right,transparent,var(--gold-dk),transparent);margin-bottom:16px;"></div>
       <div class="sb-user" id="sbUser">—</div>
-      <button class="sb-logout" onclick="doLogout()">Esci</button>
+      <button class="sb-logout" onclick="doLogout()">Esci →</button>
     </div>
   </div>
 
-  <!-- MAIN -->
   <div class="main">
     <div class="topbar">
       <div class="topbar-title" id="topbarTitle">Dashboard</div>
-      <button class="btn btn-gold btn-sm" onclick="openNewJobModal()">
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="1" x2="8" y2="15"/><line x1="1" y1="8" x2="15" y2="8"/></svg>
+      <button class="btn btn-gold" onclick="openNewJobModal()">
+        <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="1" x2="8" y2="15"/><line x1="1" y1="8" x2="15" y2="8"/></svg>
         Crea offerta
       </button>
     </div>
 
     <div class="content">
 
-      <!-- ═══ VIEW: DASHBOARD ═══ -->
       <div id="view-dashboard">
         <div class="metrics-row">
           <div class="metric"><div class="metric-label">Offerte attive</div><div class="metric-value gold" id="mOfferte">–</div><div class="metric-sub">posizioni aperte</div></div>
           <div class="metric"><div class="metric-label">Candidature totali</div><div class="metric-value" id="mTotali">–</div><div class="metric-sub">nel database</div></div>
-          <div class="metric"><div class="metric-label">Da esaminare</div><div class="metric-value warn" id="mDaEsaminare">–</div><div class="metric-sub">stato "candidato"</div></div>
-          <div class="metric"><div class="metric-label">Fit medio AI</div><div class="metric-value ok" id="mFitMedio">–</div><div class="metric-sub">su candidature con score</div></div>
+          <div class="metric"><div class="metric-label">Da esaminare</div><div class="metric-value warn" id="mDaEsaminare">–</div><div class="metric-sub">stato candidato</div></div>
+          <div class="metric"><div class="metric-label">Fit medio AI</div><div class="metric-value ok" id="mFitMedio">–</div><div class="metric-sub">su profili analizzati</div></div>
         </div>
-
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
-          <!-- Ultime candidature -->
           <div class="section-card">
             <div class="sc-header">
-              <div class="sc-title">Ultime candidature</div>
-              <a class="btn btn-ghost btn-sm" onclick="showView('candidature')">Vedi tutte →</a>
+              <div style="flex:1"><div class="sc-label">Recenti</div><div class="sc-title">Ultime candidature</div></div>
+              <a class="btn btn-ghost btn-sm" onclick="showView('candidature',document.querySelectorAll('.sb-link')[2])">Vedi tutte →</a>
             </div>
-            <div class="table-wrap" id="recentTable">
-              <div class="empty-state"><p>Caricamento…</p></div>
-            </div>
+            <div class="table-wrap" id="recentTable"><div class="empty-state"><p>Caricamento…</p></div></div>
           </div>
-
-          <!-- Statistiche torta -->
           <div class="section-card">
-            <div class="sc-header"><div class="sc-title">Distribuzione stato</div></div>
-            <div class="sc-body">
-              <div class="pie-area" id="pieArea">
-                <div class="empty-state"><p>Nessun dato</p></div>
-              </div>
-            </div>
+            <div class="sc-header"><div><div class="sc-label">Statistiche</div><div class="sc-title">Distribuzione stato</div></div></div>
+            <div class="sc-body"><div class="pie-area" id="pieArea"><div class="empty-state"><p>Nessun dato ancora.</p></div></div></div>
           </div>
         </div>
       </div>
 
-      <!-- ═══ VIEW: OFFERTE ═══ -->
       <div id="view-offerte" style="display:none">
         <div class="section-card">
           <div class="sc-header">
-            <div>
-              <div class="sc-title">Offerte di lavoro</div>
-              <div class="sc-sub">Clicca su un'offerta per vedere i candidati · Il link candidatura è nella riga dell'offerta</div>
-            </div>
+            <div style="flex:1"><div class="sc-label">Posizioni</div><div class="sc-title">Offerte di lavoro</div><div class="sc-sub">Clicca un'offerta per vedere i candidati · Copia il link per pubblicarlo su Indeed, LinkedIn etc.</div></div>
             <button class="btn btn-gold" onclick="openNewJobModal()">
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="1" x2="8" y2="15"/><line x1="1" y1="8" x2="15" y2="8"/></svg>
+              <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="1" x2="8" y2="15"/><line x1="1" y1="8" x2="15" y2="8"/></svg>
               Crea offerta
             </button>
           </div>
-          <div class="sc-body">
-            <div class="job-list" id="jobList">
-              <div class="empty-state"><p>Nessuna offerta. Crea la prima offerta con il tasto in alto.</p></div>
-            </div>
-          </div>
+          <div class="sc-body"><div class="job-list" id="jobList"><div class="empty-state"><p>Nessuna offerta ancora. Crea la prima con il tasto "Crea offerta".</p></div></div></div>
         </div>
-
-        <!-- Candidati per offerta selezionata -->
-        <div class="section-card" id="jobDetailCard" style="display:none;margin-top:20px;">
+        <div class="section-card" id="jobDetailCard" style="display:none">
           <div class="sc-header">
-            <div>
-              <div class="sc-title" id="jobDetailTitle">—</div>
-              <div class="sc-sub" id="jobDetailSub">—</div>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <button class="copy-chip" id="copyLinkBtn" onclick="copyJobLink()">
+            <div style="flex:1;min-width:0"><div class="sc-label">Candidature</div><div class="sc-title" id="jobDetailTitle">—</div><div class="sc-sub" id="jobDetailSub">—</div></div>
+            <div style="display:flex;gap:8px;align-items:center;flex-shrink:0;">
+              <button class="copy-chip" onclick="copyJobLink()">
                 <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11H2.5A1.5 1.5 0 011 9.5v-7A1.5 1.5 0 012.5 1h7A1.5 1.5 0 0111 2.5V3"/></svg>
                 Copia link candidatura
               </button>
               <div class="tabs" id="jobTabs">
-                <button class="tab-btn active" onclick="filterByStato(null, this)">Tutti</button>
-                <button class="tab-btn" onclick="filterByStato('candidato', this)">Candidati</button>
-                <button class="tab-btn" onclick="filterByStato('colloquiato', this)">Colloquiati</button>
-                <button class="tab-btn" onclick="filterByStato('accettato', this)">Accettati</button>
+                <button class="tab-btn active" onclick="filterByStato(null,this)">Tutti</button>
+                <button class="tab-btn" onclick="filterByStato('candidato',this)">Candidati</button>
+                <button class="tab-btn" onclick="filterByStato('colloquiato',this)">Colloquiati</button>
+                <button class="tab-btn" onclick="filterByStato('accettato',this)">Accettati</button>
               </div>
             </div>
           </div>
           <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Candidato</th>
-                  <th>Data</th>
-                  <th>CV</th>
-                  <th>UNI 10459</th>
-                  <th>Esperienza</th>
-                  <th>Stato</th>
-                  <th>Fit AI</th>
-                </tr>
-              </thead>
-              <tbody id="candidatiBody"></tbody>
-            </table>
+            <table><thead><tr><th>Candidato</th><th>Data</th><th>CV</th><th>UNI 10459</th><th>Esperienza</th><th>Stato</th><th>Fit AI</th></tr></thead>
+            <tbody id="candidatiBody"></tbody></table>
           </div>
           <div class="empty-state" id="candidatiEmpty" style="display:none"><p>Nessuna candidatura per questa offerta.</p></div>
         </div>
       </div>
 
-      <!-- ═══ VIEW: CANDIDATURE ═══ -->
       <div id="view-candidature" style="display:none">
         <div class="section-card">
           <div class="sc-header">
-            <div class="sc-title">Tutte le candidature</div>
+            <div style="flex:1"><div class="sc-label">Archivio</div><div class="sc-title">Tutte le candidature</div></div>
             <div class="tabs">
-              <button class="tab-btn active" onclick="filterAll(null, this)">Tutti</button>
-              <button class="tab-btn" onclick="filterAll('candidato', this)">Candidato</button>
-              <button class="tab-btn" onclick="filterAll('colloquiato', this)">Colloquiato</button>
-              <button class="tab-btn" onclick="filterAll('accettato', this)">Accettato</button>
-              <button class="tab-btn" onclick="filterAll('rifiutato', this)">Rifiutato</button>
+              <button class="tab-btn active" onclick="filterAll(null,this)">Tutti</button>
+              <button class="tab-btn" onclick="filterAll('candidato',this)">Candidato</button>
+              <button class="tab-btn" onclick="filterAll('colloquiato',this)">Colloquiato</button>
+              <button class="tab-btn" onclick="filterAll('accettato',this)">Accettato</button>
+              <button class="tab-btn" onclick="filterAll('rifiutato',this)">Rifiutato</button>
             </div>
           </div>
           <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Candidato</th>
-                  <th>Posizione</th>
-                  <th>Data</th>
-                  <th>CV</th>
-                  <th>Stato</th>
-                  <th>Fit AI</th>
-                </tr>
-              </thead>
-              <tbody id="allCandBody"></tbody>
-            </table>
+            <table><thead><tr><th>Candidato</th><th>Posizione</th><th>Data</th><th>CV</th><th>Stato</th><th>Fit AI</th></tr></thead>
+            <tbody id="allCandBody"></tbody></table>
           </div>
           <div class="empty-state" id="allCandEmpty" style="display:none"><p>Nessuna candidatura trovata.</p></div>
         </div>
       </div>
 
-      <!-- ═══ VIEW: DATABASE ═══ -->
       <div id="view-database" style="display:none">
         <div class="section-card">
           <div class="sc-header">
-            <div>
-              <div class="sc-title">Database archivio</div>
-              <div class="sc-sub">Ricerca tra tutti i profili — anche da posizioni chiuse</div>
-            </div>
+            <div style="flex:1"><div class="sc-label">Ricerca</div><div class="sc-title">Database archivio</div><div class="sc-sub">Cerca tra tutti i profili — anche da posizioni chiuse</div></div>
             <button class="btn btn-ghost btn-sm" onclick="exportCSV()">
-              <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10v4h12v-4"/><path d="M8 2v8M5 7l3 3 3-3"/></svg>
+              <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10v4h12v-4"/><path d="M8 2v8M5 7l3 3 3-3"/></svg>
               Esporta CSV
             </button>
           </div>
-          <div class="sc-body" style="padding-bottom:0">
-            <div class="db-filters">
-              <input type="text" id="dbSearch" placeholder="Nome, cognome, email…" oninput="dbFilter()"/>
-              <select id="dbPosizione" onchange="dbFilter()">
-                <option value="">Tutte le posizioni</option>
-              </select>
-              <select id="dbAnno" onchange="dbFilter()">
-                <option value="">Tutti gli anni</option>
-              </select>
-              <select id="dbUni" onchange="dbFilter()">
-                <option value="">UNI 10459 — tutti</option>
-                <option value="si">Certificato UNI</option>
-                <option value="no">Senza certificazione</option>
-              </select>
-              <select id="dbStato" onchange="dbFilter()">
-                <option value="">Qualsiasi stato</option>
-                <option value="candidato">Candidato</option>
-                <option value="colloquiato">Colloquiato</option>
-                <option value="accettato">Accettato</option>
-                <option value="rifiutato">Rifiutato</option>
-              </select>
-            </div>
+          <div class="db-filters">
+            <input type="text" id="dbSearch" placeholder="Nome, cognome, email…" oninput="dbFilter()"/>
+            <select id="dbPosizione" onchange="dbFilter()"><option value="">Tutte le posizioni</option></select>
+            <select id="dbAnno" onchange="dbFilter()"><option value="">Tutti gli anni</option></select>
+            <select id="dbUni" onchange="dbFilter()"><option value="">UNI 10459 — tutti</option><option value="si">Certificato</option><option value="no">Non certificato</option></select>
+            <select id="dbStato" onchange="dbFilter()"><option value="">Qualsiasi stato</option><option value="candidato">Candidato</option><option value="colloquiato">Colloquiato</option><option value="accettato">Accettato</option><option value="rifiutato">Rifiutato</option></select>
           </div>
           <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Candidato</th>
-                  <th>Posizione</th>
-                  <th>Anno</th>
-                  <th>CV</th>
-                  <th>UNI 10459</th>
-                  <th>Esperienza</th>
-                  <th>Settori</th>
-                  <th>Stato</th>
-                  <th>Fit AI</th>
-                </tr>
-              </thead>
-              <tbody id="dbBody"></tbody>
-            </table>
+            <table><thead><tr><th>Candidato</th><th>Posizione</th><th>Anno</th><th>CV</th><th>UNI 10459</th><th>Esperienza</th><th>Settori</th><th>Stato</th><th>Fit AI</th></tr></thead>
+            <tbody id="dbBody"></tbody></table>
           </div>
           <div class="empty-state" id="dbEmpty"><p>Nessun risultato trovato.</p></div>
         </div>
       </div>
 
-    </div><!-- /content -->
-  </div><!-- /main -->
+    </div>
+  </div>
 
-  <!-- MODAL NUOVA OFFERTA -->
   <div class="modal-overlay" id="jobModal">
     <div class="modal">
       <div class="modal-head">
-        <div class="modal-title">Nuova offerta di lavoro</div>
+        <div class="modal-title">Nuova offerta</div>
         <button class="modal-close" onclick="closeModal()">×</button>
       </div>
       <div class="modal-body">
-        <div class="field">
-          <label>Titolo posizione *</label>
-          <input type="text" id="jTitle" placeholder="es. Security Manager — Milano Nord"/>
+        <div class="field"><label>Titolo posizione *</label><input type="text" id="jTitle" placeholder="es. Security Manager — Milano Nord"/></div>
+        <div class="form-row-2">
+          <div class="field"><label>Sede / Luogo</label><input type="text" id="jLocation" placeholder="Milano, Roma…"/></div>
+          <div class="field"><label>Tipo contratto</label><select id="jContract"><option value="">— Seleziona —</option><option>Tempo indeterminato</option><option>Tempo determinato</option><option>Partita IVA / Consulenza</option><option>Stage / Tirocinio</option><option>Da definire</option></select></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-          <div class="field">
-            <label>Sede / Luogo</label>
-            <input type="text" id="jLocation" placeholder="Milano, Roma, Full Remote…"/>
-          </div>
-          <div class="field">
-            <label>Tipo contratto</label>
-            <select id="jContract">
-              <option value="">— Seleziona —</option>
-              <option>Tempo indeterminato</option>
-              <option>Tempo determinato</option>
-              <option>Partita IVA / Consulenza</option>
-              <option>Stage / Tirocinio</option>
-              <option>Da definire</option>
-            </select>
-          </div>
+        <div class="form-row-2">
+          <div class="field"><label>Settore</label><input type="text" id="jSector" placeholder="Security, Safety…"/></div>
+          <div class="field"><label>Tipo impiego</label><select id="jType"><option>Full Time</option><option>Part Time</option><option>Freelance</option></select></div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-          <div class="field">
-            <label>Settore</label>
-            <input type="text" id="jSector" placeholder="Security, Safety, Risk…"/>
-          </div>
-          <div class="field">
-            <label>Tipo impiego</label>
-            <select id="jType">
-              <option>Full Time</option>
-              <option>Part Time</option>
-              <option>Freelance</option>
-            </select>
-          </div>
-        </div>
-        <div class="field">
-          <label>Descrizione della posizione</label>
-          <textarea id="jDesc" placeholder="Descrivi il ruolo, le responsabilità, il contesto aziendale…&#10;&#10;Puoi usare più paragrafi separati da righe vuote."></textarea>
-        </div>
-        <div class="field">
-          <label>Requisiti (uno per riga)</label>
-          <textarea id="jReqs" placeholder="Certificazione UNI 10459&#10;Almeno 5 anni di esperienza&#10;Conoscenza sistemi videosorveglianza&#10;Patente B e automunito" style="min-height:110px;"></textarea>
-          <small>Ogni riga diventerà un punto elenco nel portale candidature.</small>
-        </div>
+        <div class="field"><label>Descrizione della posizione</label><textarea id="jDesc" placeholder="Descrivi il ruolo e le responsabilità…"></textarea></div>
+        <div class="field"><label>Requisiti (uno per riga)</label><textarea id="jReqs" placeholder="Certificazione UNI 10459&#10;Almeno 5 anni di esperienza&#10;Patente B e automunito" style="min-height:110px;"></textarea><small>Ogni riga diventa un punto elenco nella pagina candidatura pubblica.</small></div>
       </div>
       <div class="modal-foot">
         <button class="btn btn-ghost" onclick="closeModal()">Annulla</button>
-        <button class="btn btn-gold" id="saveJobBtn" onclick="saveJob()">Pubblica offerta</button>
+        <button class="btn btn-gold" id="saveJobBtn" onclick="saveJob()">Pubblica offerta →</button>
       </div>
     </div>
   </div>
@@ -479,364 +342,216 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    // ─── CONFIGURAZIONE SUPABASE ──────────────────────────────────────────
     const SUPABASE_URL = 'https://dpfjautqowbzndgkrjnp.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwZmphdXRxb3diem5kZ2tyam5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MzI5NzcsImV4cCI6MjA5MTMwODk3N30.7ppWIWJHootC2EQbWT0z30DPehFO5P-v_fB_b6YNxT4';
-    // ─────────────────────────────────────────────────────────────────────
-
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // ── BASE URL per i link candidatura (aggiornare in produzione)
     const BASE_URL = window.location.origin + window.location.pathname.replace('dashboard.html','');
+    let allJobs=[], allApps=[], currentJobId=null;
 
-    let allJobs = [];
-    let allApps = [];
-    let currentJobId = null;
-    let currentView = 'dashboard';
-
-    // ── AUTH CHECK ────────────────────────────────────────────────────────
     async function init() {
-      const { data: { session } } = await sb.auth.getSession();
-      if (!session) { window.location.href = 'login.html'; return; }
+      const { data:{session} } = await sb.auth.getSession();
+      if(!session){window.location.href='login.html';return;}
       document.getElementById('sbUser').textContent = session.user.email;
       await loadAll();
     }
+    async function doLogout(){await sb.auth.signOut();window.location.href='login.html';}
 
-    async function doLogout() {
-      await sb.auth.signOut();
-      window.location.href = 'login.html';
-    }
-
-    // ── CARICA DATI ───────────────────────────────────────────────────────
     async function loadAll() {
-      const [{ data: jobs }, { data: apps }] = await Promise.all([
-        sb.from('job_positions').select('*').order('created_at', { ascending: false }),
-        sb.from('applications').select('*, job_positions(title)').order('created_at', { ascending: false })
+      const [{data:jobs},{data:apps}] = await Promise.all([
+        sb.from('job_positions').select('*').order('created_at',{ascending:false}),
+        sb.from('applications').select('*, job_positions(title)').order('created_at',{ascending:false})
       ]);
-
-      allJobs = jobs || [];
-      allApps = apps || [];
-
-      updateSidebar();
-      renderMetrics();
-      renderRecentTable();
-      renderPie();
-      renderJobList();
-      renderAllCand();
-      renderDatabase();
-      populateDBFilters();
+      allJobs=jobs||[]; allApps=apps||[];
+      updateSidebar(); renderMetrics(); renderRecentTable(); renderPie();
+      renderJobList(); renderAllCand(); renderDatabase(); populateDBFilters();
     }
 
-    function updateSidebar() {
-      document.getElementById('sbOfferteCount').textContent = allJobs.filter(j => j.is_active).length;
-      document.getElementById('sbCandCount').textContent = allApps.length;
+    function updateSidebar(){
+      document.getElementById('sbOfferteCount').textContent=allJobs.filter(j=>j.is_active).length;
+      document.getElementById('sbCandCount').textContent=allApps.length;
     }
-
-    // ── METRICHE ──────────────────────────────────────────────────────────
-    function renderMetrics() {
-      document.getElementById('mOfferte').textContent = allJobs.filter(j => j.is_active).length;
-      document.getElementById('mTotali').textContent = allApps.length;
-      document.getElementById('mDaEsaminare').textContent = allApps.filter(a => a.stato === 'candidato').length;
-      const scored = allApps.filter(a => a.ai_fit_score != null);
-      const avg = scored.length ? Math.round(scored.reduce((s,a)=>s+a.ai_fit_score,0)/scored.length) : null;
-      document.getElementById('mFitMedio').textContent = avg != null ? avg + '%' : '—';
+    function renderMetrics(){
+      document.getElementById('mOfferte').textContent=allJobs.filter(j=>j.is_active).length;
+      document.getElementById('mTotali').textContent=allApps.length;
+      document.getElementById('mDaEsaminare').textContent=allApps.filter(a=>a.stato==='candidato').length;
+      const scored=allApps.filter(a=>a.ai_fit_score!=null);
+      const avg=scored.length?Math.round(scored.reduce((s,a)=>s+a.ai_fit_score,0)/scored.length):null;
+      document.getElementById('mFitMedio').textContent=avg!=null?avg+'%':'—';
     }
-
-    // ── TABELLA RECENTI ───────────────────────────────────────────────────
-    function renderRecentTable() {
-      const el = document.getElementById('recentTable');
-      const recent = allApps.slice(0, 6);
-      if (!recent.length) { el.innerHTML = '<div class="empty-state"><p>Nessuna candidatura ancora.</p></div>'; return; }
-      el.innerHTML = `<table><thead><tr><th>Candidato</th><th>Posizione</th><th>Stato</th><th>Fit</th></tr></thead><tbody>
-        ${recent.map(a => `<tr>
+    function renderRecentTable(){
+      const el=document.getElementById('recentTable');
+      const recent=allApps.slice(0,6);
+      if(!recent.length){el.innerHTML='<div class="empty-state"><p>Nessuna candidatura ancora.</p></div>';return;}
+      el.innerHTML=`<table><thead><tr><th>Candidato</th><th>Posizione</th><th>Stato</th><th>Fit</th></tr></thead><tbody>
+        ${recent.map(a=>`<tr>
           <td><div class="candidate-name">${a.nome} ${a.cognome}</div></td>
-          <td style="font-size:11px;color:rgba(255,255,255,.35)">${a.job_positions?.title||'—'}</td>
-          <td>${statoBadge(a.stato, a.id)}</td>
+          <td style="font-size:11px;color:rgba(255,255,255,.32);font-style:italic">${a.job_positions?.title||'—'}</td>
+          <td>${statoBadge(a.stato,a.id)}</td>
           <td>${fitBar(a.ai_fit_score)}</td>
         </tr>`).join('')}
       </tbody></table>`;
     }
-
-    // ── TORTA ─────────────────────────────────────────────────────────────
-    function renderPie() {
-      const counts = { candidato:0, colloquiato:0, accettato:0, rifiutato:0, sospeso:0 };
-      allApps.forEach(a => { if (counts[a.stato] !== undefined) counts[a.stato]++; });
-      const total = allApps.length;
-      const colors = { candidato:'#7db5f5', colloquiato:'#e8c84a', accettato:'#5ec989', rifiutato:'#e08080', sospeso:'#9ca3af' };
-      const labels = { candidato:'Candidato', colloquiato:'Colloquiato', accettato:'Accettato', rifiutato:'Rifiutato', sospeso:'Sospeso' };
-      const el = document.getElementById('pieArea');
-      if (!total) { el.innerHTML = '<div class="empty-state"><p>Nessun dato ancora.</p></div>'; return; }
-
-      // SVG donut
-      let offset = 25, svgPaths = '';
-      Object.entries(counts).forEach(([stato, n]) => {
-        if (!n) return;
-        const pct = (n / total) * 100;
-        svgPaths += `<circle cx="18" cy="18" r="14" fill="none" stroke="${colors[stato]}" stroke-width="4.5"
-          stroke-dasharray="${pct} ${100-pct}" stroke-dashoffset="${offset}" opacity="0.9"/>`;
-        offset -= pct;
+    function renderPie(){
+      const counts={candidato:0,colloquiato:0,accettato:0,rifiutato:0,sospeso:0};
+      allApps.forEach(a=>{if(counts[a.stato]!==undefined)counts[a.stato]++;});
+      const total=allApps.length;
+      const colors={candidato:'#93c5fd',colloquiato:'#e2c88a',accettato:'#7dd9a8',rifiutato:'#fca5a5',sospeso:'#d1d5db'};
+      const labels={candidato:'Candidato',colloquiato:'Colloquiato',accettato:'Accettato',rifiutato:'Rifiutato',sospeso:'Sospeso'};
+      const el=document.getElementById('pieArea');
+      if(!total){el.innerHTML='<div class="empty-state"><p>Nessun dato ancora.</p></div>';return;}
+      let offset=25,svgPaths='';
+      Object.entries(counts).forEach(([stato,n])=>{
+        if(!n)return;const pct=(n/total)*100;
+        svgPaths+=`<circle cx="18" cy="18" r="14" fill="none" stroke="${colors[stato]}" stroke-width="4.5" stroke-dasharray="${pct} ${100-pct}" stroke-dashoffset="${offset}" opacity="0.85"/>`;
+        offset-=pct;
       });
-
-      const scored = allApps.filter(a => a.ai_fit_score != null);
-      const avg = scored.length ? Math.round(scored.reduce((s,a)=>s+a.ai_fit_score,0)/scored.length) : null;
-
-      el.innerHTML = `
-        <svg width="90" height="90" viewBox="0 0 36 36" style="flex-shrink:0">${svgPaths}</svg>
-        <div class="pie-legend">
-          ${Object.entries(counts).filter(([,n])=>n>0).map(([stato,n])=>`
-            <div class="pie-item"><div class="pie-dot" style="background:${colors[stato]}"></div>${labels[stato]} <strong>${n}</strong></div>
-          `).join('')}
-        </div>
-        <div class="ai-avg" style="margin-left:auto">
-          <div class="ai-avg-label">Fit medio AI</div>
-          <div class="ai-avg-value">${avg != null ? avg+'%' : '—'}</div>
-          <div style="font-size:10px;color:rgba(255,255,255,.22);margin-top:3px">${scored.length} analizzati</div>
-        </div>`;
+      const scored=allApps.filter(a=>a.ai_fit_score!=null);
+      const avg=scored.length?Math.round(scored.reduce((s,a)=>s+a.ai_fit_score,0)/scored.length):null;
+      el.innerHTML=`<svg width="90" height="90" viewBox="0 0 36 36" style="flex-shrink:0">${svgPaths}</svg>
+        <div class="pie-legend">${Object.entries(counts).filter(([,n])=>n>0).map(([s,n])=>`<div class="pie-item"><div class="pie-dot" style="background:${colors[s]}"></div>${labels[s]} <strong>${n}</strong></div>`).join('')}</div>
+        <div class="ai-avg"><div class="ai-avg-label">Fit medio AI</div><div class="ai-avg-value">${avg!=null?avg+'%':'—'}</div><div style="font-size:10px;color:rgba(255,255,255,.25);margin-top:4px;font-style:italic">${scored.length} analizzati</div></div>`;
     }
-
-    // ── LISTA OFFERTE ─────────────────────────────────────────────────────
-    function renderJobList() {
-      const el = document.getElementById('jobList');
-      if (!allJobs.length) { el.innerHTML = '<div class="empty-state"><p>Nessuna offerta. Crea la prima con il tasto "Crea offerta".</p></div>'; return; }
-      el.innerHTML = allJobs.map(j => {
-        const nCand = allApps.filter(a => a.job_id === j.id).length;
-        const nColl = allApps.filter(a => a.job_id === j.id && a.stato === 'colloquiato').length;
+    function renderJobList(){
+      const el=document.getElementById('jobList');
+      if(!allJobs.length){el.innerHTML='<div class="empty-state"><p>Nessuna offerta. Crea la prima con il tasto "Crea offerta".</p></div>';return;}
+      el.innerHTML=allJobs.map(j=>{
+        const nC=allApps.filter(a=>a.job_id===j.id).length;
+        const nCo=allApps.filter(a=>a.job_id===j.id&&a.stato==='colloquiato').length;
         return `<div class="job-row ${currentJobId===j.id?'selected':''}" onclick="selectJob('${j.id}')">
-          <div style="flex-shrink:0">${j.is_active ? '<div class="job-active-dot"></div>' : '<div class="job-inactive-dot"></div>'}</div>
-          <div class="job-row-info">
-            <div class="job-row-title">${j.title}</div>
-            <div class="job-row-meta">
-              <span>${j.location||'—'}</span>
-              <span>${j.contract_type||''}</span>
-              <span>${formatDate(j.created_at)}</span>
-            </div>
-          </div>
-          <div class="job-row-stats">
-            <div class="jrs"><div class="jrs-v">${nCand}</div><div class="jrs-l">Candidati</div></div>
-            <div class="jrs"><div class="jrs-v">${nColl}</div><div class="jrs-l">Colloquiati</div></div>
-          </div>
-          <button class="copy-chip" onclick="event.stopPropagation();copyLink('${j.id}')">
-            <svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11H2.5A1.5 1.5 0 011 9.5v-7A1.5 1.5 0 012.5 1h7A1.5 1.5 0 0111 2.5V3"/></svg>
-            Link
-          </button>
+          <div style="flex-shrink:0">${j.is_active?'<div class="job-active-dot"></div>':'<div class="job-inactive-dot"></div>'}</div>
+          <div class="job-row-info"><div class="job-row-title">${j.title}</div><div class="job-row-meta"><span>${j.location||'—'}</span><span>${j.contract_type||''}</span><span>${formatDate(j.created_at)}</span></div></div>
+          <div class="job-row-stats"><div class="jrs"><div class="jrs-v">${nC}</div><div class="jrs-l">Candidati</div></div><div class="jrs"><div class="jrs-v">${nCo}</div><div class="jrs-l">Colloquiati</div></div></div>
+          <button class="copy-chip" onclick="event.stopPropagation();copyLink('${j.id}')"><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="9" height="9" rx="1.5"/><path d="M3 11H2.5A1.5 1.5 0 011 9.5v-7A1.5 1.5 0 012.5 1h7A1.5 1.5 0 0111 2.5V3"/></svg>Copia link</button>
         </div>`;
       }).join('');
     }
-
-    function selectJob(jobId) {
-      currentJobId = jobId;
-      renderJobList(); // aggiorna selected
-
-      const job = allJobs.find(j => j.id === jobId);
-      const apps = allApps.filter(a => a.job_id === jobId);
-
-      document.getElementById('jobDetailCard').style.display = '';
-      document.getElementById('jobDetailTitle').textContent = job.title;
-      document.getElementById('jobDetailSub').textContent =
-        `${job.location||''} · ${apps.length} candidature · Pubblicata il ${formatDate(job.created_at)}`;
-
+    function selectJob(jobId){
+      currentJobId=jobId;renderJobList();
+      const job=allJobs.find(j=>j.id===jobId);
+      const apps=allApps.filter(a=>a.job_id===jobId);
+      document.getElementById('jobDetailCard').style.display='';
+      document.getElementById('jobDetailTitle').textContent=job.title;
+      document.getElementById('jobDetailSub').textContent=`${job.location||''} · ${apps.length} candidature · Pubblicata il ${formatDate(job.created_at)}`;
       renderJobCandidati(apps);
     }
-
-    function renderJobCandidati(apps) {
-      const body = document.getElementById('candidatiBody');
-      const empty = document.getElementById('candidatiEmpty');
-      if (!apps.length) {
-        body.innerHTML = ''; empty.style.display = ''; return;
-      }
-      empty.style.display = 'none';
-      body.innerHTML = apps.map(a => `<tr>
-        <td><div class="candidate-name">${a.nome} ${a.cognome}</div><div class="candidate-email">${a.email}</div></td>
-        <td style="font-size:11px;color:rgba(255,255,255,.35)">${formatDate(a.created_at)}</td>
-        <td>${a.cv_url ? `<a class="cv-link" href="${a.cv_url}" target="_blank"><svg width="11" height="11" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 2h6l4 4v9a1 1 0 01-1 1H4a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M10 2v4h4"/></svg>${a.cv_filename||'CV'}</a>` : '<span style="color:rgba(255,255,255,.2);font-size:11px">—</span>'}</td>
-        <td style="font-size:11px">${uniLabel(a.q_uni10459)}</td>
-        <td style="font-size:11px;color:rgba(255,255,255,.5)">${a.q_esperienza||'—'}</td>
-        <td>${statoBadge(a.stato, a.id)}</td>
-        <td>${fitBar(a.ai_fit_score)}</td>
-      </tr>`).join('');
-    }
-
-    let allCandFilter = null;
-    function filterByStato(stato, btn) {
-      document.querySelectorAll('#jobTabs .tab-btn').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      const apps = allApps.filter(a => a.job_id === currentJobId && (!stato || a.stato === stato));
-      renderJobCandidati(apps);
-    }
-
-    // ── TUTTE LE CANDIDATURE ──────────────────────────────────────────────
-    function renderAllCand(filterStato) {
-      const apps = filterStato ? allApps.filter(a=>a.stato===filterStato) : allApps;
-      const body = document.getElementById('allCandBody');
-      const empty = document.getElementById('allCandEmpty');
-      if (!apps.length) { body.innerHTML=''; empty.style.display=''; return; }
-      empty.style.display = 'none';
-      body.innerHTML = apps.map(a=>`<tr>
-        <td><div class="candidate-name">${a.nome} ${a.cognome}</div><div class="candidate-email">${a.email}</div></td>
-        <td style="font-size:11px;color:rgba(255,255,255,.4)">${a.job_positions?.title||'—'}</td>
-        <td style="font-size:11px;color:rgba(255,255,255,.35)">${formatDate(a.created_at)}</td>
-        <td>${a.cv_url?`<a class="cv-link" href="${a.cv_url}" target="_blank">📄 CV</a>`:'—'}</td>
-        <td>${statoBadge(a.stato, a.id)}</td>
-        <td>${fitBar(a.ai_fit_score)}</td>
-      </tr>`).join('');
-    }
-
-    function filterAll(stato, btn) {
-      document.querySelectorAll('#view-candidature .tab-btn').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      renderAllCand(stato);
-    }
-
-    // ── DATABASE ──────────────────────────────────────────────────────────
-    function populateDBFilters() {
-      const posSel = document.getElementById('dbPosizione');
-      allJobs.forEach(j => {
-        const o = document.createElement('option'); o.value=j.id; o.textContent=j.title; posSel.appendChild(o);
-      });
-      const years = [...new Set(allApps.map(a=>new Date(a.created_at).getFullYear()))].sort((a,b)=>b-a);
-      const yrSel = document.getElementById('dbAnno');
-      years.forEach(y => { const o=document.createElement('option'); o.value=y; o.textContent=y; yrSel.appendChild(o); });
-    }
-
-    function renderDatabase(filtered) {
-      const data = filtered !== undefined ? filtered : allApps;
-      const body = document.getElementById('dbBody');
-      const empty = document.getElementById('dbEmpty');
-      if (!data.length) { body.innerHTML=''; empty.style.display='block'; return; }
+    function renderJobCandidati(apps){
+      const body=document.getElementById('candidatiBody'),empty=document.getElementById('candidatiEmpty');
+      if(!apps.length){body.innerHTML='';empty.style.display='';return;}
       empty.style.display='none';
-      body.innerHTML = data.map(a=>`<tr>
+      body.innerHTML=apps.map(a=>`<tr>
         <td><div class="candidate-name">${a.nome} ${a.cognome}</div><div class="candidate-email">${a.email}</div></td>
-        <td style="font-size:11px;color:rgba(255,255,255,.4)">${a.job_positions?.title||'—'}</td>
-        <td style="font-size:11px;color:rgba(255,255,255,.35)">${new Date(a.created_at).getFullYear()}</td>
-        <td>${a.cv_url?`<a class="cv-link" href="${a.cv_url}" target="_blank">📄 CV</a>`:'—'}</td>
-        <td style="font-size:11px">${uniLabel(a.q_uni10459)}</td>
-        <td style="font-size:11px;color:rgba(255,255,255,.5)">${a.q_esperienza||'—'}</td>
-        <td style="font-size:11px;color:rgba(255,255,255,.35)">${(a.q_settori||[]).join(', ')||'—'}</td>
-        <td>${statoBadge(a.stato, a.id)}</td>
+        <td style="font-size:11px;color:rgba(255,255,255,.35)">${formatDate(a.created_at)}</td>
+        <td>${a.cv_url?`<a class="cv-link" href="${a.cv_url}" target="_blank">📄 ${a.cv_filename||'CV'}</a>`:'<span style="color:rgba(255,255,255,.2)">—</span>'}</td>
+        <td>${uniLabel(a.q_uni10459)}</td>
+        <td style="font-size:11px;color:rgba(255,255,255,.45)">${a.q_esperienza||'—'}</td>
+        <td>${statoBadge(a.stato,a.id)}</td>
         <td>${fitBar(a.ai_fit_score)}</td>
       </tr>`).join('');
     }
-
-    function dbFilter() {
-      const search = document.getElementById('dbSearch').value.toLowerCase();
-      const pos = document.getElementById('dbPosizione').value;
-      const anno = document.getElementById('dbAnno').value;
-      const uni = document.getElementById('dbUni').value;
-      const stato = document.getElementById('dbStato').value;
-      const filtered = allApps.filter(a => {
-        const name = `${a.nome} ${a.cognome} ${a.email}`.toLowerCase();
-        if (search && !name.includes(search)) return false;
-        if (pos && a.job_id !== pos) return false;
-        if (anno && new Date(a.created_at).getFullYear() !== parseInt(anno)) return false;
-        if (uni === 'si' && a.q_uni10459 !== 'si') return false;
-        if (uni === 'no' && a.q_uni10459 === 'si') return false;
-        if (stato && a.stato !== stato) return false;
+    function filterByStato(stato,btn){
+      document.querySelectorAll('#jobTabs .tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');
+      renderJobCandidati(allApps.filter(a=>a.job_id===currentJobId&&(!stato||a.stato===stato)));
+    }
+    function renderAllCand(f){
+      const apps=f?allApps.filter(a=>a.stato===f):allApps;
+      const body=document.getElementById('allCandBody'),empty=document.getElementById('allCandEmpty');
+      if(!apps.length){body.innerHTML='';empty.style.display='';return;}
+      empty.style.display='none';
+      body.innerHTML=apps.map(a=>`<tr>
+        <td><div class="candidate-name">${a.nome} ${a.cognome}</div><div class="candidate-email">${a.email}</div></td>
+        <td style="font-size:11px;color:rgba(255,255,255,.35);font-style:italic">${a.job_positions?.title||'—'}</td>
+        <td style="font-size:11px;color:rgba(255,255,255,.32)">${formatDate(a.created_at)}</td>
+        <td>${a.cv_url?`<a class="cv-link" href="${a.cv_url}" target="_blank">📄 CV</a>`:'—'}</td>
+        <td>${statoBadge(a.stato,a.id)}</td>
+        <td>${fitBar(a.ai_fit_score)}</td>
+      </tr>`).join('');
+    }
+    function filterAll(s,btn){document.querySelectorAll('#view-candidature .tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderAllCand(s);}
+    function populateDBFilters(){
+      const ps=document.getElementById('dbPosizione');
+      allJobs.forEach(j=>{const o=document.createElement('option');o.value=j.id;o.textContent=j.title;ps.appendChild(o);});
+      const ys=document.getElementById('dbAnno');
+      [...new Set(allApps.map(a=>new Date(a.created_at).getFullYear()))].sort((a,b)=>b-a).forEach(y=>{const o=document.createElement('option');o.value=y;o.textContent=y;ys.appendChild(o);});
+    }
+    function renderDatabase(filtered){
+      const data=filtered!==undefined?filtered:allApps;
+      const body=document.getElementById('dbBody'),empty=document.getElementById('dbEmpty');
+      if(!data.length){body.innerHTML='';empty.style.display='block';return;}
+      empty.style.display='none';
+      body.innerHTML=data.map(a=>`<tr>
+        <td><div class="candidate-name">${a.nome} ${a.cognome}</div><div class="candidate-email">${a.email}</div></td>
+        <td style="font-size:11px;color:rgba(255,255,255,.35);font-style:italic">${a.job_positions?.title||'—'}</td>
+        <td style="font-size:11px;color:rgba(255,255,255,.32)">${new Date(a.created_at).getFullYear()}</td>
+        <td>${a.cv_url?`<a class="cv-link" href="${a.cv_url}" target="_blank">📄 CV</a>`:'—'}</td>
+        <td>${uniLabel(a.q_uni10459)}</td>
+        <td style="font-size:11px;color:rgba(255,255,255,.45)">${a.q_esperienza||'—'}</td>
+        <td style="font-size:11px;color:rgba(255,255,255,.32)">${(a.q_settori||[]).join(', ')||'—'}</td>
+        <td>${statoBadge(a.stato,a.id)}</td>
+        <td>${fitBar(a.ai_fit_score)}</td>
+      </tr>`).join('');
+    }
+    function dbFilter(){
+      const s=document.getElementById('dbSearch').value.toLowerCase(),p=document.getElementById('dbPosizione').value,
+        a=document.getElementById('dbAnno').value,u=document.getElementById('dbUni').value,st=document.getElementById('dbStato').value;
+      renderDatabase(allApps.filter(x=>{
+        if(s&&!`${x.nome} ${x.cognome} ${x.email}`.toLowerCase().includes(s))return false;
+        if(p&&x.job_id!==p)return false;
+        if(a&&new Date(x.created_at).getFullYear()!==parseInt(a))return false;
+        if(u==='si'&&x.q_uni10459!=='si')return false;
+        if(u==='no'&&x.q_uni10459==='si')return false;
+        if(st&&x.stato!==st)return false;
         return true;
-      });
-      renderDatabase(filtered);
+      }));
     }
-
-    function exportCSV() {
-      const rows = allApps.map(a => [
-        `"${a.nome} ${a.cognome}"`, `"${a.email}"`, `"${a.telefono||''}"`,
-        `"${a.job_positions?.title||''}"`, formatDate(a.created_at),
-        `"${a.q_esperienza||''}"`, `"${a.q_uni10459||''}"`,
-        `"${(a.q_settori||[]).join(';')}"`, `"${a.stato}"`,
-        a.ai_fit_score != null ? a.ai_fit_score+'%' : ''
-      ]);
-      const csv = ['Nome,Email,Telefono,Posizione,Data,Esperienza,UNI10459,Settori,Stato,FitAI', ...rows.map(r=>r.join(','))].join('\n');
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='recruiting_database.csv'; a.click();
+    function exportCSV(){
+      const rows=allApps.map(a=>[`"${a.nome} ${a.cognome}"`,`"${a.email}"`,`"${a.telefono||''}"`,`"${a.job_positions?.title||''}"`,formatDate(a.created_at),`"${a.q_esperienza||''}"`,`"${a.q_uni10459||''}"`,`"${(a.q_settori||[]).join(';')}"`,`"${a.stato}"`,a.ai_fit_score!=null?a.ai_fit_score+'%':'']);
+      const csv=['Nome,Email,Telefono,Posizione,Data,Esperienza,UNI10459,Settori,Stato,FitAI',...rows.map(r=>r.join(','))].join('\n');
+      const el=document.createElement('a');el.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));el.download='recruiting_database.csv';el.click();
     }
-
-    // ── STATO CHANGE ──────────────────────────────────────────────────────
-    async function changeStato(appId, newStato) {
-      await sb.from('applications').update({ stato: newStato }).eq('id', appId);
-      await loadAll();
-      if (currentJobId) {
-        const apps = allApps.filter(a => a.job_id === currentJobId);
-        renderJobCandidati(apps);
-      }
-      showToast('Stato aggiornato: ' + newStato);
+    async function changeStato(appId,newStato){
+      await sb.from('applications').update({stato:newStato}).eq('id',appId);
+      await loadAll();if(currentJobId)renderJobCandidati(allApps.filter(a=>a.job_id===currentJobId));
+      showToast('Stato aggiornato: '+newStato);
     }
-
-    // ── NUOVA OFFERTA ─────────────────────────────────────────────────────
-    function openNewJobModal() { document.getElementById('jobModal').classList.add('open'); }
-    function closeModal() { document.getElementById('jobModal').classList.remove('open'); }
-
-    async function saveJob() {
-      const title = document.getElementById('jTitle').value.trim();
-      if (!title) { showToast('Il titolo è obbligatorio'); return; }
-      const btn = document.getElementById('saveJobBtn');
-      btn.disabled = true; btn.textContent = 'Salvataggio…';
-      const reqs = document.getElementById('jReqs').value.split('\n').map(r=>r.trim()).filter(Boolean);
-      const { error } = await sb.from('job_positions').insert({
-        title, location: document.getElementById('jLocation').value.trim(),
-        contract_type: document.getElementById('jContract').value,
-        sector: document.getElementById('jSector').value.trim(),
-        job_type: document.getElementById('jType').value,
-        description: document.getElementById('jDesc').value.trim(),
-        requirements: reqs, is_active: true
-      });
-      btn.disabled = false; btn.textContent = 'Pubblica offerta';
-      if (error) { showToast('Errore nel salvataggio'); return; }
-      closeModal();
-      // reset form
-      ['jTitle','jLocation','jSector','jDesc','jReqs'].forEach(id=>document.getElementById(id).value='');
-      await loadAll();
-      showToast('Offerta pubblicata!');
+    function openNewJobModal(){document.getElementById('jobModal').classList.add('open');}
+    function closeModal(){document.getElementById('jobModal').classList.remove('open');}
+    async function saveJob(){
+      const title=document.getElementById('jTitle').value.trim();
+      if(!title){showToast('Il titolo è obbligatorio');return;}
+      const btn=document.getElementById('saveJobBtn');btn.disabled=true;btn.textContent='Salvataggio…';
+      const reqs=document.getElementById('jReqs').value.split('\n').map(r=>r.trim()).filter(Boolean);
+      const{error}=await sb.from('job_positions').insert({title,location:document.getElementById('jLocation').value.trim(),contract_type:document.getElementById('jContract').value,sector:document.getElementById('jSector').value.trim(),job_type:document.getElementById('jType').value,description:document.getElementById('jDesc').value.trim(),requirements:reqs,is_active:true});
+      btn.disabled=false;btn.textContent='Pubblica offerta →';
+      if(error){showToast('Errore nel salvataggio');return;}
+      closeModal();['jTitle','jLocation','jSector','jDesc','jReqs'].forEach(id=>document.getElementById(id).value='');
+      await loadAll();showToast('Offerta pubblicata!');
     }
-
-    // ── COPIA LINK ────────────────────────────────────────────────────────
-    function copyLink(jobId) {
-      const url = `${BASE_URL}candidatura.html?job=${jobId}`;
-      navigator.clipboard.writeText(url).then(()=>showToast('Link copiato!'));
-    }
-    function copyJobLink() { if (currentJobId) copyLink(currentJobId); }
-
-    // ── HELPERS ───────────────────────────────────────────────────────────
-    function statoBadge(stato, appId) {
-      const opts = ['candidato','colloquiato','accettato','rifiutato','sospeso'];
-      const optsHtml = opts.map(s=>`<option value="${s}" ${s===stato?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('');
-      return `<select class="stato stato-${stato}" onchange="changeStato('${appId}', this.value)" style="cursor:pointer;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.5px;font-family:var(--sans);outline:none;border:1px solid;background:transparent;">
-        ${optsHtml}
+    function copyLink(jobId){navigator.clipboard.writeText(`${BASE_URL}candidatura.html?job=${jobId}`).then(()=>showToast('Link copiato negli appunti!'));}
+    function copyJobLink(){if(currentJobId)copyLink(currentJobId);}
+    function statoBadge(stato,appId){
+      const opts=['candidato','colloquiato','accettato','rifiutato','sospeso'];
+      return `<select class="stato stato-${stato}" onchange="changeStato('${appId}',this.value)" style="cursor:pointer;font-family:var(--sans);outline:none;border:1px solid;background:transparent;">
+        ${opts.map(s=>`<option value="${s}" ${s===stato?'selected':''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`).join('')}
       </select>`;
     }
-
-    function fitBar(score) {
-      if (score == null) return '<span style="font-size:11px;color:rgba(255,255,255,.2)">—</span>';
-      const cls = score>=75?'high':score>=50?'mid':'low';
+    function fitBar(score){
+      if(score==null)return '<span style="font-size:11px;color:rgba(255,255,255,.2);font-style:italic">—</span>';
+      const cls=score>=75?'high':score>=50?'mid':'low';
       return `<div class="fit-wrap fit-${cls}"><div class="fit-track"><div class="fit-fill" style="width:${score}%"></div></div><div class="fit-pct">${score}%</div></div>`;
     }
-
-    function uniLabel(v) {
-      if (v==='si') return '<span style="color:#5ec989;font-size:11px">✓ Sì</span>';
-      if (v==='in_corso') return '<span style="color:#e8b04a;font-size:11px">⏳ In corso</span>';
-      return '<span style="color:rgba(255,255,255,.3);font-size:11px">—</span>';
+    function uniLabel(v){
+      if(v==='si')return '<span style="color:#7dd9a8;font-size:11px">✓ Sì</span>';
+      if(v==='in_corso')return '<span style="color:#e2c88a;font-size:11px">⏳ In corso</span>';
+      return '<span style="color:rgba(255,255,255,.25);font-size:11px">—</span>';
     }
-
-    function formatDate(iso) {
-      if (!iso) return '—';
-      return new Date(iso).toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric'});
-    }
-
-    function showToast(msg) {
-      const t = document.getElementById('toast'); t.textContent=msg;
-      t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000);
-    }
-
-    // ── NAVIGAZIONE VIEWS ─────────────────────────────────────────────────
-    const viewTitles = { dashboard:'Dashboard', offerte:'Offerte di lavoro', candidature:'Candidature', database:'Database archivio' };
-    function showView(name) {
-      ['dashboard','offerte','candidature','database'].forEach(v=>{
-        document.getElementById('view-'+v).style.display = v===name?'':'none';
-      });
+    function formatDate(iso){if(!iso)return'—';return new Date(iso).toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric'});}
+    function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);}
+    function showView(name,el){
+      ['dashboard','offerte','candidature','database'].forEach(v=>document.getElementById('view-'+v).style.display=v===name?'':'none');
       document.querySelectorAll('.sb-link').forEach(l=>l.classList.remove('active'));
-      event.currentTarget.classList.add('active');
-      document.getElementById('topbarTitle').textContent = viewTitles[name];
-      currentView = name;
+      if(el)el.classList.add('active');
+      document.getElementById('topbarTitle').textContent={dashboard:'Dashboard',offerte:'Offerte di lavoro',candidature:'Candidature',database:'Database archivio'}[name]||'';
     }
-
     init();
   </script>
 </body>
