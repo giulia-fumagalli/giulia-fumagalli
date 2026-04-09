@@ -20,7 +20,7 @@
     body{font-family:var(--sans);background:var(--ink);color:#fff;display:flex;min-height:100svh;overflow-x:hidden;}
 
     /* SIDEBAR */
-    .sidebar{width:var(--sidebar);flex-shrink:0;background:#0a1120;border-right:1px solid var(--line);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;}
+    .sidebar{width:var(--sidebar);flex-shrink:0;background:var(--ink-mid);border-right:1px solid var(--line);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;}
     .sb-logo{padding:24px 20px 20px;border-bottom:1px solid var(--line);}
     .sb-logo-name{font-family:var(--serif);font-size:15px;color:#fff;letter-spacing:0.04em;}
     .sb-logo-name em{font-style:italic;color:var(--gold);}
@@ -40,7 +40,7 @@
 
     /* MAIN */
     .main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100svh;}
-    .topbar{height:56px;background:#0a1120;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:40;}
+    .topbar{height:56px;background:var(--ink-mid);border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:40;}
     .topbar-title{font-family:var(--serif);font-size:18px;font-weight:300;color:#fff;flex:1;}
     .topbar-title em{font-style:italic;color:var(--gold-lt);}
     .btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:3px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;font-family:var(--sans);text-decoration:none;}
@@ -50,11 +50,13 @@
     .btn-ghost:hover{color:#fff;border-color:rgba(200,169,110,0.4);}
     .btn-sm{padding:5px 12px;font-size:10px;}
 
-    .content{padding:28px;flex:1;}
+    .content{padding:28px;flex:1;position:relative;}
+    .content::before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(-52deg,transparent,transparent 90px,rgba(200,169,110,0.013) 90px,rgba(200,169,110,0.013) 91px);z-index:0;}
+    .content > *{position:relative;z-index:1;}
 
     /* METRICHE */
     .metrics-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
-    .metric{background:var(--ink-card);border:1px solid var(--line);border-radius:5px;padding:18px 20px;}
+    .metric{background:#0f1d30;border:1px solid var(--line);border-radius:5px;padding:18px 20px;}
     .metric-label{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-bottom:8px;}
     .metric-value{font-family:var(--serif);font-size:32px;font-weight:300;line-height:1;color:#fff;}
     .metric-value.gold{color:var(--gold-lt);}
@@ -63,7 +65,7 @@
     .metric-sub{font-size:10px;color:rgba(255,255,255,0.22);margin-top:6px;}
 
     /* SEZIONI */
-    .section-card{background:var(--ink-card);border:1px solid var(--line);border-radius:5px;margin-bottom:20px;}
+    .section-card{background:#0f1d30;border:1px solid var(--line);border-radius:5px;margin-bottom:20px;}
     .sc-header{padding:16px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;}
     .sc-title{font-family:var(--serif);font-size:17px;font-weight:300;color:#fff;flex:1;}
     .sc-sub{font-size:10px;color:rgba(255,255,255,0.28);}
@@ -220,11 +222,8 @@
   <div class="main">
     <div class="topbar">
       <div class="topbar-title" id="topbarTitle">Dashboard</div>
-      <button class="btn btn-ghost btn-sm" onclick="showView('offerte')">
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="8" y1="1" x2="8" y2="15"/><line x1="1" y1="8" x2="15" y2="8"/></svg>
-        Nuova offerta
-      </button>
       <button class="btn btn-gold btn-sm" onclick="openNewJobModal()">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="1" x2="8" y2="15"/><line x1="1" y1="8" x2="15" y2="8"/></svg>
         Crea offerta
       </button>
     </div>
