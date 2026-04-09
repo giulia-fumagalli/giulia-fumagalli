@@ -3,121 +3,104 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Recruiting — Accesso Admin</title>
+  <title>Recruiting — Accesso Admin | SIES</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-  <!-- Supabase SDK -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root{
-      --ink:#080f1c;--gold:#c8a96e;--gold-lt:#e2c88a;--gold-dk:#8c7040;
-      --line:rgba(200,169,110,0.22);--sans:'Inter',sans-serif;--serif:'Cormorant Garamond',serif;
+      --navy:#1a2e4a; --navy-mid:#2c4a6e; --navy-lt:#3d6494;
+      --red:#c0392b; --red-lt:#e74c3c;
+      --white:#ffffff; --off:#f8f9fa; --border:#e2e8f0;
+      --text:#2d3748; --text-mid:#4a5568; --text-light:#718096;
+      --sans:'Montserrat',sans-serif; --body:'Open Sans',sans-serif;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html,body{height:100%;font-family:var(--sans);background:var(--ink);color:#fff;}
-    body{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100svh;padding:24px;position:relative;overflow:hidden;}
+    html,body{height:100%;font-family:var(--body);background:var(--off);color:var(--text);}
+    body{display:flex;min-height:100svh;}
 
-    /* Sfondo decorativo */
-    body::before{content:'R';position:absolute;right:-5vw;bottom:-15vh;font-family:var(--serif);font-size:60vw;font-weight:300;font-style:italic;color:rgba(255,255,255,0.018);line-height:1;pointer-events:none;user-select:none;}
-    body::after{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(-52deg,transparent,transparent 90px,rgba(200,169,110,0.012) 90px,rgba(200,169,110,0.012) 91px);}
+    .left-panel{width:420px;flex-shrink:0;background:var(--navy);display:flex;flex-direction:column;justify-content:space-between;padding:48px 44px;position:relative;overflow:hidden;}
+    .left-panel::before{content:'';position:absolute;bottom:-80px;right:-80px;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,0.04);}
+    .left-panel::after{content:'';position:absolute;top:-40px;left:-40px;width:180px;height:180px;border-radius:50%;background:rgba(192,57,43,0.12);}
+    .lp-logo{position:relative;z-index:1;}
+    .lp-logo-name{font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#fff;margin-bottom:4px;}
+    .lp-logo-sub{font-size:11px;font-weight:300;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+    .lp-divider{width:40px;height:2px;background:var(--red);margin:24px 0;}
+    .lp-content{position:relative;z-index:1;}
+    .lp-title{font-family:var(--sans);font-size:28px;font-weight:300;color:#fff;line-height:1.2;margin-bottom:16px;}
+    .lp-title strong{font-weight:700;display:block;}
+    .lp-desc{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.8;}
+    .lp-bottom{position:relative;z-index:1;}
+    .lp-back{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);text-decoration:none;transition:color .2s;}
+    .lp-back:hover{color:rgba(255,255,255,0.7);}
 
-    .back-link{position:absolute;top:28px;left:32px;font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.28);text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .25s;z-index:10;}
-    .back-link:hover{color:var(--gold);}
-
-    .login-card{position:relative;z-index:1;width:100%;max-width:380px;background:rgba(255,255,255,0.03);border:1px solid var(--line);border-radius:6px;padding:48px 40px;backdrop-filter:blur(10px);}
-    .login-card::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(to right,transparent,var(--gold-dk),transparent);}
-
-    .login-logo{font-family:var(--serif);font-size:13px;letter-spacing:0.06em;color:rgba(255,255,255,0.5);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
-    .login-logo span{width:20px;height:1px;background:var(--gold-dk);}
-    .login-title{font-family:var(--serif);font-size:32px;font-weight:300;color:#fff;line-height:1.1;margin-bottom:6px;}
-    .login-title em{font-style:italic;color:var(--gold-lt);}
-    .login-sub{font-size:12px;color:rgba(255,255,255,0.32);margin-bottom:40px;line-height:1.6;}
+    .right-panel{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 24px;background:var(--white);}
+    .login-box{width:100%;max-width:380px;}
+    .login-tag{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:12px;}
+    .login-title{font-family:var(--sans);font-size:26px;font-weight:600;color:var(--navy);margin-bottom:6px;}
+    .login-sub{font-size:13px;color:var(--text-light);margin-bottom:36px;line-height:1.6;}
 
     .field{margin-bottom:20px;}
-    .field label{display:block;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:8px;}
-    .field input{width:100%;padding:12px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(200,169,110,0.18);border-radius:3px;color:#fff;font-size:14px;font-family:var(--sans);outline:none;transition:border-color .25s;}
-    .field input::placeholder{color:rgba(255,255,255,0.2);}
-    .field input:focus{border-color:rgba(200,169,110,0.5);}
+    .field label{display:block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-mid);margin-bottom:7px;}
+    .field input{width:100%;padding:12px 14px;background:var(--off);border:1.5px solid var(--border);border-radius:6px;color:var(--text);font-size:14px;font-family:var(--body);outline:none;transition:border-color .2s;}
+    .field input:focus{border-color:var(--navy-lt);background:#fff;}
+    .field input::placeholder{color:var(--text-light);}
 
-    .btn-login{width:100%;padding:14px;background:var(--gold);color:var(--ink);font-size:10px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;border:none;border-radius:3px;cursor:pointer;margin-top:8px;transition:background .25s;font-family:var(--sans);}
-    .btn-login:hover{background:var(--gold-lt);}
+    .btn-login{width:100%;padding:13px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:none;border-radius:6px;cursor:pointer;margin-top:8px;transition:background .2s;font-family:var(--sans);}
+    .btn-login:hover{background:var(--navy-mid);}
     .btn-login:disabled{opacity:0.5;cursor:not-allowed;}
+    .error-msg{font-size:12px;color:var(--red);margin-top:12px;text-align:center;min-height:18px;}
+    .login-footer{margin-top:40px;padding-top:24px;border-top:1px solid var(--border);text-align:center;}
+    .login-footer p{font-size:11px;color:var(--text-light);line-height:1.7;}
 
-    .error-msg{font-size:12px;color:#e07070;margin-top:14px;text-align:center;min-height:18px;}
-
-    .login-footer{margin-top:32px;padding-top:24px;border-top:1px solid rgba(200,169,110,0.1);text-align:center;}
-    .login-footer p{font-size:11px;color:rgba(255,255,255,0.2);line-height:1.6;}
+    @media(max-width:700px){.left-panel{display:none;}.right-panel{background:var(--off);}}
   </style>
 </head>
 <body>
-
-  <a href="../index.html#servizi" class="back-link">
-    <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Torna al sito
-  </a>
-
-  <div class="login-card">
-    <div class="login-logo"><span></span> Giulia Fumagalli</div>
-    <h1 class="login-title">Recruiting<br/><em>Platform</em></h1>
-    <p class="login-sub">Area riservata. Accesso consentito<br/>solo agli amministratori autorizzati.</p>
-
-    <div class="field">
-      <label>Email</label>
-      <input type="email" id="email" placeholder="admin@example.com" autocomplete="email"/>
+  <div class="left-panel">
+    <div class="lp-logo">
+      <div class="lp-logo-name">SIES</div>
+      <div class="lp-logo-sub">Scuola Internazionale Etica & Sicurezza</div>
+      <div class="lp-divider"></div>
     </div>
-    <div class="field">
-      <label>Password</label>
-      <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
+    <div class="lp-content">
+      <div class="lp-title">Piattaforma<br/><strong>Recruiting</strong></div>
+      <p class="lp-desc">Gestione candidature, valutazione profili e database talenti per il settore security e risk management.</p>
     </div>
-
-    <button class="btn-login" id="loginBtn" onclick="doLogin()">Accedi alla dashboard →</button>
-    <div class="error-msg" id="errorMsg"></div>
-
-    <div class="login-footer">
-      <p>Accesso riservato all'amministratore.<br/>Per assistenza contatta il gestore della piattaforma.</p>
+    <div class="lp-bottom">
+      <a href="../index.html#servizi" class="lp-back">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="none"><path d="M13 8H3M7 4L3 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Torna al sito
+      </a>
     </div>
   </div>
-
+  <div class="right-panel">
+    <div class="login-box">
+      <div class="login-tag">Area Riservata</div>
+      <h1 class="login-title">Accedi alla Dashboard</h1>
+      <p class="login-sub">Inserisci le tue credenziali di amministratore.</p>
+      <div class="field"><label>Email</label><input type="email" id="email" placeholder="admin@scuolaeticaesicurezza.eu" autocomplete="email"/></div>
+      <div class="field"><label>Password</label><input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/></div>
+      <button class="btn-login" id="loginBtn" onclick="doLogin()">Accedi →</button>
+      <div class="error-msg" id="errorMsg"></div>
+      <div class="login-footer"><p>Accesso riservato agli amministratori SIES.<br/>Per assistenza contatta il gestore della piattaforma.</p></div>
+    </div>
+  </div>
   <script>
-    // ─── CONFIGURAZIONE SUPABASE ──────────────────────────────────────────
-    // Sostituisci questi valori con quelli del tuo progetto Supabase
-    // Li trovi in: Supabase Dashboard → Settings → API
     const SUPABASE_URL = 'https://dpfjautqowbzndgkrjnp.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwZmphdXRxb3diem5kZ2tyam5wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3MzI5NzcsImV4cCI6MjA5MTMwODk3N30.7ppWIWJHootC2EQbWT0z30DPehFO5P-v_fB_b6YNxT4';
-    // ─────────────────────────────────────────────────────────────────────
-
     const sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // Se già loggato, redirect diretto alla dashboard
-    sbClient.auth.getSession().then(({ data: { session } }) => {
-      if (session) window.location.href = 'dashboard.html';
-    });
-
+    sbClient.auth.getSession().then(({ data: { session } }) => { if (session) window.location.href = 'dashboard.html'; });
     async function doLogin() {
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
-      const btn = document.getElementById('loginBtn');
-      const err = document.getElementById('errorMsg');
-
+      const btn = document.getElementById('loginBtn'), err = document.getElementById('errorMsg');
       if (!email || !password) { err.textContent = 'Inserisci email e password.'; return; }
-
-      btn.disabled = true;
-      btn.textContent = 'Accesso in corso…';
-      err.textContent = '';
-
-      const { data, error } = await sbClient.auth.signInWithPassword({ email, password });
-
-      if (error) {
-        err.textContent = 'Credenziali non valide. Riprova.';
-        btn.disabled = false;
-        btn.textContent = 'Accedi alla dashboard →';
-        return;
-      }
-
+      btn.disabled = true; btn.textContent = 'Accesso in corso…'; err.textContent = '';
+      const { error } = await sbClient.auth.signInWithPassword({ email, password });
+      if (error) { err.textContent = 'Credenziali non valide. Riprova.'; btn.disabled = false; btn.textContent = 'Accedi →'; return; }
       window.location.href = 'dashboard.html';
     }
-
-    // Login con tasto Enter
     document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
   </script>
 </body>
