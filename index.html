@@ -38,8 +38,8 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 200;
-      padding: 0 48px;
-      height: 60px;
+      padding: 0 60px;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -131,49 +131,28 @@
     }
 
     /* ══════════════════════════════════
-       SCENE 1 — HERO SPLIT
+       SCENE 1 — HERO FULL COVER
     ══════════════════════════════════ */
     .scene-hero {
       min-height: 100svh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
       position: relative;
       overflow: hidden;
-    }
-
-    /* TESTO — sinistra */
-    .hero-content {
-      position: relative;
-      z-index: 2;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 100px 52px 72px 48px;
-      background: var(--ink);
+      align-items: flex-end;
     }
 
-    /* sottili righe diagonali decorative */
-    .hero-content::before {
-      content: '';
-      position: absolute; inset: 0; pointer-events: none;
-      background: repeating-linear-gradient(
-        -55deg, transparent, transparent 80px,
-        rgba(200,169,110,0.018) 80px, rgba(200,169,110,0.018) 81px
-      );
-    }
-
-    /* FOTO — destra */
+    /* FOTO — full background */
     .hero-bg {
-      position: relative;
-      overflow: hidden;
-      background: var(--ink-mid);
+      position: absolute;
+      inset: 0;
+      z-index: 0;
     }
     .hero-bg img {
       width: 100%; height: 100%;
       object-fit: cover;
       object-position: center top;
       display: block;
-      filter: grayscale(18%) contrast(1.08) brightness(0.82);
+      filter: grayscale(20%) contrast(1.08) brightness(0.72);
       transform: scale(1.04);
       animation: heroZoom 14s ease-out forwards;
     }
@@ -182,24 +161,42 @@
       to   { transform: scale(1.00); }
     }
 
-    /* vignetta sottile sui bordi della foto */
+    /* overlay: scuro a sinistra e in basso, foto visibile a destra */
     .hero-bg::after {
       content: '';
       position: absolute; inset: 0;
       background:
-        linear-gradient(to left,  transparent 65%, rgba(8,15,28,0.55) 100%),
-        linear-gradient(to top,   rgba(8,15,28,0.5) 0%, transparent 35%),
-        linear-gradient(to bottom,rgba(8,15,28,0.3) 0%, transparent 25%);
+        linear-gradient(105deg,
+          rgba(8,15,28,0.92) 0%,
+          rgba(8,15,28,0.75) 40%,
+          rgba(8,15,28,0.20) 70%,
+          transparent 100%),
+        linear-gradient(to top,
+          rgba(8,15,28,0.85) 0%,
+          rgba(8,15,28,0.30) 40%,
+          transparent 70%);
     }
 
-    /* linea dorata verticale tra testo e foto */
+    /* linea ornamentale dorata verticale — 60% destra */
     .hero-divider {
       position: absolute;
-      left: 50%; top: 12%; bottom: 12%;
+      left: 58%; top: 15%; bottom: 15%;
       width: 1px;
-      background: linear-gradient(to bottom, transparent, rgba(200,169,110,0.35), transparent);
-      z-index: 3;
-      transform: translateX(-50%);
+      background: linear-gradient(to bottom,
+        transparent 0%,
+        rgba(200,169,110,0.4) 30%,
+        rgba(200,169,110,0.4) 70%,
+        transparent 100%);
+      z-index: 2;
+    }
+
+    /* TESTO — ancorato in basso a sinistra */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 680px;
+      padding: 0 60px 72px;
     }
 
     .hero-tag {
@@ -345,7 +342,7 @@
     .profilo-inner {
       max-width: 1160px;
       margin: 0 auto;
-      padding: 100px 40px;
+      padding: 100px 60px;
     }
 
     .scene-label {
@@ -486,7 +483,7 @@
     .aree-inner {
       max-width: 1160px;
       margin: 0 auto;
-      padding: 100px 40px;
+      padding: 100px 60px;
     }
 
     .aree-header {
@@ -611,7 +608,7 @@
     .servizi-inner {
       max-width: 1160px;
       margin: 0 auto;
-      padding: 100px 40px;
+      padding: 100px 60px;
     }
 
     .servizi-intro { margin-bottom: 56px; }
@@ -876,11 +873,8 @@
        RESPONSIVE
     ══════════════════════════════════ */
     @media (max-width: 860px) {
-      .scene-hero { grid-template-columns: 1fr; grid-template-rows: 55vw 1fr; }
-      .hero-bg { grid-row: 1; }
+      .hero-content { padding: 0 28px 56px; max-width: 100%; }
       .hero-divider { display: none; }
-      .hero-content { grid-row: 2; padding: 44px 24px 56px; justify-content: flex-start; }
-      .hero-content::before { display: none; }
       .profilo-inner, .aree-inner, .servizi-inner, .store-inner { padding: 72px 24px; }
       .profilo-split { grid-template-columns: 1fr; gap: 52px; }
       .aree-header { grid-template-columns: 1fr; gap: 20px; margin-bottom: 48px; }
@@ -923,6 +917,9 @@
 
   <!-- ══ HERO ══ -->
   <section class="scene-hero" id="home">
+    <div class="hero-bg">
+      <img src="foto.png" alt="Giulia Fumagalli"/>
+    </div>
     <div class="hero-divider"></div>
 
     <div class="hero-content">
@@ -945,10 +942,6 @@
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
-    </div>
-
-    <div class="hero-bg">
-      <img src="foto.png" alt="Giulia Fumagalli"/>
     </div>
 
     <div class="scroll-ind">
