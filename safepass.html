@@ -691,9 +691,9 @@ function renderTrasfertaList(body) {
         <div class="page-eyebrow">Trasferte Attive</div>
         <div class="page-title">Seleziona una <em>Trasferta</em></div>
       </div>
-      <button class="btn btn-gold" onclick="showView('viaggiatori')">
+      <button class="btn btn-gold" onclick="openNewTripDirect()">
         <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        Gestisci Viaggiatori
+        Nuova Trasferta
       </button>
     </div>
     <div class="card">
@@ -703,10 +703,85 @@ function renderTrasfertaList(body) {
   </div>`;
 }
 
+function openNewTripDirect() {
+  // Apri modal assegna trasferta: prima chiede a chi assegnare
+  if (DB.travelers.length === 0) {
+    alert('Crea prima almeno un profilo viaggiatore nella sezione "Viaggiatori".');
+    showView('viaggiatori'); return;
+  }
+  const travOpts = DB.travelers.map(t =>
+    `<option value="${t.id}">${t.nome} ${t.cognome} — ${t.ruolo}</option>`
+  ).join('');
+  const countryOptions = [
+    {v:'nigeria',f:'🇳🇬',n:'Nigeria',r:'alto'},
+    {v:'arabia',f:'🇸🇦',n:'Arabia Saudita',r:'medio'},
+    {v:'germania',f:'🇩🇪',n:'Germania',r:'basso'},
+    {v:'brasile',f:'🇧🇷',n:'Brasile',r:'alto'},
+    {v:'giappone',f:'🇯🇵',n:'Giappone',r:'basso'},
+    {v:'argentina',f:'🇦🇷',n:'Argentina',r:'medio'},
+  ].map(c => `<option value="${c.v}">${c.f} ${c.n} — Rischio ${c.r.toUpperCase()}</option>`).join('');
+  const scopi = ['Commerciale / Meeting','Tecnico / Installazione','Sopralluogo','Audit / Ispezione','Formazione'].map(s=>`<option>${s}</option>`).join('');
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.innerHTML = `<div class="modal-box">
+    <div class="modal-title">Nuova Trasferta</div>
+    <div class="modal-sub">Seleziona il viaggiatore e compila i dettagli della missione.</div>
+    <div class="form-grid">
+      <div class="form-group full"><label class="label">Assegna a *</label>
+        <select class="sel" id="nd-traveler">${travOpts}</select>
+      </div>
+      <div class="form-group full"><label class="label">Paese di destinazione *</label>
+        <select class="sel" id="nd-paese">${countryOptions}</select>
+      </div>
+      <div class="form-group full"><label class="label">Città *</label><input class="inp" id="nd-citta" placeholder="es. Lagos" type="text"/></div>
+      <div class="form-group"><label class="label">Data partenza *</label><input class="inp" id="nd-inizio" type="date"/></div>
+      <div class="form-group"><label class="label">Durata (giorni) *</label><input class="inp" id="nd-giorni" type="number" placeholder="10" min="1"/></div>
+      <div class="form-group full"><label class="label">Scopo</label>
+        <select class="sel" id="nd-scopo">${scopi}</select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button class="btn btn-ghost" style="flex:1;justify-content:center;" onclick="closeModal()">Annulla</button>
+      <button class="btn btn-gold" style="flex:1;justify-content:center;" onclick="saveTripDirect()">Crea & Apri Trasferta →</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
+function saveTripDirect() {
+  const travelerId = document.getElementById('nd-traveler').value;
+  const paeseKey = document.getElementById('nd-paese').value;
+  const citta = document.getElementById('nd-citta').value.trim();
+  const inizio = document.getElementById('nd-inizio').value;
+  const giorni = parseInt(document.getElementById('nd-giorni').value);
+  const scopo = document.getElementById('nd-scopo').value;
+  if (!citta || !inizio || !giorni) { alert('Compila tutti i campi obbligatori.'); return; }
+  const c = COUNTRIES[paeseKey];
+  DB.trips = DB.trips.filter(t => t.travelerId !== travelerId);
+  const [y,m,d] = inizio.split('-');
+  const dataInizio = `${d}/${m}/${y}`;
+  const fineDate = new Date(inizio); fineDate.setDate(fineDate.getDate() + giorni);
+  const fd = fineDate.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const newTrip = { id:generateId('tr'), paese:c.n, citta, flag:c.f, risk:c.r, scopo, dataInizio, dataFine:fd, giorni, travelerId, phase:0, stato:'pre-trip' };
+  DB.trips.push(newTrip);
+  const traveler = DB.travelers.find(t => t.id === travelerId);
+  if (traveler) traveler.tripId = newTrip.id;
+  // Seleziona subito la nuova trasferta e apri la checklist
+  session.currentTrip = newTrip;
+  session.curPhase = 0;
+  closeModal();
+  showView('trasferte');
+}
+
+function backToTripList() {
+  session.currentTrip = null;
+  showView('trasferte');
+}
+
 function selectTrip(tripId) {
   session.currentTrip = DB.trips.find(t => t.id === tripId) || null;
   if (session.currentTrip) session.curPhase = session.currentTrip.phase;
-  refresh();
+  showView('trasferte');
 }
 
 function sidebar() {
@@ -727,6 +802,14 @@ function sidebar() {
     </div>`;
   }).join('');
   return `<div class="sidebar">
+    <div style="padding:6px 10px;border-bottom:1px solid rgba(255,255,255,.05);flex-shrink:0;">
+      <button onclick="backToTripList()" style="width:100%;display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:3px;background:none;border:none;cursor:pointer;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.32);transition:all .2s;"
+        onmouseover="this.style.background='rgba(255,255,255,.05)';this.style.color='rgba(255,255,255,.7)'"
+        onmouseout="this.style.background='none';this.style.color='rgba(255,255,255,.32)'">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M9 2L4 7l5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Tutte le trasferte
+      </button>
+    </div>
     <div class="psb-trip">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
         <span style="font-size:22px;">${trip.flag}</span>
