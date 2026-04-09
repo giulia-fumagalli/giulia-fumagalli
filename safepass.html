@@ -4,683 +4,1076 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>SafePass — Travel Risk Management</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet"/>
 <style>
-:root{
-  --ink:#08101f; --ink2:#0f1c30; --ink3:#162540;
-  --gold:#c8a65a; --glt:#e2c07e; --gdk:#7a5e28;
-  --ok:#4caf7d; --warn:#e8923a; --danger:#e05555;
-  --line:rgba(200,166,90,0.18); --line2:rgba(255,255,255,0.06);
-  --muted:rgba(255,255,255,0.38);
-  --sans:'Inter',sans-serif; --serif:'Cormorant Garamond',serif;
+:root {
+  --bg:     #060d1a;
+  --bg2:    #0c1628;
+  --bg3:    #122035;
+  --bg4:    #182840;
+  --gold:   #c8a55a;
+  --glt:    #e2c07e;
+  --gdk:    #7a5e28;
+  --ok:     #3db87a;
+  --warn:   #e89240;
+  --danger: #e05050;
+  --info:   #5090e0;
+  --line:   rgba(200,165,90,.18);
+  --line2:  rgba(255,255,255,.07);
+  --muted:  rgba(255,255,255,.38);
+  --display:'Syne', sans-serif;
+  --body:   'Lora', serif;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--sans);background:var(--ink);color:#fff;overflow-x:hidden;}
-::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--ink);}::-webkit-scrollbar-thumb{background:var(--gdk);}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { font-family:var(--body); background:var(--bg); color:#fff; overflow-x:hidden; min-height:100vh; }
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--gdk); border-radius:2px; }
 
-/* LOGIN */
-#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 30% 50%,#0d1e38 0%,var(--ink) 70%);}
-.lb{background:var(--ink2);border:1px solid var(--line);border-radius:8px;padding:46px 42px;width:100%;max-width:420px;}
-.ll{font-family:var(--serif);font-size:28px;font-weight:300;margin-bottom:4px;}
-.ll em{font-style:italic;color:var(--glt);}
-.ls{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:34px;}
-.lbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:6px;display:block;}
-.li{width:100%;background:var(--ink3);border:1px solid rgba(255,255,255,0.09);border-radius:3px;padding:11px 13px;color:#fff;font-family:var(--sans);font-size:13px;margin-bottom:13px;outline:none;transition:border-color .2s;}
-.li:focus{border-color:var(--gold);}
-.li::placeholder{color:rgba(255,255,255,0.18);}
-.lsel{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='8' viewBox='0 0 10 8'%3E%3Cpath d='M1 1l4 5 4-5' stroke='%23c8a65a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
-.lsel option{background:var(--ink2);}
+/* ─── UTIL ─── */
+.hidden { display:none !important; }
+.flex { display:flex; }
+.col { flex-direction:column; }
+.g8 { gap:8px; }
+.g12 { gap:12px; }
+.g16 { gap:16px; }
+.g24 { gap:24px; }
+.ac { align-items:center; }
+.jb { justify-content:space-between; }
+.jc { justify-content:center; }
+.f1 { flex:1; }
+.w100 { width:100%; }
 
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border:none;border-radius:3px;font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
-.bg{background:var(--gold);color:var(--ink);}
-.bg:hover{background:var(--glt);}
-.bgh{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.12);}
-.bgh:hover{color:#fff;border-color:rgba(255,255,255,0.28);}
-.bok{background:var(--ok);color:#fff;}
-.bok:hover{filter:brightness(1.1);}
-.bdis{opacity:.35;cursor:not-allowed!important;}
-.bfull{width:100%;justify-content:center;}
+/* ─── BUTTONS ─── */
+.btn {
+  display:inline-flex; align-items:center; gap:7px;
+  padding:10px 20px; border:none; border-radius:3px;
+  font-family:var(--display); font-size:10px; font-weight:700;
+  letter-spacing:2.5px; text-transform:uppercase; cursor:pointer; transition:all .2s;
+}
+.btn-gold { background:var(--gold); color:var(--bg); }
+.btn-gold:hover { background:var(--glt); }
+.btn-ok { background:var(--ok); color:#fff; }
+.btn-ok:hover { filter:brightness(1.12); }
+.btn-danger { background:var(--danger); color:#fff; }
+.btn-ghost { background:rgba(255,255,255,.06); color:rgba(255,255,255,.55); border:1px solid var(--line2); }
+.btn-ghost:hover { background:rgba(255,255,255,.1); color:#fff; }
+.btn-sm { padding:7px 14px; font-size:9px; letter-spacing:2px; }
+.btn-full { width:100%; justify-content:center; }
+.btn-dis { opacity:.32; cursor:not-allowed !important; pointer-events:none; }
 
-/* APP */
-#app{display:none;flex-direction:column;height:100vh;overflow:hidden;}
+/* ─── INPUTS ─── */
+.inp, .sel {
+  background:var(--bg3); border:1px solid rgba(255,255,255,.1);
+  border-radius:3px; padding:10px 13px; color:#fff;
+  font-family:var(--body); font-size:13px; outline:none; width:100%;
+  transition:border-color .2s;
+}
+.inp:focus, .sel:focus { border-color:var(--gold); }
+.inp::placeholder { color:rgba(255,255,255,.22); }
+.sel { cursor:pointer; appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23c8a55a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 12px center; }
+.sel option { background:var(--bg2); }
+.label { font-family:var(--display); font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.35); display:block; margin-bottom:5px; }
 
-/* TOPBAR */
-.tb{background:rgba(8,16,31,.97);backdrop-filter:blur(20px);border-bottom:1px solid var(--line);height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;flex-shrink:0;}
-.tbl{font-family:var(--serif);font-size:15px;font-weight:300;}
-.tbl em{font-style:italic;color:var(--glt);}
-.tbr{display:flex;align-items:center;gap:14px;}
-.tbadge{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);padding:3px 10px;border:1px solid var(--line);border-radius:2px;}
-.tlo{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.22);background:none;border:none;cursor:pointer;transition:color .2s;}
-.tlo:hover{color:#fff;}
+/* ─── BADGES ─── */
+.badge { font-family:var(--display); font-size:8px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:3px 9px; border-radius:2px; }
+.badge-gold { background:rgba(200,165,90,.12); color:var(--gold); border:1px solid var(--line); }
+.badge-ok { background:rgba(61,184,122,.12); color:var(--ok); border:1px solid rgba(61,184,122,.25); }
+.badge-warn { background:rgba(232,146,64,.12); color:var(--warn); border:1px solid rgba(232,146,64,.25); }
+.badge-danger { background:rgba(224,80,80,.12); color:var(--danger); border:1px solid rgba(224,80,80,.25); }
+.badge-info { background:rgba(80,144,224,.12); color:var(--info); border:1px solid rgba(80,144,224,.25); }
 
-/* TOPNAV */
-.tn{background:var(--ink2);border-bottom:1px solid var(--line2);display:flex;padding:0 24px;flex-shrink:0;overflow-x:auto;}
-.tnb{font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.3);padding:13px 16px;cursor:pointer;border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;white-space:nowrap;transition:all .2s;}
-.tnb:hover{color:rgba(255,255,255,.65);}
-.tnb.on{color:var(--gold);border-bottom-color:var(--gold);}
+/* ─── CARDS ─── */
+.card { background:var(--bg2); border:1px solid var(--line); border-radius:6px; overflow:hidden; }
+.card-head { padding:12px 18px; border-bottom:1px solid var(--line2); display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.card-title { font-family:var(--display); font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:rgba(255,255,255,.38); }
+.card-body { padding:18px; }
 
-/* MAIN BODY */
-.body{display:flex;flex:1;overflow:hidden;}
+/* ─── ALERTS ─── */
+.alert { display:flex; gap:10px; align-items:flex-start; padding:11px 14px; border:1px solid; border-radius:4px; font-family:var(--body); font-size:12px; line-height:1.65; }
+.alert svg { flex-shrink:0; margin-top:2px; }
+.alert-danger { border-color:rgba(224,80,80,.3); background:rgba(224,80,80,.06); color:rgba(255,180,180,.9); }
+.alert-warn { border-color:rgba(232,146,64,.3); background:rgba(232,146,64,.06); color:rgba(255,200,150,.9); }
+.alert-info { border-color:rgba(80,144,224,.3); background:rgba(80,144,224,.06); color:rgba(170,210,255,.9); }
+.alert-ok { border-color:rgba(61,184,122,.3); background:rgba(61,184,122,.06); color:rgba(160,230,190,.9); }
 
-/* LEFT SIDEBAR — phase steps */
-.psb{width:260px;flex-shrink:0;background:var(--ink2);border-right:1px solid var(--line2);display:flex;flex-direction:column;overflow:hidden;}
-.psb-trip{padding:18px 18px 12px;border-bottom:1px solid var(--line2);}
-.psb-dest{font-family:var(--serif);font-size:16px;font-weight:300;color:#fff;margin-bottom:2px;}
-.psb-meta{font-size:10px;color:rgba(255,255,255,.3);}
-.psb-steps{flex:1;overflow-y:auto;padding:8px 0;}
-.pstep{padding:13px 16px 13px 14px;border-left:2px solid transparent;cursor:pointer;transition:all .2s;position:relative;}
-.pstep.cur{border-left-color:var(--gold);background:rgba(200,166,90,.05);}
-.pstep.done-s{border-left-color:var(--ok);background:rgba(76,175,125,.03);}
-.pstep.lock{opacity:.32;cursor:not-allowed;}
-.pstep:not(.lock):not(.cur):hover{background:rgba(255,255,255,.02);}
-.ps-eye{font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:3px;}
-.pstep.cur .ps-eye{color:var(--gold);}
-.pstep.done-s .ps-eye{color:var(--ok);}
-.ps-name{font-size:12px;font-weight:600;color:rgba(255,255,255,.55);}
-.pstep.cur .ps-name{color:#fff;}
-.ps-prog{font-size:10px;color:rgba(255,255,255,.22);margin-top:2px;}
-.ps-tick{position:absolute;right:14px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:9px;}
-.pstep.done-s .ps-tick{background:var(--ok);border-color:var(--ok);}
-.pstep.lock .ps-tick{font-size:11px;color:rgba(255,255,255,.2);}
-.psb-foot{padding:14px 16px;border-top:1px solid var(--line2);}
-.psb-foot-lbl{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:6px;}
-.mpbar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin-bottom:5px;}
-.mpbar-f{height:100%;background:var(--gold);border-radius:2px;transition:width .4s ease;}
-.mpbar-c{font-size:10px;color:rgba(255,255,255,.28);}
-.mpbar-c strong{color:var(--glt);}
+/* ─── TAGS ─── */
+.tag { font-family:var(--display); font-size:8px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:2px 7px; border-radius:2px; }
+.tag-law { background:rgba(224,80,80,.1); color:var(--danger); border:1px solid rgba(224,80,80,.22); }
+.tag-med { background:rgba(61,184,122,.1); color:var(--ok); border:1px solid rgba(61,184,122,.22); }
+.tag-rec { background:rgba(200,165,90,.1); color:var(--gold); border:1px solid var(--line); }
 
-/* PHASE CONTENT */
-.pcont{flex:1;overflow-y:auto;padding:28px 32px;}
-.peyebrow{font-size:9px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:7px;}
-.peyebrow::before{content:'◆';font-size:5px;}
-.ptitle{font-family:var(--serif);font-size:clamp(20px,2.8vw,32px);font-weight:300;line-height:1.1;margin-bottom:18px;}
-.ptitle em{font-style:italic;color:var(--glt);}
+/* ══════════════════════════════════════════════════
+   LOGIN SCREEN
+══════════════════════════════════════════════════ */
+#screen-login {
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(ellipse at 25% 40%, #0d1f3c 0%, var(--bg) 65%);
+  position:relative; overflow:hidden;
+}
+#screen-login::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(-52deg, transparent, transparent 80px, rgba(200,165,90,.012) 80px, rgba(200,165,90,.012) 81px);
+}
+.login-box {
+  background:var(--bg2); border:1px solid var(--line);
+  border-radius:8px; padding:48px 44px; width:100%; max-width:420px;
+  position:relative; z-index:1;
+  box-shadow: 0 40px 80px rgba(0,0,0,.5);
+}
+.login-logo { font-family:var(--display); font-size:26px; font-weight:800; color:#fff; margin-bottom:4px; letter-spacing:-0.5px; }
+.login-logo em { font-style:normal; color:var(--gold); }
+.login-sub { font-family:var(--display); font-size:9px; font-weight:600; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.25); margin-bottom:36px; }
+.login-mode-tabs { display:flex; gap:0; margin-bottom:28px; border:1px solid var(--line2); border-radius:4px; overflow:hidden; }
+.lmt { flex:1; padding:9px 0; text-align:center; font-family:var(--display); font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.3); cursor:pointer; transition:all .2s; background:transparent; border:none; }
+.lmt.active { background:var(--bg3); color:var(--gold); }
 
-/* ALERT */
-.ab{display:flex;gap:10px;align-items:flex-start;padding:11px 13px;border:1px solid;border-radius:4px;margin-bottom:14px;font-size:11px;line-height:1.6;}
-.ab svg{flex-shrink:0;margin-top:1px;}
-.ab.danger{border-color:rgba(224,85,85,.3);background:rgba(224,85,85,.05);color:rgba(255,180,180,.85);}
-.ab.warn{border-color:rgba(232,146,58,.3);background:rgba(232,146,58,.05);color:rgba(255,200,150,.85);}
-.ab.info{border-color:rgba(100,160,255,.3);background:rgba(100,160,255,.05);color:rgba(180,210,255,.85);}
-.ab.ok{border-color:rgba(76,175,125,.3);background:rgba(76,175,125,.05);color:rgba(160,230,190,.85);}
+/* ══════════════════════════════════════════════════
+   APP SHELL
+══════════════════════════════════════════════════ */
+#screen-app { display:none; flex-direction:column; height:100vh; overflow:hidden; }
 
-/* CHECKLIST */
-.cl-wrap{margin-bottom:20px;}
-.cl-head{display:flex;align-items:center;gap:9px;padding:9px 13px;background:rgba(200,166,90,.04);border:1px solid var(--line);border-radius:4px 4px 0 0;}
-.cl-head-ico{width:26px;height:26px;border-radius:50%;background:rgba(200,166,90,.1);display:flex;align-items:center;justify-content:center;color:var(--gold);flex-shrink:0;}
-.cl-head-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);flex:1;}
-.cl-head-cnt{font-size:10px;color:rgba(255,255,255,.28);}
-.cl-list{border:1px solid var(--line);border-top:none;border-radius:0 0 4px 4px;}
-.cli{display:flex;align-items:flex-start;gap:12px;padding:13px 13px;border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s;}
-.cli:last-child{border-bottom:none;}
-.cli:hover{background:rgba(255,255,255,.02);}
-.cli.faded{opacity:.5;}
-.chkbox{width:19px;height:19px;flex-shrink:0;border:1.5px solid rgba(255,255,255,.2);border-radius:3px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;margin-top:1px;}
-.chkbox.law{border-color:rgba(224,85,85,.55);}
-.chkbox.ck{background:var(--ok);border-color:var(--ok);}
-.cli-body{flex:1;}
-.cli-t{font-size:12px;font-weight:500;color:rgba(255,255,255,.85);margin-bottom:2px;line-height:1.4;}
-.cli-d{font-size:11px;color:rgba(255,255,255,.32);line-height:1.6;}
-.tags{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap;}
-.tag{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 6px;border-radius:2px;}
-.tlaw{background:rgba(224,85,85,.1);color:var(--danger);border:1px solid rgba(224,85,85,.22);}
-.tmed{background:rgba(76,175,125,.1);color:var(--ok);border:1px solid rgba(76,175,125,.22);}
-.trec{background:rgba(200,166,90,.1);color:var(--gold);border:1px solid var(--line);}
-.tright{background:rgba(100,160,255,.1);color:#88b4ff;border:1px solid rgba(100,160,255,.22);}
+.topbar {
+  background:rgba(6,13,26,.97); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--line); height:52px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:space-between; padding:0 24px;
+}
+.topbar-logo { font-family:var(--display); font-size:14px; font-weight:800; letter-spacing:-0.3px; }
+.topbar-logo em { font-style:normal; color:var(--gold); }
+.topbar-right { display:flex; align-items:center; gap:14px; }
+.user-chip {
+  display:flex; align-items:center; gap:8px;
+  padding:4px 12px 4px 4px;
+  background:rgba(255,255,255,.05); border:1px solid var(--line2); border-radius:20px;
+}
+.user-avatar {
+  width:26px; height:26px; border-radius:50%;
+  background:linear-gradient(135deg, var(--gdk), var(--gold));
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--display); font-size:10px; font-weight:800; color:var(--bg);
+}
+.user-name { font-family:var(--display); font-size:10px; font-weight:600; letter-spacing:1px; color:rgba(255,255,255,.6); }
+.btn-logout { font-family:var(--display); font-size:9px; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.2); background:none; border:none; cursor:pointer; transition:color .2s; }
+.btn-logout:hover { color:#fff; }
 
-/* ADVANCE */
-.adv{margin-top:22px;padding:18px;background:rgba(200,166,90,.04);border:1px solid var(--line);border-radius:4px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.adv-l{}
-.adv-label{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:3px;}
-.adv-count{font-family:var(--serif);font-size:20px;font-weight:300;color:var(--glt);}
-.adv-r{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.adv-note{font-size:10px;color:var(--danger);max-width:200px;text-align:right;line-height:1.4;}
+/* TOP NAV */
+.topnav { background:var(--bg2); border-bottom:1px solid var(--line2); display:flex; padding:0 24px; flex-shrink:0; overflow-x:auto; }
+.tnav-btn {
+  font-family:var(--display); font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase;
+  color:rgba(255,255,255,.3); padding:13px 16px; cursor:pointer;
+  border-bottom:2px solid transparent; background:none;
+  border-top:none; border-left:none; border-right:none;
+  white-space:nowrap; transition:all .2s; display:flex; align-items:center; gap:7px;
+}
+.tnav-btn:hover { color:rgba(255,255,255,.65); }
+.tnav-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
 
-/* RIGHT PANEL */
-.rpan{width:296px;flex-shrink:0;background:var(--ink2);border-left:1px solid var(--line2);display:flex;flex-direction:column;overflow:hidden;}
-.rpan-h{padding:14px 16px;border-bottom:1px solid var(--line2);}
-.rpan-title{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-bottom:8px;}
-.rpan-prog{display:flex;align-items:center;gap:8px;}
-.rpbar{flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;}
-.rpbar-f{height:100%;background:var(--gold);border-radius:2px;transition:width .4s;}
-.rpbar-n{font-size:11px;font-weight:600;color:var(--glt);}
-.rpan-body{flex:1;overflow-y:auto;padding:6px 0;}
-.rpg{margin-bottom:2px;}
-.rpg-h{padding:8px 16px;display:flex;justify-content:space-between;align-items:center;}
-.rpg-label{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.25);}
-.rpg-label.phase-active{color:var(--gold);}
-.rpg-label.phase-done{color:var(--ok);}
-.rpg-label.phase-lock{color:rgba(255,255,255,.15);}
-.rpg-cnt{font-size:9px;color:rgba(255,255,255,.22);}
-.rpi{padding:7px 16px;display:flex;align-items:flex-start;gap:9px;border-bottom:1px solid rgba(255,255,255,.025);}
-.rpi-chk{width:13px;height:13px;border-radius:2px;border:1px solid rgba(255,255,255,.14);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;}
-.rpi-chk.ck{background:var(--ok);border-color:var(--ok);}
-.rpi-chk.law{border-color:rgba(224,85,85,.4);}
-.rpi-chk.lock{opacity:.3;}
-.rpi-txt{font-size:10px;color:rgba(255,255,255,.4);line-height:1.45;flex:1;}
-.rpi-txt.ck{text-decoration:line-through;opacity:.38;}
-.rpi-txt.lock{opacity:.2;}
-.rpan-foot{padding:12px 16px;border-top:1px solid var(--line2);}
-.bk-btn{width:100%;justify-content:center;font-size:9px;padding:9px 16px;}
+/* BODY */
+.app-body { display:flex; flex:1; overflow:hidden; }
+
+/* ──────────────────────────────
+   LAYOUT PIECES
+────────────────────────────── */
+.sidebar {
+  width:260px; flex-shrink:0; background:var(--bg2);
+  border-right:1px solid var(--line2);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.main-area { flex:1; overflow-y:auto; }
+.right-panel {
+  width:288px; flex-shrink:0; background:var(--bg2);
+  border-left:1px solid var(--line2);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.page-pad { padding:28px 32px; }
+
+/* ── PHASE SIDEBAR ── */
+.psb-trip { padding:16px 18px 12px; border-bottom:1px solid var(--line2); }
+.psb-dest { font-family:var(--display); font-size:14px; font-weight:700; color:#fff; margin-bottom:2px; }
+.psb-meta { font-family:var(--body); font-size:11px; color:rgba(255,255,255,.32); }
+.psb-steps { flex:1; overflow-y:auto; padding:6px 0; }
+.phase-step {
+  padding:12px 16px; border-left:2px solid transparent;
+  cursor:pointer; transition:all .2s; position:relative;
+}
+.phase-step.active { border-left-color:var(--gold); background:rgba(200,165,90,.05); }
+.phase-step.done { border-left-color:var(--ok); }
+.phase-step.locked { opacity:.3; cursor:not-allowed; }
+.phase-step:not(.locked):not(.active):hover { background:rgba(255,255,255,.02); }
+.ps-eye { font-family:var(--display); font-size:8px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:rgba(255,255,255,.28); margin-bottom:3px; }
+.phase-step.active .ps-eye { color:var(--gold); }
+.phase-step.done .ps-eye { color:var(--ok); }
+.ps-name { font-family:var(--display); font-size:11px; font-weight:600; color:rgba(255,255,255,.55); line-height:1.3; }
+.phase-step.active .ps-name { color:#fff; }
+.ps-prog { font-family:var(--display); font-size:9px; color:rgba(255,255,255,.22); margin-top:3px; }
+.ps-tick { position:absolute; right:14px; top:50%; transform:translateY(-50%); width:18px; height:18px; border-radius:50%; border:1.5px solid rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; font-size:9px; }
+.phase-step.done .ps-tick { background:var(--ok); border-color:var(--ok); }
+.psb-foot { padding:12px 16px; border-top:1px solid var(--line2); }
+.psb-foot-label { font-family:var(--display); font-size:8px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.25); margin-bottom:6px; }
+.mini-pbar { height:3px; background:rgba(255,255,255,.07); border-radius:2px; overflow:hidden; margin-bottom:5px; }
+.mini-pbar-fill { height:100%; background:var(--gold); border-radius:2px; transition:width .4s ease; }
+.mini-pbar-count { font-family:var(--display); font-size:9px; color:rgba(255,255,255,.28); }
+.mini-pbar-count strong { color:var(--glt); }
+
+/* ── CHECKLIST ITEM ── */
+.cl-section-head {
+  display:flex; align-items:center; gap:9px; padding:9px 13px;
+  background:rgba(200,165,90,.04); border:1px solid var(--line);
+  border-radius:4px 4px 0 0;
+}
+.cl-section-icon { width:26px; height:26px; border-radius:50%; background:rgba(200,165,90,.1); display:flex; align-items:center; justify-content:center; color:var(--gold); flex-shrink:0; }
+.cl-section-title { font-family:var(--display); font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gold); flex:1; }
+.cl-section-cnt { font-family:var(--display); font-size:9px; color:rgba(255,255,255,.28); }
+.cl-list { border:1px solid var(--line); border-top:none; border-radius:0 0 4px 4px; margin-bottom:20px; }
+.cl-item { display:flex; align-items:flex-start; gap:12px; padding:13px 13px; border-bottom:1px solid rgba(255,255,255,.04); transition:background .15s; }
+.cl-item:last-child { border-bottom:none; }
+.cl-item:hover { background:rgba(255,255,255,.02); }
+.cl-item.done-item { opacity:.52; }
+.chk {
+  width:19px; height:19px; flex-shrink:0; border:1.5px solid rgba(255,255,255,.2);
+  border-radius:3px; cursor:pointer; transition:all .2s;
+  display:flex; align-items:center; justify-content:center; margin-top:1px;
+}
+.chk.law { border-color:rgba(224,80,80,.55); }
+.chk.checked { background:var(--ok); border-color:var(--ok); }
+.cl-body { flex:1; }
+.cl-title { font-family:var(--body); font-size:13px; font-weight:500; color:rgba(255,255,255,.85); margin-bottom:3px; line-height:1.4; }
+.cl-desc { font-family:var(--body); font-size:11px; color:rgba(255,255,255,.32); line-height:1.6; }
+.cl-tags { display:flex; gap:4px; margin-top:5px; flex-wrap:wrap; }
+
+/* ── ADVANCE ── */
+.phase-advance {
+  padding:18px; background:rgba(200,165,90,.04); border:1px solid var(--line);
+  border-radius:4px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+}
+.adv-label { font-family:var(--display); font-size:8px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.28); margin-bottom:3px; }
+.adv-count { font-family:var(--display); font-size:18px; font-weight:700; color:var(--glt); }
+.adv-note { font-family:var(--body); font-size:11px; color:var(--danger); max-width:200px; text-align:right; line-height:1.4; }
+
+/* ── RIGHT PANEL ── */
+.rp-head { padding:12px 16px; border-bottom:1px solid var(--line2); }
+.rp-title { font-family:var(--display); font-size:9px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:rgba(255,255,255,.32); margin-bottom:8px; }
+.rp-pbar { display:flex; align-items:center; gap:8px; }
+.rp-pbar-track { flex:1; height:4px; background:rgba(255,255,255,.07); border-radius:2px; overflow:hidden; }
+.rp-pbar-fill { height:100%; background:var(--gold); border-radius:2px; transition:width .4s; }
+.rp-pbar-count { font-family:var(--display); font-size:11px; font-weight:700; color:var(--glt); }
+.rp-body { flex:1; overflow-y:auto; padding:4px 0; }
+.rp-group-head {
+  padding:8px 16px; display:flex; justify-content:space-between; align-items:center;
+  font-family:var(--display); font-size:8px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+}
+.rp-group-head.ph-active { color:var(--gold); }
+.rp-group-head.ph-done { color:var(--ok); }
+.rp-group-head.ph-lock { color:rgba(255,255,255,.18); }
+.rp-group-cnt { color:rgba(255,255,255,.22); }
+.rp-item { padding:6px 16px; display:flex; align-items:flex-start; gap:9px; border-bottom:1px solid rgba(255,255,255,.025); }
+.rp-chk { width:13px; height:13px; border-radius:2px; border:1px solid rgba(255,255,255,.14); flex-shrink:0; margin-top:2px; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+.rp-chk.checked { background:var(--ok); border-color:var(--ok); }
+.rp-chk.law { border-color:rgba(224,80,80,.4); }
+.rp-chk.locked { opacity:.25; }
+.rp-text { font-family:var(--body); font-size:10px; color:rgba(255,255,255,.42); line-height:1.45; flex:1; }
+.rp-text.done { text-decoration:line-through; opacity:.4; }
+.rp-text.locked { opacity:.2; }
+.rp-foot { padding:12px 16px; border-top:1px solid var(--line2); }
+.booking-btn { width:100%; justify-content:center; font-size:9px; letter-spacing:2px; padding:9px 16px; }
+
+/* ══════════════════════════════════════════════════
+   RESPONSABILE: VIAGGIATORI (gestione profili)
+══════════════════════════════════════════════════ */
+.page-eyebrow { font-family:var(--display); font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; display:flex; align-items:center; gap:7px; }
+.page-eyebrow::before { content:'◆'; font-size:5px; }
+.page-title { font-family:var(--display); font-size:clamp(20px,2.5vw,30px); font-weight:800; color:#fff; line-height:1.1; margin-bottom:20px; }
+.page-title em { font-style:normal; color:var(--glt); }
+
+/* TRAVELER TABLE */
+.trav-table { width:100%; border-collapse:collapse; }
+.trav-table thead tr { border-bottom:1px solid var(--line2); }
+.trav-table th { font-family:var(--display); font-size:8px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.3); padding:10px 14px; text-align:left; }
+.trav-table tbody tr { border-bottom:1px solid rgba(255,255,255,.04); transition:background .15s; cursor:default; }
+.trav-table tbody tr:hover { background:rgba(255,255,255,.02); }
+.trav-table td { padding:12px 14px; font-family:var(--body); font-size:12px; color:rgba(255,255,255,.65); vertical-align:middle; }
+.td-name { font-weight:600; color:#fff !important; }
+.td-pin {
+  font-family:var(--display); font-size:11px; font-weight:700; letter-spacing:3px;
+  color:var(--gold); background:rgba(200,165,90,.08); border:1px solid var(--line);
+  padding:3px 8px; border-radius:2px; cursor:pointer;
+}
+.td-pin:hover::after { content:' 📋'; }
+.avatar-sm {
+  width:30px; height:30px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--display); font-size:11px; font-weight:800; color:var(--bg);
+  flex-shrink:0;
+}
+
+/* MODAL */
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:500;
+  display:flex; align-items:center; justify-content:center;
+  backdrop-filter:blur(4px); padding:20px;
+}
+.modal-box {
+  background:var(--bg2); border:1px solid var(--line);
+  border-radius:8px; padding:32px; width:100%; max-width:520px;
+  box-shadow:0 40px 80px rgba(0,0,0,.6);
+  max-height:90vh; overflow-y:auto;
+}
+.modal-title { font-family:var(--display); font-size:16px; font-weight:800; color:#fff; margin-bottom:4px; }
+.modal-sub { font-family:var(--body); font-size:12px; color:rgba(255,255,255,.38); margin-bottom:24px; }
+.form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-group { display:flex; flex-direction:column; gap:5px; }
+.form-group.full { grid-column:1/-1; }
+
+/* PIN DISPLAY */
+.pin-box {
+  background:var(--bg3); border:1px solid var(--gold); border-radius:6px;
+  padding:24px; text-align:center; margin:20px 0;
+}
+.pin-label { font-family:var(--display); font-size:9px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:10px; }
+.pin-value { font-family:var(--display); font-size:36px; font-weight:800; letter-spacing:8px; color:var(--gold); }
+.pin-note { font-family:var(--body); font-size:11px; color:rgba(255,255,255,.35); margin-top:8px; line-height:1.55; }
+
+/* TRAVELER CARD (viaggiatore view) */
+.trip-card {
+  background:var(--bg2); border:1px solid var(--line); border-radius:8px; overflow:hidden;
+  margin-bottom:20px;
+}
+.trip-card-hero {
+  padding:28px 28px 22px;
+  background:linear-gradient(135deg, var(--bg3) 0%, var(--bg4) 100%);
+  border-bottom:1px solid var(--line2);
+  position:relative; overflow:hidden;
+}
+.trip-card-hero::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background:repeating-linear-gradient(-55deg,transparent,transparent 60px,rgba(200,165,90,.015) 60px,rgba(200,165,90,.015) 61px);
+}
+.trip-flag { font-size:40px; margin-bottom:10px; display:block; }
+.trip-dest { font-family:var(--display); font-size:22px; font-weight:800; color:#fff; margin-bottom:4px; }
+.trip-dates { font-family:var(--body); font-size:12px; color:rgba(255,255,255,.38); }
+.trip-info-grid { display:grid; grid-template-columns:repeat(3,1fr); }
+.trip-info-cell { padding:16px 18px; border-right:1px solid var(--line2); }
+.trip-info-cell:last-child { border-right:none; }
+.tic-label { font-family:var(--display); font-size:8px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,.28); margin-bottom:4px; }
+.tic-val { font-family:var(--display); font-size:13px; font-weight:700; color:#fff; }
+
+/* RISK BARS */
+.risk-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.risk-label { font-family:var(--display); font-size:9px; font-weight:600; letter-spacing:1px; text-transform:uppercase; color:rgba(255,255,255,.35); min-width:120px; }
+.risk-bar { flex:1; height:3px; background:rgba(255,255,255,.07); border-radius:2px; overflow:hidden; }
+.risk-fill { height:100%; border-radius:2px; }
+.rf-h { background:var(--danger); }
+.rf-m { background:var(--warn); }
+.rf-l { background:var(--ok); }
+.risk-val { font-family:var(--display); font-size:10px; font-weight:700; min-width:24px; text-align:right; }
 
 /* PAESI */
-.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;}
-.pc{background:var(--ink3);border:1px solid var(--line);border-radius:5px;padding:16px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;}
-.pc::after{content:'';position:absolute;top:0;left:0;width:0;height:2px;background:var(--gold);transition:width .3s;}
-.pc:hover{border-color:rgba(200,166,90,.38);transform:translateY(-2px);}
-.pc:hover::after{width:100%;}
-.pc-f{font-size:22px;margin-bottom:7px;}
-.pc-n{font-size:13px;font-weight:600;color:#fff;margin-bottom:1px;}
-.pc-r{font-size:10px;color:rgba(255,255,255,.28);margin-bottom:9px;}
-.rbar{height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin-bottom:6px;}
-.rbf{height:100%;border-radius:2px;}
-.rbf.h{background:var(--danger);width:80%;}
-.rbf.m{background:var(--warn);width:50%;}
-.rbf.l{background:var(--ok);width:22%;}
-.pc-src{font-size:8px;color:rgba(255,255,255,.18);margin-top:5px;}
-.rbadge{font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:2px;}
-.ra{background:rgba(224,85,85,.1);color:var(--danger);border:1px solid rgba(224,85,85,.25);}
-.rm{background:rgba(232,146,58,.1);color:var(--warn);border:1px solid rgba(232,146,58,.25);}
-.rl{background:rgba(76,175,125,.1);color:var(--ok);border:1px solid rgba(76,175,125,.25);}
-.rsrc-box{background:rgba(200,166,90,.04);border:1px solid var(--line);border-radius:4px;padding:12px 14px;margin-bottom:18px;}
-.rsrc-t{font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gdk);margin-bottom:8px;}
-.rsrc-row{display:flex;align-items:flex-start;gap:7px;margin-bottom:5px;font-size:11px;color:rgba(255,255,255,.38);line-height:1.5;}
-.rsrc-dot{width:4px;height:4px;border-radius:50%;background:var(--gdk);flex-shrink:0;margin-top:5px;}
+.paese-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; }
+.paese-card {
+  background:var(--bg3); border:1px solid var(--line); border-radius:5px;
+  padding:16px; cursor:default; transition:all .22s; position:relative; overflow:hidden;
+}
+.paese-card::after { content:''; position:absolute; top:0; left:0; width:0; height:2px; background:var(--gold); transition:width .3s; }
+.paese-card:hover { border-color:rgba(200,165,90,.4); transform:translateY(-2px); }
+.paese-card:hover::after { width:100%; }
+.pc-flag { font-size:22px; margin-bottom:7px; }
+.pc-name { font-family:var(--display); font-size:12px; font-weight:700; color:#fff; margin-bottom:1px; }
+.pc-region { font-family:var(--display); font-size:9px; color:rgba(255,255,255,.28); margin-bottom:9px; }
+.pc-rbar { height:3px; background:rgba(255,255,255,.07); border-radius:2px; overflow:hidden; margin-bottom:6px; }
+.pc-rfill { height:100%; border-radius:2px; }
+.pc-src { font-family:var(--display); font-size:8px; color:rgba(255,255,255,.18); margin-top:5px; }
+
+/* RISK SOURCE */
+.rsrc { background:rgba(200,165,90,.04); border:1px solid var(--line); border-radius:4px; padding:12px 14px; margin-bottom:16px; }
+.rsrc-title { font-family:var(--display); font-size:8px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--gdk); margin-bottom:8px; }
+.rsrc-row { display:flex; align-items:flex-start; gap:7px; margin-bottom:5px; }
+.rsrc-dot { width:4px; height:4px; border-radius:50%; background:var(--gdk); flex-shrink:0; margin-top:5px; }
+.rsrc-text { font-family:var(--body); font-size:11px; color:rgba(255,255,255,.38); line-height:1.5; }
 
 /* MANUAL */
-.man-wrap{display:flex;height:100%;overflow:hidden;}
-.man-sb{width:210px;flex-shrink:0;border-right:1px solid var(--line2);overflow-y:auto;}
-.man-sb-i{padding:10px 14px;font-size:11px;color:rgba(255,255,255,.38);cursor:pointer;border-left:2px solid transparent;border-bottom:1px solid rgba(255,255,255,.03);transition:all .18s;}
-.man-sb-i:hover{color:rgba(255,255,255,.7);background:rgba(255,255,255,.02);}
-.man-sb-i.on{color:var(--gold);border-left-color:var(--gold);background:rgba(200,166,90,.04);}
-.man-body{flex:1;overflow-y:auto;padding:22px 24px;}
-.ms{display:none;}
-.ms.on{display:block;}
-.ms h3{font-family:var(--serif);font-size:19px;font-weight:300;color:#fff;margin-bottom:12px;}
-.ms h4{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gdk);margin:14px 0 7px;}
-.ms p{font-size:12px;color:rgba(255,255,255,.42);line-height:1.7;margin-bottom:8px;}
-.mlist{list-style:none;display:flex;flex-direction:column;gap:6px;}
-.mlist li{font-size:12px;color:rgba(255,255,255,.46);line-height:1.6;padding-left:15px;position:relative;}
-.mlist li::before{content:'◆';font-size:5px;position:absolute;left:0;top:6px;color:var(--gdk);}
-.mproc{background:rgba(200,166,90,.04);border:1px solid var(--line);border-radius:4px;padding:13px 14px;margin-bottom:9px;}
-.mproc-t{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
-.mproc-b{font-size:11px;color:rgba(255,255,255,.42);line-height:1.65;}
+.man-wrap { display:flex; height:100%; overflow:hidden; }
+.man-sb { width:200px; flex-shrink:0; border-right:1px solid var(--line2); overflow-y:auto; }
+.msbi { padding:10px 14px; font-family:var(--body); font-size:11px; color:rgba(255,255,255,.38); cursor:pointer; border-left:2px solid transparent; border-bottom:1px solid rgba(255,255,255,.03); transition:all .18s; }
+.msbi:hover { color:rgba(255,255,255,.7); background:rgba(255,255,255,.02); }
+.msbi.on { color:var(--gold); border-left-color:var(--gold); background:rgba(200,165,90,.04); }
+.man-body { flex:1; overflow-y:auto; padding:22px 24px; }
+.msec { display:none; }
+.msec.on { display:block; }
+.msec h3 { font-family:var(--display); font-size:16px; font-weight:800; color:#fff; margin-bottom:12px; }
+.msec h4 { font-family:var(--display); font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gdk); margin:14px 0 7px; }
+.msec p { font-family:var(--body); font-size:12px; color:rgba(255,255,255,.42); line-height:1.7; margin-bottom:8px; }
+.mlist { list-style:none; display:flex; flex-direction:column; gap:6px; }
+.mlist li { font-family:var(--body); font-size:12px; color:rgba(255,255,255,.46); line-height:1.6; padding-left:15px; position:relative; }
+.mlist li::before { content:'◆'; font-size:5px; position:absolute; left:0; top:6px; color:var(--gdk); }
+.mproc { background:rgba(200,165,90,.04); border:1px solid var(--line); border-radius:4px; padding:13px 14px; margin-bottom:9px; }
+.mproc-t { font-family:var(--display); font-size:9px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+.mproc-b { font-family:var(--body); font-size:12px; color:rgba(255,255,255,.42); line-height:1.65; }
 
-/* nuova trasferta */
-.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
-.fg{display:flex;flex-direction:column;gap:5px;}
-.fg.full{grid-column:1/-1;}
-.flbl{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
-.fi,.fsel{background:var(--ink3);border:1px solid rgba(255,255,255,.08);border-radius:3px;padding:10px 12px;color:#fff;font-family:var(--sans);font-size:12px;outline:none;transition:border-color .2s;}
-.fi:focus,.fsel:focus{border-color:var(--gold);}
-.fi::placeholder{color:rgba(255,255,255,.18);}
-.fsel option{background:var(--ink2);}
-.map-ph{background:var(--ink3);border:1px solid var(--line);border-radius:4px;height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;color:rgba(255,255,255,.18);cursor:pointer;grid-column:1/-1;font-size:11px;text-align:center;}
-.card{background:var(--ink2);border:1px solid var(--line);border-radius:5px;overflow:hidden;margin-bottom:14px;}
-.card-h{padding:12px 16px;border-bottom:1px solid var(--line2);display:flex;align-items:center;justify-content:space-between;}
-.card-t{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);}
-.card-b{padding:16px;}
+/* NOTIFICATION DOT */
+.notif { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--danger); margin-left:4px; vertical-align:middle; }
 
-@media(max-width:1100px){.rpan{display:none;}}
-@media(max-width:800px){.psb{width:100%;border-right:none;border-bottom:1px solid var(--line2);}.body{flex-direction:column;}.psb-steps{display:flex;overflow-x:auto;}.pstep{min-width:140px;border-left:none;border-bottom:2px solid transparent;}.pstep.cur{border-bottom-color:var(--gold);border-left:none;}}
-@media(max-width:580px){.pcont{padding:18px 14px;}.fgrid{grid-template-columns:1fr;}.fg.full{grid-column:unset;}}
+/* RESPONSIVE */
+@media(max-width:1100px) { .right-panel { display:none; } }
+@media(max-width:800px) { .sidebar { display:none; } }
+@media(max-width:580px) { .page-pad { padding:18px 14px; } .form-grid { grid-template-columns:1fr; } .form-group.full { grid-column:unset; } }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login">
-<div class="lb">
-  <div class="ll">Safe<em>Pass</em></div>
-  <div class="ls">Travel Risk Management Platform</div>
-  <label class="lbl">Profilo di accesso</label>
-  <select class="li lsel" id="psel">
-    <option value="">— Seleziona profilo —</option>
-    <option value="resp">Responsabile Trasferte / HR</option>
-    <option value="viag">Viaggiatore / Dipendente</option>
-  </select>
-  <label class="lbl">Email aziendale</label>
-  <input class="li" type="email" placeholder="nome@azienda.com"/>
-  <label class="lbl">Password</label>
-  <input class="li" type="password" placeholder="••••••••"/>
-  <button class="btn bg bfull" style="margin-top:6px" onclick="doLogin()">Accedi →</button>
-</div>
-</div>
+<!-- ══════════ LOGIN ══════════ -->
+<div id="screen-login">
+  <div class="login-box">
+    <div class="login-logo">Safe<em>Pass</em></div>
+    <div class="login-sub">Travel Risk Management Platform</div>
 
-<!-- APP -->
-<div id="app">
-  <div class="tb">
-    <div class="tbl">Safe<em>Pass</em></div>
-    <div class="tbr">
-      <div class="tbadge" id="tbadge">◆ RESPONSABILE</div>
-      <button class="tlo" onclick="doLogout()">Esci</button>
+    <!-- MODE TABS -->
+    <div class="login-mode-tabs">
+      <button class="lmt active" onclick="setLoginMode('resp')">Responsabile</button>
+      <button class="lmt" onclick="setLoginMode('viag')">Viaggiatore</button>
+    </div>
+
+    <!-- RESP FIELDS -->
+    <div id="resp-fields">
+      <label class="label">Email aziendale</label>
+      <input class="inp" id="resp-email" type="email" placeholder="responsabile@azienda.com" style="margin-bottom:12px"/>
+      <label class="label">Password</label>
+      <input class="inp" id="resp-pass" type="password" placeholder="••••••••" style="margin-bottom:20px"/>
+      <button class="btn btn-gold btn-full" onclick="loginResp()">Accedi come Responsabile →</button>
+      <div style="margin-top:12px;text-align:center;font-family:var(--display);font-size:10px;color:rgba(255,255,255,.2);">Demo: qualsiasi email / password</div>
+    </div>
+
+    <!-- VIAG FIELDS -->
+    <div id="viag-fields" class="hidden">
+      <div class="alert alert-info" style="margin-bottom:16px;">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="color:var(--info)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v4M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <span>Il tuo account deve essere creato dal Responsabile Trasferte. Usa l'email e il PIN ricevuto.</span>
+      </div>
+      <label class="label">Email aziendale</label>
+      <input class="inp" id="viag-email" type="email" placeholder="nome@azienda.com" style="margin-bottom:12px"/>
+      <label class="label">PIN di accesso</label>
+      <input class="inp" id="viag-pin" type="text" placeholder="es. 4829" maxlength="6" style="margin-bottom:20px;letter-spacing:4px;font-family:var(--display);font-size:18px;font-weight:700;"/>
+      <button class="btn btn-gold btn-full" onclick="loginViag()">Accedi con PIN →</button>
     </div>
   </div>
-  <div class="tn" id="tn"></div>
-  <div class="body" id="body"></div>
+</div>
+
+<!-- ══════════ APP ══════════ -->
+<div id="screen-app">
+  <div class="topbar">
+    <div class="topbar-logo">Safe<em>Pass</em></div>
+    <div class="topbar-right">
+      <div class="user-chip">
+        <div class="user-avatar" id="topbar-avatar">G</div>
+        <div class="user-name" id="topbar-name">Giulia F.</div>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">Esci</button>
+    </div>
+  </div>
+  <div class="topnav" id="topnav"></div>
+  <div class="app-body" id="app-body"></div>
 </div>
 
 <script>
-/* ═══════════════════════════════
-   STATE
-═══════════════════════════════ */
-let profile = null;
-let view = 'trip';
-let curPhase = 0; // 0=pre 1=on 2=post
+/* ══════════════════════════════════════════════════════
+   DATABASE (in-memory, shared between profiles in session)
+══════════════════════════════════════════════════════ */
+// Seeded travelers for demo
+let DB = {
+  travelers: [
+    { id:'t1', nome:'Marco', cognome:'Bianchi', email:'marco.bianchi@azienda.com', pin:'4829', eta:45, genere:'M', ruolo:'Tecnico Senior', avatar:'MB', color:'#8c6e28', tripId:'tr1' },
+    { id:'t2', nome:'Sara', cognome:'Conti', email:'sara.conti@azienda.com', pin:'7312', eta:33, genere:'F', ruolo:'Project Manager', avatar:'SC', color:'#286e5c', tripId:'tr2' },
+    { id:'t3', nome:'Luca', cognome:'Ferri', email:'luca.ferri@azienda.com', pin:'5581', eta:28, genere:'M', ruolo:'Sales Manager', avatar:'LF', color:'#28468c', tripId:null },
+  ],
+  trips: [
+    { id:'tr1', paese:'Nigeria', citta:'Lagos', flag:'🇳🇬', risk:'alto', scopo:'Commerciale', dataInizio:'15/05/2026', dataFine:'25/05/2026', giorni:10, travelerId:'t1', phase:0, stato:'pre-trip' },
+    { id:'tr2', paese:'Germania', citta:'Monaco', flag:'🇩🇪', risk:'basso', scopo:'Tecnico', dataInizio:'10/05/2026', dataFine:'13/05/2026', giorni:3, travelerId:'t2', phase:1, stato:'on-trip' },
+  ],
+  checkState: {}, // tripId+itemId -> bool
+};
 
-// All checklist items — resp:  'resp' | 'viag'
-const ALL_ITEMS = [
-  // ── PRE ── RESPONSABILE
-  {id:'r0',ph:0,who:'resp',law:true, t:'Valutazione idoneità alla mansione',d:'Verifica medica del lavoratore per le attività previste in Nigeria. Medical Fitness Certification.',tags:['law','med']},
-  {id:'r1',ph:0,who:'resp',law:true, t:'Stipula assicurazione specifica trasferta ad alto rischio',d:'Polizza obbligatoria: rimpatrio, assistenza sanitaria h24, invalidità permanente, morte. D.Lgs. 81/08.',tags:['law']},
-  {id:'r2',ph:0,who:'resp',law:true, t:'Verifica visti e documenti di ingresso Nigeria',d:'Passaporto valido minimo 6 mesi, visto lavorativo, documenti aziendali richiesti dalle autorità nigeriane.',tags:['law']},
-  {id:'r3',ph:0,who:'resp',law:true, t:'Registrazione portale MAECI / Farnesina',d:'Obbligatoria per paese ad alto rischio. Permette ricezione avvisi critici su dispositivi mobili. Direttiva Ippocampo 2006.',tags:['law']},
-  {id:'r4',ph:0,who:'resp',law:true, t:'Erogazione formazione obbligatoria (art. 37 D.Lgs. 81/08)',d:'La formazione NON è facoltativa. Il lavoratore non può rifiutarsi né partire senza averla completata. Deve rimanere traccia verificabile.',tags:['law']},
-  {id:'r5',ph:0,who:'resp',law:true, t:'Sorveglianza sanitaria e vaccinazioni Nigeria',d:'Febbre gialla (obbligatoria), malaria (profilassi), tifo, epatite A/B. Colloquio con medico di travel medicine.',tags:['law','med']},
-  {id:'r6',ph:0,who:'resp',law:true, t:'Elaborazione e consegna Scheda Paese Nigeria',d:'Documento con: valutazione rischio, zone a rischio Lagos, numeri emergenza, normative locali, Contact Sheet plastificata.',tags:['law']},
-  {id:'r7',ph:0,who:'resp',law:true, t:'Aggiornamento DVR per trasferte internazionali',d:'Sentenza Bonatti 2024 + Cassazione n.35510/2021: modello organizzativo verificabile obbligatorio prima della partenza.',tags:['law']},
-  {id:'r8',ph:0,who:'resp',law:false,t:'Attivazione Security Operation Centre (SOC) h24',d:'Numero dedicato raggiungibile h24 7/7. Security check giornalieri per destinazioni ad alto rischio.',tags:['rec']},
-  // ── PRE ── VIAGGIATORE
-  {id:'v0',ph:0,who:'viag',law:true, t:'Completare la formazione obbligatoria TRM',d:'Art. 37 D.Lgs. 81/08 — Non posso rifiutarmi né partire senza averla completata. Traccia verificabile conservata nel sistema.',tags:['law']},
-  {id:'v1',ph:0,who:'viag',law:true, t:'Leggere e comprendere la Scheda Paese Nigeria',d:'Valutazione rischio, zone a rischio Lagos, numeri emergenza, normative locali e raccomandazioni comportamentali. Art. 36 D.Lgs. 81/08.',tags:['law']},
-  {id:'v2',ph:0,who:'viag',law:true, t:'Visita medica pre-trasferta e vaccinazioni',d:'Colloquio con medico di travel medicine. Nigeria: febbre gialla obbligatoria, malaria, tifo. Medical Fitness Certification.',tags:['law','med']},
-  {id:'v3',ph:0,who:'viag',law:true, t:'Accettazione formale incarico (Duty of Loyalty)',d:'Firma digitale: prendo atto dei rischi, mi impegno a rispettare le procedure SafePass e a comunicare tutti gli spostamenti.',tags:['law']},
-  {id:'v4',ph:0,who:'viag',law:false,t:'Allestire zaino delle emergenze',d:'Kit primo soccorso, torcia, copia documenti, denaro contante, coperta isotermica, fischietto, power bank, viveri secchi.',tags:['rec']},
-  {id:'v5',ph:0,who:'viag',law:false,t:'Comunicare itinerario dettagliato al responsabile',d:'Hotel, meeting, spostamenti, numeri di contatto locali. Avvertire tempestivamente in caso di modifiche al programma.',tags:['rec']},
-  // ── ON ── RESPONSABILE
-  {id:'r9', ph:1,who:'resp',law:false,t:'Verifica situazione paese alla partenza',d:'Aggiornamento in tempo reale: sicurezza, allerte, proteste attive. Trasmissione update al viaggiatore prima del volo.',tags:['rec']},
-  {id:'r10',ph:1,who:'resp',law:true, t:'Monitoraggio itinerario — safety check giornalieri',d:'Conferma check-in hotel, verifica spostamenti, geolocalizzazione GPS attiva per tutta la missione Nigeria.',tags:['law','rec']},
-  {id:'r11',ph:1,who:'resp',law:true, t:'Conferma attivazione copertura assicurativa',d:'Verifica che la polizza sia attiva e operativa per tutta la durata della missione nigeriana.',tags:['law']},
-  {id:'r12',ph:1,who:'resp',law:false,t:'Disponibilità contatti anagrafici viaggiatore',d:'Cellulare nazionale, eventuale numero estero, email. Trattati in ottemperanza normativa privacy giuslavoristica.',tags:['rec']},
-  // ── ON ── VIAGGIATORE
-  {id:'v6',ph:1,who:'viag',law:false,t:'Safety check giornaliero — conferma posizione sicura',d:'Rispondere ai check del SOC h24. Per Nigeria: obbligatorio ogni giorno entro le 20:00 locali.',tags:['rec']},
-  {id:'v7',ph:1,who:'viag',law:false,t:'Comunicare ogni spostamento in tempo reale',d:'Non spostarsi senza aver comunicato destinazione. Solo trasporti ufficiali prenotati. In taxi: annotare targa e licenza.',tags:['rec']},
-  {id:'v8',ph:1,who:'viag',law:false,t:'Rispettare le raccomandazioni SafePass on-trip',d:'Non uscire soli di notte, non esibire oggetti di valore, usare solo taxi prenotati, bere solo acqua sigillata.',tags:['rec']},
-  {id:'v9',ph:1,who:'viag',law:true, t:'Duty of Loyalty — non ignorare le raccomandazioni di sicurezza',d:'Sentenza Bonatti: ignorare le indicazioni dell\'Ambasciata ha portato a condanne penali. Seguire sempre le istruzioni ufficiali.',tags:['law']},
-  // ── POST ── RESPONSABILE
-  {id:'r13',ph:2,who:'resp',law:false,t:'Condurre debriefing con il viaggiatore',d:'Raccolta feedback su: adeguatezza supporto, misure adottate, gestione criticità. ISO 31030: ciclo miglioramento continuo.',tags:['rec']},
-  {id:'r14',ph:2,who:'resp',law:false,t:'Scheduling follow-up medico post-trasferta',d:'Nigeria: screening malaria, malattie tropicali, check up psicofisico. Costruzione terapie specifiche se necessario.',tags:['med','rec']},
-  {id:'r15',ph:2,who:'resp',law:false,t:'Valutazione stress trasferta-correlato (ISO 31030:2021)',d:'Considerare: durata volo, fuso orario, intensità attività, destinazione ad alto rischio. Chiarire il riposo spettante.',tags:['rec']},
-  {id:'r16',ph:2,who:'resp',law:true, t:'Aggiornamento DVR con lezioni apprese dalla missione',d:'Inserire nel ciclo di miglioramento continuo le criticità emerse. Cassazione n.35510/2021: obbligo di vigilanza permanente.',tags:['law']},
-  {id:'r17',ph:2,who:'resp',law:false,t:'Chiusura pratiche assicurative',d:'Reportistica sinistri se applicabile, chiusura copertura specifica missione Nigeria.',tags:['rec']},
-  // ── POST ── VIAGGIATORE
-  {id:'v10',ph:2,who:'viag',law:false,t:'Partecipare al debriefing post-trasferta',d:'Fornire feedback onesto su: supporto ricevuto, problemi incontrati, efficacia misure di sicurezza adottate.',tags:['rec']},
-  {id:'v11',ph:2,who:'viag',law:false,t:'Effettuare visita medica post-trasferta',d:'Nigeria: screening malaria, valutazione psicofisica. Comunicare qualsiasi sintomo emerso durante o dopo la missione.',tags:['med','rec']},
-  {id:'v12',ph:2,who:'viag',law:false,t:'Segnalare incidenti o eventi anomali',d:'Qualsiasi evento di sicurezza, malessere fisico o psicologico va documentato per il miglioramento continuo SafePass.',tags:['rec']},
+/* ══════════════════════════════════════════════════════
+   SESSION STATE
+══════════════════════════════════════════════════════ */
+let session = { profile:null, userId:null, currentTrip:null, curPhase:0 };
+let loginMode = 'resp';
+
+/* ══════════════════════════════════════════════════════
+   CHECKLIST DATA
+══════════════════════════════════════════════════════ */
+const ITEMS_RESP = [
+  // PRE
+  {id:'r0',ph:0,law:true, t:'Valutazione idoneità alla mansione e Medical Fitness',d:'Verifica medica del lavoratore per le attività previste nella destinazione specifica.',tags:['law','med']},
+  {id:'r1',ph:0,law:true, t:'Stipula assicurazione specifica trasferta',d:'Polizza obbligatoria: rimpatrio, assistenza sanitaria h24, invalidità permanente, morte. D.Lgs. 81/08.',tags:['law']},
+  {id:'r2',ph:0,law:true, t:'Verifica visti e documenti di ingresso',d:'Passaporto valido min. 6 mesi, visto lavorativo, documenti aziendali necessari.',tags:['law']},
+  {id:'r3',ph:0,law:true, t:'Registrazione portale MAECI / Farnesina',d:'Obbligatoria per paesi ad alto rischio. Permette ricezione avvisi critici. Direttiva Ippocampo 2006.',tags:['law']},
+  {id:'r4',ph:0,law:true, t:'Erogazione formazione obbligatoria (art. 37 D.Lgs. 81/08)',d:'La formazione NON è facoltativa. Traccia verificabile obbligatoria. Il lavoratore non può partire senza averla completata.',tags:['law']},
+  {id:'r5',ph:0,law:true, t:'Sorveglianza sanitaria e vaccinazioni',d:'Vaccinazioni obbligatorie per la destinazione, profilassi farmacologiche, Medical Fitness Certification.',tags:['law','med']},
+  {id:'r6',ph:0,law:true, t:'Elaborazione e consegna Scheda Paese',d:'Valutazione rischio, zone critiche, numeri emergenza, normative locali, Contact Sheet plastificata.',tags:['law']},
+  {id:'r7',ph:0,law:true, t:'Aggiornamento DVR trasferte internazionali',d:'Sentenza Bonatti 2024 + Cassazione n.35510/2021: modello organizzativo verificabile obbligatorio.',tags:['law']},
+  {id:'r8',ph:0,law:false,t:'Attivazione Security Operation Centre (SOC) h24',d:'Numero dedicato h24 7/7 per destinazioni ad alto rischio. Security check giornalieri.',tags:['rec']},
+  // ON
+  {id:'r9', ph:1,law:false,t:'Verifica situazione paese alla partenza',d:'Aggiornamento in tempo reale: sicurezza, allerte, proteste. Update al viaggiatore prima del volo.',tags:['rec']},
+  {id:'r10',ph:1,law:true, t:'Monitoraggio itinerario e safety check giornalieri',d:'Conferma check-in hotel, verifica spostamenti, geolocalizzazione GPS attiva per tutta la missione.',tags:['law','rec']},
+  {id:'r11',ph:1,law:true, t:'Conferma attivazione copertura assicurativa',d:'Verifica che la polizza sia attiva e operativa per tutta la durata della missione.',tags:['law']},
+  {id:'r12',ph:1,law:false,t:'Disponibilità contatti anagrafici viaggiatore',d:'Cellulare nazionale, numero estero, email. Trattati in ottemperanza normativa privacy.',tags:['rec']},
+  // POST
+  {id:'r13',ph:2,law:false,t:'Debriefing con il viaggiatore al rientro',d:'Raccolta feedback su: supporto, misure adottate, gestione criticità. ISO 31030: ciclo miglioramento.',tags:['rec']},
+  {id:'r14',ph:2,law:false,t:'Scheduling follow-up medico post-trasferta',d:'Screening per malattie correlate alla destinazione, check up psicofisico, valutazione stress.',tags:['med','rec']},
+  {id:'r15',ph:2,law:false,t:'Valutazione stress trasferta-correlato (ISO 31030:2021)',d:'Considerare: durata volo, fuso orario, intensità attività, destinazione ad alto rischio.',tags:['rec']},
+  {id:'r16',ph:2,law:true, t:'Aggiornamento DVR con lezioni apprese',d:'Cassazione n.35510/2021: obbligo di vigilanza permanente. Inserire criticità nel ciclo di miglioramento.',tags:['law']},
+  {id:'r17',ph:2,law:false,t:'Chiusura pratiche assicurative',d:'Reportistica sinistri se applicabile, chiusura copertura specifica missione.',tags:['rec']},
+];
+const ITEMS_VIAG = [
+  {id:'v0',ph:0,law:true, t:'Completare la formazione obbligatoria TRM',d:'Art. 37 D.Lgs. 81/08 — Non posso rifiutarmi né partire senza averla completata. Traccia verificabile conservata.',tags:['law']},
+  {id:'v1',ph:0,law:true, t:'Leggere la Scheda Paese e comprendere i rischi',d:'Art. 36 D.Lgs. 81/08 — Valutazione rischio, zone critiche, numeri emergenza, normative locali.',tags:['law']},
+  {id:'v2',ph:0,law:true, t:'Visita medica pre-trasferta e vaccinazioni',d:'Colloquio con medico di travel medicine. Medical Fitness Certification. Profilassi vaccinale specifica.',tags:['law','med']},
+  {id:'v3',ph:0,law:true, t:'Accettazione formale incarico (Duty of Loyalty)',d:'Firma digitale: prendo atto dei rischi e mi impegno a rispettare le procedure SafePass.',tags:['law']},
+  {id:'v4',ph:0,law:false,t:'Allestire zaino delle emergenze',d:'Kit primo soccorso, torcia, copia documenti, contanti, coperta isotermica, fischietto, power bank, viveri secchi.',tags:['rec']},
+  {id:'v5',ph:0,law:false,t:'Comunicare itinerario dettagliato al responsabile',d:'Hotel, meeting, spostamenti, contatti locali. Avvertire tempestivamente in caso di modifiche.',tags:['rec']},
+  {id:'v6',ph:1,law:false,t:'Safety check giornaliero — conferma posizione sicura',d:'Rispondere ai check del SOC h24. Per destinazioni ad alto rischio: entro le 20:00 locali ogni giorno.',tags:['rec']},
+  {id:'v7',ph:1,law:false,t:'Comunicare ogni spostamento in tempo reale',d:'Non spostarsi senza aver comunicato la destinazione. Solo trasporti ufficiali prenotati.',tags:['rec']},
+  {id:'v8',ph:1,law:false,t:'Rispettare le raccomandazioni SafePass on-trip',d:'Non uscire soli di notte, non esibire oggetti di valore, usare solo taxi prenotati.',tags:['rec']},
+  {id:'v9',ph:1,law:true, t:'Duty of Loyalty — seguire le raccomandazioni di sicurezza',d:'Sentenza Bonatti: ignorare le indicazioni dell\'Ambasciata ha portato a condanne penali per l\'azienda.',tags:['law']},
+  {id:'v10',ph:2,law:false,t:'Partecipare al debriefing post-trasferta',d:'Fornire feedback onesto su: supporto ricevuto, problemi incontrati, efficacia misure di sicurezza.',tags:['rec']},
+  {id:'v11',ph:2,law:false,t:'Effettuare visita medica post-trasferta',d:'Screening malattie correlate alla destinazione, valutazione psicofisica. Comunicare qualsiasi sintomo.',tags:['med','rec']},
+  {id:'v12',ph:2,law:false,t:'Segnalare incidenti o eventi anomali',d:'Qualsiasi evento di sicurezza o malessere va documentato per il miglioramento continuo SafePass.',tags:['rec']},
 ];
 
-let itemState = {}; // id -> bool
+function getItems() { return session.profile === 'resp' ? ITEMS_RESP : ITEMS_VIAG; }
+function phItems(ph) { return getItems().filter(i => i.ph === ph); }
+function ckKey(itemId) { return (session.currentTrip?.id || 'demo') + '_' + itemId; }
+function isChecked(itemId) { return !!DB.checkState[ckKey(itemId)]; }
+function setChecked(itemId, val) { DB.checkState[ckKey(itemId)] = val; }
+function phDone(ph) { return phItems(ph).filter(i => isChecked(i.id)).length; }
+function phLaw(ph) { return phItems(ph).filter(i => i.law).length; }
+function phLawDone(ph) { return phItems(ph).filter(i => i.law && isChecked(i.id)).length; }
+function phComplete(ph) { const l = phLaw(ph); return l === 0 ? phDone(ph) >= phItems(ph).length : phLawDone(ph) >= l; }
+function totDone() { return getItems().filter(i => isChecked(i.id)).length; }
+function totItems() { return getItems().length; }
 
-function myItems(){return ALL_ITEMS.filter(i=>i.who===profile);}
-function phItems(ph){return myItems().filter(i=>i.ph===ph);}
-function phDone(ph){return phItems(ph).filter(i=>itemState[i.id]).length;}
-function phLaw(ph){return phItems(ph).filter(i=>i.law).length;}
-function phLawDone(ph){return phItems(ph).filter(i=>i.law&&itemState[i.id]).length;}
-function phComplete(ph){return phLawDone(ph)>=phLaw(ph)&&phLaw(ph)>0;}
-function totDone(){return myItems().filter(i=>itemState[i.id]).length;}
-function totItems(){return myItems().length;}
+const PHASE_LABELS = ['PRE-TRIP', 'ON-TRIP', 'POST-TRIP'];
+const PHASE_NAMES = {
+  resp: ['Pianificazione & Conformità', 'Monitoraggio & Protezione', 'Debriefing & Chiusura'],
+  viag: ['Informazione & Preparazione', 'Duty of Loyalty & Sicurezza', 'Rientro & Follow-up'],
+};
+const AVATR_COLORS = ['#8c6e28','#286e5c','#28468c','#6e2868','#6e4528','#28556e'];
 
-const PHASE_LABELS = ['PRE-TRIP','ON-TRIP','POST-TRIP'];
-const PHASE_NAMES_RESP = ['Pianificazione & Conformità','Monitoraggio & Protezione','Debriefing & Chiusura'];
-const PHASE_NAMES_VIAG = ['Informazione & Preparazione','Duty of Loyalty & Sicurezza','Rientro & Follow-up'];
-
-function phName(ph){return profile==='resp'?PHASE_NAMES_RESP[ph]:PHASE_NAMES_VIAG[ph];}
-
-/* ═══════════════════════════════
-   LOGIN / LOGOUT
-═══════════════════════════════ */
-function doLogin(){
-  const p=document.getElementById('psel').value;
-  if(!p){alert('Seleziona un profilo.');return;}
-  profile=p; itemState={}; curPhase=0;
-  document.getElementById('login').style.display='none';
-  document.getElementById('app').style.display='flex';
-  document.getElementById('app').style.flexDirection='column';
-  document.getElementById('tbadge').textContent='◆ '+(p==='resp'?'RESPONSABILE':'VIAGGIATORE');
-  buildNav(); showView('trip');
-}
-function doLogout(){
-  profile=null;
-  document.getElementById('login').style.display='flex';
-  document.getElementById('app').style.display='none';
+/* ══════════════════════════════════════════════════════
+   LOGIN
+══════════════════════════════════════════════════════ */
+function setLoginMode(m) {
+  loginMode = m;
+  document.querySelectorAll('.lmt').forEach((b,i) => b.classList.toggle('active', (i===0&&m==='resp')||(i===1&&m==='viag')));
+  document.getElementById('resp-fields').classList.toggle('hidden', m !== 'resp');
+  document.getElementById('viag-fields').classList.toggle('hidden', m !== 'viag');
 }
 
-/* ═══════════════════════════════
+function loginResp() {
+  const email = document.getElementById('resp-email').value.trim() || 'responsabile@azienda.com';
+  session = { profile:'resp', userId:'resp', currentTrip:null, curPhase:0 };
+  startApp('Giulia F.', 'GF', '#8c6e28');
+}
+
+function loginViag() {
+  const email = document.getElementById('viag-email').value.trim().toLowerCase();
+  const pin = document.getElementById('viag-pin').value.trim();
+  if (!email || !pin) { alert('Inserisci email e PIN.'); return; }
+  const traveler = DB.travelers.find(t => t.email.toLowerCase() === email && t.pin === pin);
+  if (!traveler) { alert('Email o PIN non corretti. Contatta il Responsabile Trasferte.'); return; }
+  const trip = DB.trips.find(t => t.id === traveler.tripId) || null;
+  session = { profile:'viag', userId:traveler.id, currentTrip:trip, curPhase:trip?.phase || 0 };
+  startApp(traveler.nome + ' ' + traveler.cognome.charAt(0)+'.', traveler.avatar, traveler.color);
+}
+
+function startApp(name, avatar, color) {
+  document.getElementById('screen-login').style.display = 'none';
+  document.getElementById('screen-app').style.display = 'flex';
+  document.getElementById('screen-app').style.flexDirection = 'column';
+  document.getElementById('screen-app').style.height = '100vh';
+  document.getElementById('topbar-name').textContent = name;
+  document.getElementById('topbar-avatar').textContent = avatar;
+  document.getElementById('topbar-avatar').style.background = `linear-gradient(135deg, ${color}, ${color}cc)`;
+  buildNav();
+  showView(session.profile === 'resp' ? 'trasferte' : 'trip');
+}
+
+function doLogout() {
+  session = { profile:null, userId:null, currentTrip:null, curPhase:0 };
+  document.getElementById('screen-login').style.display = 'flex';
+  document.getElementById('screen-app').style.display = 'none';
+  document.getElementById('resp-email').value = '';
+  document.getElementById('resp-pass').value = '';
+  document.getElementById('viag-email').value = '';
+  document.getElementById('viag-pin').value = '';
+}
+
+/* ══════════════════════════════════════════════════════
    NAV
-═══════════════════════════════ */
-function buildNav(){
-  const tabs=profile==='resp'
-    ?[['trip','Trasferta Attiva'],['nuova','Nuova Trasferta'],['paesi','Schede Paese'],['manuale','Manuale']]
-    :[['trip','La Mia Trasferta'],['paesi','Schede Paese'],['manuale','Manuale']];
-  document.getElementById('tn').innerHTML=tabs.map(([id,l])=>`<button class="tnb" id="tn-${id}" onclick="showView('${id}')">${l}</button>`).join('');
-}
-function showView(id){
-  view=id;
-  document.querySelectorAll('.tnb').forEach(b=>b.classList.remove('on'));
-  const b=document.getElementById('tn-'+id);if(b)b.classList.add('on');
-  const body=document.getElementById('body');
-  if(id==='trip')renderTrip(body);
-  else if(id==='nuova')renderNuova(body);
-  else if(id==='paesi')renderPaesi(body);
-  else if(id==='manuale')renderManuale(body);
+══════════════════════════════════════════════════════ */
+let activeView = '';
+function buildNav() {
+  const tabs = session.profile === 'resp'
+    ? [['trasferte','Trasferte'],['viaggiatori','Viaggiatori'],['paesi','Schede Paese'],['manuale','Manuale']]
+    : [['trip','La Mia Trasferta'],['paesi','Schede Paese'],['manuale','Manuale']];
+  document.getElementById('topnav').innerHTML = tabs.map(([id,l]) =>
+    `<button class="tnav-btn" id="tn-${id}" onclick="showView('${id}')">${l}</button>`
+  ).join('');
 }
 
-/* ═══════════════════════════════
-   TRIP VIEW
-═══════════════════════════════ */
-function renderTrip(body){
-  body.innerHTML=`${sidebar()}${phaseContent()}${rightPanel()}`;
-}
-function refresh(){
-  const body=document.getElementById('body');
-  if(view==='trip')renderTrip(body);
+function showView(id) {
+  activeView = id;
+  document.querySelectorAll('.tnav-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById('tn-'+id); if(btn) btn.classList.add('active');
+  const body = document.getElementById('app-body');
+  if(id==='trasferte') renderTrasferte(body);
+  else if(id==='viaggiatori') renderViaggiatori(body);
+  else if(id==='trip') renderTrip(body);
+  else if(id==='paesi') renderPaesi(body);
+  else if(id==='manuale') renderManuale(body);
 }
 
-/* SIDEBAR */
-function sidebar(){
-  const td=totDone(),tt=totItems();
-  const pct=tt?Math.round(td/tt*100):0;
-  const steps=[0,1,2].map(ph=>{
-    const isDone=phComplete(ph);
-    const isActive=ph===curPhase;
-    const isLocked=ph>curPhase;
-    let cls=isActive?'cur':isDone?'done-s':isLocked?'lock':'';
-    const tick=isDone?'✓':isLocked?'🔒':'';
-    return `<div class="pstep ${cls}" onclick="clickPhase(${ph})">
+function refresh() { showView(activeView); }
+
+/* ══════════════════════════════════════════════════════
+   RESP: TRASFERTE
+══════════════════════════════════════════════════════ */
+function renderTrasferte(body) {
+  // Pick a trip to work on — for demo use first trip or let user click
+  if (!session.currentTrip && DB.trips.length) session.currentTrip = DB.trips[0];
+  const trip = session.currentTrip;
+  if (!trip) {
+    body.innerHTML = `<div class="main-area page-pad">
+      <div class="page-eyebrow">Nessuna trasferta attiva</div>
+      <div class="page-title">Crea una <em>Trasferta</em></div>
+      <div class="alert alert-info"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="color:var(--info)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg><span>Nessuna trasferta attiva. Vai in "Viaggiatori" per creare un profilo e assegnare una trasferta.</span></div>
+    </div>`; return;
+  }
+  session.curPhase = trip.phase;
+  body.innerHTML = sidebar() + phaseContent() + rightPanel();
+}
+
+function sidebar() {
+  const trip = session.currentTrip;
+  const td = totDone(), tt = totItems();
+  const pct = tt ? Math.round(td/tt*100) : 0;
+  const traveler = DB.travelers.find(t => t.id === trip.travelerId);
+  const steps = [0,1,2].map(ph => {
+    const done = phComplete(ph);
+    const isActive = ph === session.curPhase;
+    const isLocked = ph > session.curPhase;
+    let cls = isActive ? 'active' : done ? 'done' : isLocked ? 'locked' : '';
+    return `<div class="phase-step ${cls}" onclick="clickPhase(${ph})">
       <div class="ps-eye">${PHASE_LABELS[ph]}</div>
-      <div class="ps-name">${phName(ph)}</div>
-      <div class="ps-prog">${phDone(ph)}/${phItems(ph).length} completati${phLaw(ph)?` · ${phLawDone(ph)}/${phLaw(ph)} obbligatori`:''}</div>
-      <div class="ps-tick">${tick}</div>
+      <div class="ps-name">${PHASE_NAMES[session.profile][ph]}</div>
+      <div class="ps-prog">${phDone(ph)}/${phItems(ph).length} · ${phLawDone(ph)}/${phLaw(ph)} obbligatori</div>
+      <div class="ps-tick">${done ? '✓' : isLocked ? '🔒' : ''}</div>
     </div>`;
   }).join('');
-  return `<div class="psb">
+  return `<div class="sidebar">
     <div class="psb-trip">
-      <div class="psb-dest">🇳🇬 Nigeria — Lagos</div>
-      <div class="psb-meta">15–25 Mag 2026 · 10 giorni · <span class="rbadge ra" style="font-size:7px;padding:2px 6px;">ALTO</span></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+        <span style="font-size:22px;">${trip.flag}</span>
+        <div>
+          <div class="psb-dest">${trip.paese} — ${trip.citta}</div>
+          <div class="psb-meta">${trip.dataInizio} · ${trip.giorni}g</div>
+        </div>
+      </div>
+      ${traveler ? `<div style="display:flex;align-items:center;gap:7px;padding:7px 10px;background:rgba(255,255,255,.04);border-radius:4px;border:1px solid var(--line2);">
+        <div class="avatar-sm" style="background:${traveler.color};font-size:10px;">${traveler.avatar}</div>
+        <div>
+          <div style="font-family:var(--display);font-size:10px;font-weight:700;color:rgba(255,255,255,.7);">${traveler.nome} ${traveler.cognome}</div>
+          <div style="font-family:var(--display);font-size:8px;color:rgba(255,255,255,.28);margin-top:1px;">${traveler.ruolo}</div>
+        </div>
+      </div>` : ''}
     </div>
     <div class="psb-steps">${steps}</div>
     <div class="psb-foot">
-      <div class="psb-foot-lbl">Avanzamento globale</div>
-      <div class="mpbar"><div class="mpbar-f" style="width:${pct}%"></div></div>
-      <div class="mpbar-c"><strong>${td}/${tt}</strong> attività · ${pct}%</div>
+      <div class="psb-foot-label">Avanzamento globale</div>
+      <div class="mini-pbar"><div class="mini-pbar-fill" style="width:${pct}%"></div></div>
+      <div class="mini-pbar-count"><strong>${td}/${tt}</strong> attività · ${pct}%</div>
     </div>
   </div>`;
 }
 
-function clickPhase(ph){
-  if(ph>curPhase)return;
-  curPhase=ph; refresh();
+function clickPhase(ph) {
+  if(ph > session.curPhase) return;
+  session.curPhase = ph; refresh();
 }
 
-/* PHASE CONTENT */
-function phaseContent(){
-  const ph=curPhase;
-  const its=phItems(ph);
-  const ld=phLawDone(ph),lt=phLaw(ph);
-  const allLawDone=lt===0||ld>=lt;
-  const done=phDone(ph);
+function phaseContent() {
+  const ph = session.curPhase;
+  const its = phItems(ph);
+  const ld = phLawDone(ph), lt = phLaw(ph);
+  const allLawDone = lt === 0 || ld >= lt;
+  const done = phDone(ph);
 
-  // Intro per profilo e fase
-  const intros={
-    resp:{
-      0:`<div class="ab danger"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--danger);flex-shrink:0"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg><span>Obblighi in rosso = di legge. La partenza è <strong>bloccata</strong> finché non sono tutti completati. Fonte: D.Lgs. 81/08 art.36-37, ISO 31030, sentenza Bonatti 2024.</span></div>`,
-      1:`<div class="ab info"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:#88b4ff;flex-shrink:0"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v4M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Trasferta in corso. Mantieni il monitoraggio attivo: safety check giornalieri, aggiornamenti situazione paese, SOC h24 disponibile.</span></div>`,
-      2:`<div class="ab ok"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--ok);flex-shrink:0"><path d="M2 8l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Il viaggiatore è rientrato. Avvia le procedure di chiusura. ISO 31030:2021: il ciclo di miglioramento continuo si attiva qui.</span></div>`,
+  const INTRO = {
+    resp: {
+      0:`<div class="alert alert-danger" style="margin-bottom:14px;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--danger)"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg><span>Obblighi in rosso = di legge (D.Lgs. 81/08, ISO 31030, sentenza Bonatti 2024). La partenza è <strong>bloccata</strong> finché non sono tutti completati.</span></div>`,
+      1:`<div class="alert alert-info" style="margin-bottom:14px;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--info)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg><span>Trasferta in corso. Mantieni il monitoraggio attivo: safety check giornalieri e SOC h24 disponibile.</span></div>`,
+      2:`<div class="alert alert-ok" style="margin-bottom:14px;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--ok)"><path d="M2 8l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Il viaggiatore è rientrato. Avvia le procedure di chiusura. ISO 31030: il ciclo di miglioramento continuo si attiva qui.</span></div>`,
     },
-    viag:{
-      0:`<div class="ab warn"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--warn);flex-shrink:0"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v4M8 10.5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><span>Destinazione ad <strong>ALTO RISCHIO</strong>. Completa tutti gli obblighi obbligatori (bordo rosso) prima che il Responsabile possa confermare la partenza.</span></div>`,
-      1:`<div class="ab info"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:#88b4ff;flex-shrink:0"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg><span>Sei in trasferta. Il tuo <strong>Duty of Loyalty è attivo</strong>: comunica ogni spostamento, rispondi ai safety check giornalieri, segui le raccomandazioni SafePass.</span></div>`,
-      2:`<div class="ab ok"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--ok);flex-shrink:0"><path d="M2 8l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Sei rientrato. Hai diritto al recupero post-trasferta (ISO 31030:2021). Completa il debriefing per il miglioramento del sistema.</span></div>`,
+    viag: {
+      0:`<div class="alert alert-warn" style="margin-bottom:14px;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--warn)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg><span>Trasferta ad <strong>ALTO RISCHIO</strong>. Completa tutti gli obblighi (bordo rosso) prima della partenza.</span></div>`,
+      1:`<div class="alert alert-info" style="margin-bottom:14px;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--info)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg><span>Sei in trasferta. Il tuo <strong>Duty of Loyalty è attivo</strong>: comunica ogni spostamento e rispondi ai safety check giornalieri.</span></div>`,
+      2:`<div class="alert alert-ok" style="margin-bottom:14px;"><svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--ok)"><path d="M2 8l4 4 8-8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Sei rientrato. Hai diritto al recupero post-trasferta (ISO 31030:2021).</span></div>`,
     }
   };
 
-  const itemsHtml=its.map(item=>{
-    const ck=itemState[item.id]?'ck':'';
-    const lawC=item.law&&!itemState[item.id]?'law':'';
-    const faded=itemState[item.id]?'faded':'';
-    const icon=itemState[item.id]?`<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`:'';
-    return `<div class="cli ${faded}">
-      <div class="chkbox ${ck} ${lawC}" onclick="toggle('${item.id}')">${icon}</div>
-      <div class="cli-body">
-        <div class="cli-t">${item.t}</div>
-        <div class="cli-d">${item.d}</div>
-        <div class="tags">
-          ${item.tags.includes('law')?'<span class="tag tlaw">D.Lgs. 81/08</span>':''}
-          ${item.tags.includes('med')?'<span class="tag tmed">Sanitario</span>':''}
-          ${item.tags.includes('rec')?'<span class="tag trec">ISO 31030</span>':''}
+  const TITLES = {
+    resp: {0:'Pianificazione &<br/><em>Conformità Legale</em>',1:'Monitoraggio &<br/><em>Protezione Attiva</em>',2:'Debriefing &<br/><em>Miglioramento Continuo</em>'},
+    viag: {0:'Informazione &<br/><em>Preparazione alla Trasferta</em>',1:'Duty of Loyalty &<br/><em>Sicurezza in Campo</em>',2:'Rientro &<br/><em>Follow-up Post-Trasferta</em>'},
+  };
+  const SECTION_TITLES = {
+    resp: {0:'Obblighi Legali & Operativi',1:'Attività di Monitoraggio ON-TRIP',2:'Attività di Chiusura POST-TRIP'},
+    viag: {0:'I Tuoi Obblighi & Diritti PRE-TRIP',1:'Doveri ON-TRIP (Duty of Loyalty)',2:'Le Tue Attività POST-TRIP'},
+  };
+
+  const itemsHtml = its.map(item => {
+    const ck = isChecked(item.id);
+    const chkCls = (ck ? 'checked' : '') + ' ' + (!ck && item.law ? 'law' : '');
+    const icon = ck ? `<svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 3.5-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` : '';
+    return `<div class="cl-item ${ck?'done-item':''}">
+      <div class="chk ${chkCls}" onclick="toggleItem('${item.id}')">${icon}</div>
+      <div class="cl-body">
+        <div class="cl-title">${item.t}</div>
+        <div class="cl-desc">${item.d}</div>
+        <div class="cl-tags">
+          ${item.tags.includes('law') ? '<span class="tag tag-law">D.Lgs. 81/08</span>' : ''}
+          ${item.tags.includes('med') ? '<span class="tag tag-med">Sanitario</span>' : ''}
+          ${item.tags.includes('rec') ? '<span class="tag tag-rec">ISO 31030</span>' : ''}
         </div>
       </div>
     </div>`;
   }).join('');
 
-  // Advance block
-  let advHtml='';
-  if(ph<2){
-    const nxtLabel=['Conferma partenza → Passa a ON-TRIP','Conferma rientro → Passa a POST-TRIP'][ph];
-    const canAdv=allLawDone;
-    advHtml=`<div class="adv">
-      <div class="adv-l">
-        <div class="adv-label">Obblighi di legge completati</div>
-        <div class="adv-count">${ld}/${lt}</div>
-      </div>
-      <div class="adv-r">
-        ${!canAdv?`<div class="adv-note">Completa prima tutti gli obblighi in rosso per procedere</div>`:''}
-        <button class="btn ${canAdv?'bok':'bgh bdis'}" ${canAdv?'':'disabled'} onclick="${canAdv?`advPhase()`:'void(0)'}">
-          ${nxtLabel} →
-        </button>
+  let advHtml = '';
+  if (ph < 2) {
+    const nextLabel = ['Conferma partenza → ON-TRIP','Conferma rientro → POST-TRIP'][ph];
+    advHtml = `<div class="phase-advance">
+      <div><div class="adv-label">Obblighi di legge completati</div><div class="adv-count">${ld}/${lt}</div></div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        ${!allLawDone ? `<div class="adv-note">Completa prima tutti gli obblighi in rosso</div>` : ''}
+        <button class="btn ${allLawDone ? 'btn-ok' : 'btn-ghost btn-dis'}" onclick="${allLawDone ? 'advPhase()' : ''}">${nextLabel} →</button>
       </div>
     </div>`;
   } else {
-    const allDone=done>=its.length;
-    advHtml=`<div class="adv">
-      <div class="adv-l">
-        <div class="adv-label">Attività completate</div>
-        <div class="adv-count">${done}/${its.length}</div>
-      </div>
-      <button class="btn ${allDone?'bg':'bgh bdis'}" ${allDone?'':'disabled'} onclick="${allDone?`alert('Trasferta archiviata correttamente.')`:'void(0)'}">
-        ${allDone?'✓ Archivia trasferta':'Completa tutte le attività'}
-      </button>
+    const allDone = done >= its.length;
+    advHtml = `<div class="phase-advance">
+      <div><div class="adv-label">Attività completate</div><div class="adv-count">${done}/${its.length}</div></div>
+      <button class="btn ${allDone ? 'btn-gold' : 'btn-ghost btn-dis'}" onclick="${allDone ? `alert('Trasferta archiviata.')` : ''}">${allDone ? '✓ Archivia trasferta' : 'Completa tutte le attività'}</button>
     </div>`;
   }
 
-  const eyebrows={
-    resp:{0:'PRE-TRIP — Responsabile Trasferte',1:'ON-TRIP — Responsabile Trasferte',2:'POST-TRIP — Responsabile Trasferte'},
-    viag:{0:'PRE-TRIP — Viaggiatore',1:'ON-TRIP — Viaggiatore',2:'POST-TRIP — Viaggiatore'},
-  };
-  const titles={
-    resp:{0:'Pianificazione &<br/><em>Conformità Legale</em>',1:'Monitoraggio &<br/><em>Protezione Attiva</em>',2:'Debriefing &<br/><em>Miglioramento Continuo</em>'},
-    viag:{0:'Informazione &<br/><em>Preparazione alla Trasferta</em>',1:'Duty of Loyalty &<br/><em>Sicurezza in Campo</em>',2:'Rientro &<br/><em>Follow-up Post-Trasferta</em>'},
-  };
-
-  const sectionTitle={
-    resp:{0:'Obblighi Legali & Operativi da Completare',1:'Attività di Monitoraggio ON-TRIP',2:'Attività di Chiusura POST-TRIP'},
-    viag:{0:'I Tuoi Obblighi & Diritti PRE-TRIP',1:'I Tuoi Doveri ON-TRIP (Duty of Loyalty)',2:'Le Tue Attività POST-TRIP'},
-  };
-
-  return `<div class="pcont">
-    <div class="peyebrow">${eyebrows[profile][ph]}</div>
-    <div class="ptitle" style="margin-bottom:16px;">${titles[profile][ph]}</div>
-    ${intros[profile][ph]}
-    <div class="cl-wrap">
-      <div class="cl-head">
-        <div class="cl-head-ico">
-          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 5h12M2 8h8M2 11h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-        </div>
-        <span class="cl-head-title">${sectionTitle[profile][ph]}</span>
-        <span class="cl-head-cnt">${done}/${its.length} · ${lt} obbligatori</span>
-      </div>
-      <div class="cl-list">${itemsHtml}</div>
+  return `<div class="main-area page-pad">
+    <div class="page-eyebrow">${PHASE_LABELS[ph]} — ${session.profile === 'resp' ? 'Responsabile Trasferte' : 'Viaggiatore'}</div>
+    <div class="page-title" style="margin-bottom:16px;">${TITLES[session.profile][ph]}</div>
+    ${INTRO[session.profile][ph]}
+    <div class="cl-section-head">
+      <div class="cl-section-icon"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M2 5h12M2 8h8M2 11h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      <span class="cl-section-title">${SECTION_TITLES[session.profile][ph]}</span>
+      <span class="cl-section-cnt">${done}/${its.length} · ${lt} obbligatori</span>
     </div>
+    <div class="cl-list">${itemsHtml}</div>
     ${advHtml}
   </div>`;
 }
 
-function toggle(id){
-  itemState[id]=!itemState[id];
+function toggleItem(id) {
+  setChecked(id, !isChecked(id));
   refresh();
 }
-function advPhase(){
-  if(curPhase<2){curPhase++;refresh();}
+
+function advPhase() {
+  if (session.curPhase < 2) {
+    session.curPhase++;
+    if (session.currentTrip) session.currentTrip.phase = session.curPhase;
+    refresh();
+  }
 }
 
-/* RIGHT PANEL */
-function rightPanel(){
-  const td=totDone(),tt=totItems();
-  const pct=tt?Math.round(td/tt*100):0;
-
-  const groups=[0,1,2].map(ph=>{
-    const its=phItems(ph);
-    if(!its.length)return'';
-    const done=phDone(ph),total=its.length;
-    const isActive=ph===curPhase;
-    const isLocked=ph>curPhase;
-    const isDone=phComplete(ph);
-    let lcls=isActive?'phase-active':isDone?'phase-done':isLocked?'phase-lock':'';
-    return `<div class="rpg">
-      <div class="rpg-h">
-        <span class="rpg-label ${lcls}">${PHASE_LABELS[ph]} ${isDone?'✓':isLocked?'🔒':''}</span>
-        <span class="rpg-cnt">${done}/${total}</span>
+function rightPanel() {
+  const td = totDone(), tt = totItems();
+  const pct = tt ? Math.round(td/tt*100) : 0;
+  const groups = [0,1,2].map(ph => {
+    const its = phItems(ph);
+    if (!its.length) return '';
+    const done = phDone(ph);
+    const isActive = ph === session.curPhase;
+    const isLocked = ph > session.curPhase;
+    const isDone = phComplete(ph);
+    const hcls = isActive ? 'ph-active' : isDone ? 'ph-done' : isLocked ? 'ph-lock' : '';
+    return `<div>
+      <div class="rp-group-head ${hcls}">
+        <span>${PHASE_LABELS[ph]} ${isDone?'✓':isLocked?'🔒':''}</span>
+        <span class="rp-group-cnt">${done}/${its.length}</span>
       </div>
-      ${its.map(item=>{
-        const ck=itemState[item.id];
-        const lk=ph>curPhase;
-        return `<div class="rpi">
-          <div class="rpi-chk ${ck?'ck':''} ${!ck&&item.law?'law':''} ${lk?'lock':''}">${ck?`<svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}</div>
-          <div class="rpi-txt ${ck?'ck':''} ${lk?'lock':''}">${item.t}</div>
+      ${its.map(item => {
+        const ck = isChecked(item.id);
+        const lk = ph > session.curPhase;
+        return `<div class="rp-item">
+          <div class="rp-chk ${ck?'checked':''} ${!ck&&item.law?'law':''} ${lk?'locked':''}">${ck?`<svg width="8" height="8" viewBox="0 0 8 8" fill="none"><path d="M1 4l2 2 4-3" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}</div>
+          <div class="rp-text ${ck?'done':''} ${lk?'locked':''}">${item.t}</div>
         </div>`;
       }).join('')}
     </div>`;
   }).join('');
 
-  // booking for resp
-  const preLawOk=profile==='resp'&&phLawDone(0)>=phLaw(0);
-  const bookingHtml=profile==='resp'?`<div class="rpan-foot">
-    <button class="btn bk-btn ${preLawOk?'bg':'bgh bdis'}" ${preLawOk?`onclick="alert('Booking voli sbloccato! Link al portale prenotazioni.')"`:''}>
-      ${preLawOk?'✈ Booking Voli — SBLOCCATO':'✈ Booking (completa obblighi PRE)'}
+  const preLawOk = session.profile === 'resp' && phLawDone(0) >= phLaw(0);
+  const bk = session.profile === 'resp' ? `<div class="rp-foot">
+    <button class="btn booking-btn ${preLawOk ? 'btn-gold' : 'btn-ghost btn-dis'}" onclick="${preLawOk ? `alert('Booking voli sbloccato!')` : ''}">
+      ${preLawOk ? '✈ Booking Voli — SBLOCCATO' : '✈ Booking (completa obblighi PRE)'}
     </button>
-  </div>`:'';
+  </div>` : '';
 
-  return `<div class="rpan">
-    <div class="rpan-h">
-      <div class="rpan-title">Checklist Globale — Live</div>
-      <div class="rpan-prog">
-        <div class="rpbar"><div class="rpbar-f" style="width:${pct}%"></div></div>
-        <span class="rpbar-n">${td}/${tt}</span>
+  return `<div class="right-panel">
+    <div class="rp-head">
+      <div class="rp-title">Checklist Globale — Live</div>
+      <div class="rp-pbar">
+        <div class="rp-pbar-track"><div class="rp-pbar-fill" style="width:${pct}%"></div></div>
+        <span class="rp-pbar-count">${td}/${tt}</span>
       </div>
     </div>
-    <div class="rpan-body">${groups}</div>
-    ${bookingHtml}
+    <div class="rp-body">${groups}</div>
+    ${bk}
   </div>`;
 }
 
-/* ═══════════════════════════════
-   NUOVA TRASFERTA
-═══════════════════════════════ */
-function renderNuova(body){
-  body.innerHTML=`<div style="flex:1;overflow-y:auto;padding:28px 32px;">
-    <div class="peyebrow">Crea Nuova Trasferta</div>
-    <div class="ptitle" style="margin-bottom:22px;">Modulo Richiesta &<br/><em>Valutazione Rischio Paese</em></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;">
+/* ══════════════════════════════════════════════════════
+   RESP: VIAGGIATORI (profili + assegnazione trasferta)
+══════════════════════════════════════════════════════ */
+function renderViaggiatori(body) {
+  const rows = DB.travelers.map(t => {
+    const trip = DB.trips.find(tr => tr.id === t.tripId);
+    const statusBadge = trip
+      ? `<span class="badge ${trip.stato==='on-trip'?'badge-ok':'badge-warn'}">${trip.stato.toUpperCase()}</span>`
+      : `<span class="badge" style="background:rgba(255,255,255,.06);color:rgba(255,255,255,.3);border:1px solid var(--line2);">NESSUNA TRASFERTA</span>`;
+    const tripInfo = trip ? `${trip.flag} ${trip.paese} — ${trip.citta}` : '—';
+    return `<tr>
+      <td><div style="display:flex;align-items:center;gap:10px;">
+        <div class="avatar-sm" style="background:${t.color}">${t.avatar}</div>
+        <div>
+          <div class="td-name">${t.nome} ${t.cognome}</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:1px;">${t.email}</div>
+        </div>
+      </div></td>
+      <td>${t.ruolo}</td>
+      <td><span class="td-pin" onclick="copyPIN('${t.pin}')" title="Clicca per copiare">${t.pin}</span></td>
+      <td>${tripInfo}</td>
+      <td>${statusBadge}</td>
+      <td>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-ghost btn-sm" onclick="openAssignTrip('${t.id}')">Assegna trasferta</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteTraveler('${t.id}')" style="padding:7px 10px;">✕</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  body.innerHTML = `<div class="main-area page-pad">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:24px;">
       <div>
-        <div class="card">
-          <div class="card-h"><span class="card-t">Dati Destinazione</span></div>
-          <div class="card-b">
-            <div class="fgrid">
-              <div class="fg"><label class="flbl">Paese</label>
-                <select class="fsel" onchange="updRisk(this.value)">
-                  <option value="">—</option>
-                  <option value="nigeria">Nigeria</option>
-                  <option value="arabia">Arabia Saudita</option>
-                  <option value="germania">Germania</option>
-                  <option value="brasile">Brasile</option>
-                  <option value="giappone">Giappone</option>
-                </select>
-              </div>
-              <div class="fg"><label class="flbl">Città</label><input class="fi" placeholder="es. Lagos" type="text"/></div>
-              <div class="fg"><label class="flbl">Data partenza</label><input class="fi" type="date"/></div>
-              <div class="fg"><label class="flbl">Durata (giorni)</label><input class="fi" type="number" placeholder="10"/></div>
-              <div class="fg full"><label class="flbl">Scopo</label>
-                <select class="fsel"><option>Commerciale / Meeting</option><option>Tecnico / Installazione</option><option>Sopralluogo</option><option>Audit</option></select>
-              </div>
-              <div class="map-ph full" onclick="alert('Google Maps integration — attiva in produzione')">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.2" opacity="0.35"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-                <span>Localizza su mappa<br/><small style="opacity:.6">Google Maps Integration</small></span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card">
-          <div class="card-h"><span class="card-t">Dati Viaggiatore</span></div>
-          <div class="card-b">
-            <div class="fgrid">
-              <div class="fg"><label class="flbl">Nome</label><input class="fi" placeholder="Nome" type="text"/></div>
-              <div class="fg"><label class="flbl">Cognome</label><input class="fi" placeholder="Cognome" type="text"/></div>
-              <div class="fg"><label class="flbl">Genere</label><select class="fsel"><option>M</option><option>F</option><option>Altro</option></select></div>
-              <div class="fg"><label class="flbl">Età</label><input class="fi" type="number" placeholder="35"/></div>
-              <div class="fg full"><label class="flbl">Ruolo aziendale</label><input class="fi" placeholder="es. Tecnico Senior" type="text"/></div>
-              <div class="fg full"><label class="flbl">Email aziendale</label><input class="fi" placeholder="nome@azienda.com" type="email"/></div>
-            </div>
-          </div>
-        </div>
+        <div class="page-eyebrow">Gestione Profili</div>
+        <div class="page-title">Viaggiatori &<br/><em>Assegnazione Trasferte</em></div>
       </div>
-      <div>
-        <div class="card" id="rc">
-          <div class="card-h"><span class="card-t">Profilo Rischio</span><span id="rlb" style="font-size:9px;color:rgba(255,255,255,.3);">seleziona paese</span></div>
-          <div class="card-b" id="rb"><div style="font-size:12px;color:rgba(255,255,255,.25);padding:12px 0;text-align:center;">Seleziona un paese per vedere il profilo di rischio</div></div>
-        </div>
-        <div class="rsrc-box">
-          <div class="rsrc-t">Fonti dati rischio paese</div>
-          <div class="rsrc-row"><div class="rsrc-dot"></div><div><strong style="color:rgba(255,255,255,.65);">MAECI Farnesina</strong> — viaggiaresicuri.mae.it · Fonte ufficiale italiana aggiornata dal Ministero degli Affari Esteri</div></div>
-          <div class="rsrc-row"><div class="rsrc-dot"></div><div><strong style="color:rgba(255,255,255,.65);">ACLED Conflict Index 2025</strong> — acleddata.com · Mappatura conflitti globali (citato nelle Slide TRM Base allegate)</div></div>
-          <div class="rsrc-row"><div class="rsrc-dot"></div><div><strong style="color:rgba(255,255,255,.65);">WEF Global Risk Report 2025</strong> — Risk landscape geopolitico, ambientale, tecnologico</div></div>
-          <div class="rsrc-row"><div class="rsrc-dot"></div><div><strong style="color:rgba(255,255,255,.65);">ISO 31030:2021</strong> — Standard internazionale Travel Risk Management</div></div>
-        </div>
-        <div style="display:flex;gap:10px;">
-          <button class="btn bgh" style="flex:1;justify-content:center;">Salva bozza</button>
-          <button class="btn bg" style="flex:1;justify-content:center;" onclick="showView('trip')">Crea & vai a checklist →</button>
-        </div>
+      <button class="btn btn-gold" onclick="openNewTraveler()">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Nuovo Viaggiatore
+      </button>
+    </div>
+
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-head"><span class="card-title">Database Viaggiatori (${DB.travelers.length})</span></div>
+      <div style="overflow-x:auto;">
+        <table class="trav-table">
+          <thead><tr>
+            <th>Viaggiatore</th><th>Ruolo</th><th>PIN Accesso</th><th>Trasferta Attiva</th><th>Stato</th><th>Azioni</th>
+          </tr></thead>
+          <tbody>${rows.length ? rows : '<tr><td colspan="6" style="text-align:center;padding:30px;color:rgba(255,255,255,.25);font-family:var(--display);font-size:10px;letter-spacing:2px;text-transform:uppercase;">Nessun viaggiatore</td></tr>'}</tbody>
+        </table>
       </div>
+    </div>
+
+    <div class="alert alert-info">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="color:var(--info)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg>
+      <span>I PIN sono generati automaticamente dal sistema. Comunicali ai viaggiatori in modo sicuro. Il viaggiatore accede con <strong>email + PIN</strong> dalla schermata di login.</span>
     </div>
   </div>`;
 }
 
-const RISK_DB={
-  nigeria:{l:'ALTO',c:'ra',s:4,san:3,cr:4,note:'Lagos: criminalità elevata, rischio sequestri. Solo trasporti ufficiali con scorta. Registrazione MAECI obbligatoria. ⚠ Fonte MAECI: viaggio non necessario sconsigliato.'},
-  arabia:{l:'MEDIO',c:'rm',s:3,san:2,cr:2,note:'Norme socio-culturali rigide. Visto lavorativo specifico. Fonte MAECI: prudenza elevata.'},
-  germania:{l:'BASSO',c:'rl',s:1,san:1,cr:1,note:'Paese a bassissimo rischio. Standard sanitari elevati. Fonte MAECI: nessuna restrizione.'},
-  brasile:{l:'ALTO',c:'ra',s:4,san:2,cr:4,note:'Rio/São Paulo: criminalità urbana elevata. Non uscire soli di notte. Fonte MAECI: prudenza massima.'},
-  giappone:{l:'BASSO',c:'rl',s:1,san:1,cr:1,note:'Rischio sismico. Ottimo sistema sanitario. Fonte MAECI: paese sicuro.'},
+function copyPIN(pin) {
+  navigator.clipboard?.writeText(pin).catch(()=>{});
+  alert('PIN copiato: ' + pin);
+}
+
+function deleteTraveler(id) {
+  if (!confirm('Eliminare questo profilo viaggiatore?')) return;
+  // Remove any trip assigned to this traveler
+  DB.trips = DB.trips.filter(t => t.travelerId !== id);
+  DB.travelers = DB.travelers.filter(t => t.id !== id);
+  refresh();
+}
+
+function generatePIN() {
+  return String(Math.floor(1000 + Math.random() * 9000));
+}
+
+function generateId(prefix) {
+  return prefix + Date.now().toString(36);
+}
+
+/* NEW TRAVELER MODAL */
+function openNewTraveler() {
+  const pin = generatePIN();
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.id = 'modal-new-traveler';
+  modal.innerHTML = `<div class="modal-box">
+    <div class="modal-title">Nuovo Profilo Viaggiatore</div>
+    <div class="modal-sub">Compila i dati del dipendente. Il PIN viene generato automaticamente dal sistema.</div>
+    <div class="form-grid">
+      <div class="form-group"><label class="label">Nome *</label><input class="inp" id="nt-nome" placeholder="Nome" type="text"/></div>
+      <div class="form-group"><label class="label">Cognome *</label><input class="inp" id="nt-cognome" placeholder="Cognome" type="text"/></div>
+      <div class="form-group full"><label class="label">Email aziendale *</label><input class="inp" id="nt-email" placeholder="nome@azienda.com" type="email"/></div>
+      <div class="form-group"><label class="label">Genere</label>
+        <select class="sel" id="nt-genere"><option value="M">M</option><option value="F">F</option><option value="Altro">Altro</option></select>
+      </div>
+      <div class="form-group"><label class="label">Età</label><input class="inp" id="nt-eta" placeholder="35" type="number"/></div>
+      <div class="form-group full"><label class="label">Ruolo aziendale</label><input class="inp" id="nt-ruolo" placeholder="es. Tecnico Senior" type="text"/></div>
+    </div>
+    <div class="pin-box">
+      <div class="pin-label">PIN generato automaticamente</div>
+      <div class="pin-value">${pin}</div>
+      <div class="pin-note">Comunicalo al viaggiatore in modo sicuro. Dovrà usarlo insieme alla propria email aziendale per accedere a SafePass.</div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:4px;">
+      <button class="btn btn-ghost" style="flex:1;justify-content:center;" onclick="closeModal()">Annulla</button>
+      <button class="btn btn-gold" style="flex:1;justify-content:center;" onclick="saveTraveler('${pin}')">Crea Profilo →</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
+function saveTraveler(pin) {
+  const nome = document.getElementById('nt-nome').value.trim();
+  const cognome = document.getElementById('nt-cognome').value.trim();
+  const email = document.getElementById('nt-email').value.trim();
+  const ruolo = document.getElementById('nt-ruolo').value.trim() || 'Dipendente';
+  const eta = parseInt(document.getElementById('nt-eta').value) || 0;
+  const genere = document.getElementById('nt-genere').value;
+  if (!nome || !cognome || !email) { alert('Compila nome, cognome ed email.'); return; }
+  if (DB.travelers.find(t => t.email.toLowerCase() === email.toLowerCase())) { alert('Esiste già un profilo con questa email.'); return; }
+  const avatar = nome.charAt(0).toUpperCase() + cognome.charAt(0).toUpperCase();
+  const color = AVATR_COLORS[DB.travelers.length % AVATR_COLORS.length];
+  const newT = { id:generateId('t'), nome, cognome, email, pin, eta, genere, ruolo, avatar, color, tripId:null };
+  DB.travelers.push(newT);
+  closeModal();
+  refresh();
+}
+
+/* ASSIGN TRIP MODAL */
+function openAssignTrip(travelerId) {
+  const t = DB.travelers.find(x => x.id === travelerId);
+  if (!t) return;
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.id = 'modal-assign';
+  const countryOptions = [
+    {v:'nigeria',f:'🇳🇬',n:'Nigeria',r:'alto'},
+    {v:'arabia',f:'🇸🇦',n:'Arabia Saudita',r:'medio'},
+    {v:'germania',f:'🇩🇪',n:'Germania',r:'basso'},
+    {v:'brasile',f:'🇧🇷',n:'Brasile',r:'alto'},
+    {v:'giappone',f:'🇯🇵',n:'Giappone',r:'basso'},
+    {v:'argentina',f:'🇦🇷',n:'Argentina',r:'medio'},
+  ].map(c => `<option value="${c.v}" data-flag="${c.f}" data-risk="${c.r}">${c.f} ${c.n} — Rischio ${c.r.toUpperCase()}</option>`).join('');
+  const scopi = ['Commerciale / Meeting','Tecnico / Installazione','Sopralluogo','Audit / Ispezione','Formazione'].map(s=>`<option>${s}</option>`).join('');
+  modal.innerHTML = `<div class="modal-box">
+    <div class="modal-title">Assegna Trasferta</div>
+    <div class="modal-sub">Nuova trasferta per <strong style="color:var(--glt)">${t.nome} ${t.cognome}</strong> — ${t.ruolo}</div>
+    <div class="form-grid">
+      <div class="form-group full"><label class="label">Paese di destinazione *</label>
+        <select class="sel" id="at-paese">${countryOptions}</select>
+      </div>
+      <div class="form-group full"><label class="label">Città *</label><input class="inp" id="at-citta" placeholder="es. Lagos" type="text"/></div>
+      <div class="form-group"><label class="label">Data partenza *</label><input class="inp" id="at-inizio" type="date"/></div>
+      <div class="form-group"><label class="label">Durata (giorni) *</label><input class="inp" id="at-giorni" type="number" placeholder="10" min="1"/></div>
+      <div class="form-group full"><label class="label">Scopo della trasferta</label>
+        <select class="sel" id="at-scopo">${scopi}</select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px;">
+      <button class="btn btn-ghost" style="flex:1;justify-content:center;" onclick="closeModal()">Annulla</button>
+      <button class="btn btn-gold" style="flex:1;justify-content:center;" onclick="saveTrip('${travelerId}')">Crea Trasferta →</button>
+    </div>
+  </div>`;
+  document.body.appendChild(modal);
+}
+
+const COUNTRIES = {
+  nigeria:{n:'Nigeria',f:'🇳🇬',r:'alto'},
+  arabia:{n:'Arabia Saudita',f:'🇸🇦',r:'medio'},
+  germania:{n:'Germania',f:'🇩🇪',r:'basso'},
+  brasile:{n:'Brasile',f:'🇧🇷',r:'alto'},
+  giappone:{n:'Giappone',f:'🇯🇵',r:'basso'},
+  argentina:{n:'Argentina',f:'🇦🇷',r:'medio'},
 };
 
-function updRisk(v){
-  const r=RISK_DB[v];if(!r)return;
-  document.getElementById('rlb').innerHTML=`<span class="rbadge ${r.c}">${r.l}</span>`;
-  const cols=['var(--danger)','var(--warn)','var(--ok)'];
-  const getC=n=>n>=4?cols[0]:n>=3?cols[1]:cols[2];
-  document.getElementById('rb').innerHTML=`
-    ${[['Sicurezza Generale',r.s],['Rischio Sanitario',r.san],['Rischio Criminale',r.cr]].map(([lbl,val])=>`
-      <div style="margin-bottom:12px;">
-        <div style="font-size:9px;color:rgba(255,255,255,.3);margin-bottom:4px;">${lbl}</div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div style="flex:1;height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;">
-            <div style="width:${val*20}%;height:100%;background:${getC(val)};border-radius:2px;"></div>
-          </div>
-          <span style="font-size:10px;color:${getC(val)};font-weight:600;">${val}/5</span>
-        </div>
-      </div>`).join('')}
-    <div class="ab ${r.c==='ra'?'danger':'warn'}" style="margin-top:8px;">
-      <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg>
-      <span style="font-size:11px;">${r.note}</span>
-    </div>`;
+function saveTrip(travelerId) {
+  const paeseKey = document.getElementById('at-paese').value;
+  const citta = document.getElementById('at-citta').value.trim();
+  const inizio = document.getElementById('at-inizio').value;
+  const giorni = parseInt(document.getElementById('at-giorni').value);
+  const scopo = document.getElementById('at-scopo').value;
+  if (!citta || !inizio || !giorni) { alert('Compila tutti i campi obbligatori.'); return; }
+  const c = COUNTRIES[paeseKey];
+  // Remove any existing trip for this traveler
+  DB.trips = DB.trips.filter(t => t.travelerId !== travelerId);
+  const [y,m,d] = inizio.split('-');
+  const dataInizio = `${d}/${m}/${y}`;
+  const fineDate = new Date(inizio); fineDate.setDate(fineDate.getDate() + giorni);
+  const fd = fineDate.toLocaleDateString('it-IT',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const newTrip = {
+    id: generateId('tr'),
+    paese:c.n, citta, flag:c.f, risk:c.r, scopo, dataInizio, dataFine:fd,
+    giorni, travelerId, phase:0, stato:'pre-trip'
+  };
+  DB.trips.push(newTrip);
+  const traveler = DB.travelers.find(t => t.id === travelerId);
+  if (traveler) traveler.tripId = newTrip.id;
+  closeModal();
+  refresh();
 }
 
-/* ═══════════════════════════════
+function closeModal() {
+  document.querySelectorAll('.modal-overlay').forEach(m => m.remove());
+}
+
+/* ══════════════════════════════════════════════════════
+   VIAG: TRIP VIEW
+══════════════════════════════════════════════════════ */
+function renderTrip(body) {
+  const trip = session.currentTrip;
+  if (!trip) {
+    body.innerHTML = `<div class="main-area page-pad">
+      <div class="page-eyebrow">La Mia Trasferta</div>
+      <div class="page-title">Nessuna trasferta<br/><em>assegnata</em></div>
+      <div class="alert alert-info">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="color:var(--info)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg>
+        <span>Il Responsabile Trasferte non ha ancora assegnato una trasferta al tuo profilo. Contattalo per maggiori informazioni.</span>
+      </div>
+    </div>`; return;
+  }
+  body.innerHTML = sidebar() + phaseContent() + rightPanel();
+}
+
+/* ══════════════════════════════════════════════════════
    SCHEDE PAESE
-═══════════════════════════════ */
-function renderPaesi(body){
-  const P=[
+══════════════════════════════════════════════════════ */
+function renderPaesi(body) {
+  const PAESI = [
     {f:'🇳🇬',n:'Nigeria',r:'Africa Occ.',risk:'h',src:'MAECI · ACLED 2025'},
     {f:'🇸🇦',n:'Arabia Saudita',r:'Medio Oriente',risk:'m',src:'MAECI · WEF 2025'},
     {f:'🇩🇪',n:'Germania',r:'Europa',risk:'l',src:'MAECI'},
@@ -694,83 +1087,89 @@ function renderPaesi(body){
     {f:'🇲🇽',n:'Messico',r:'America C.',risk:'h',src:'MAECI · ACLED 2025'},
     {f:'🇪🇹',n:'Etiopia',r:'Africa Or.',risk:'h',src:'MAECI · ACLED 2025'},
   ];
-  const rm={h:'ra ALTO',m:'rm MEDIO',l:'rl BASSO'};
-  body.innerHTML=`<div style="flex:1;overflow-y:auto;padding:28px 32px;">
-    <div class="peyebrow">Database Internazionale</div>
-    <div class="ptitle" style="margin-bottom:10px;">Schede <em>Paese</em></div>
-    <div class="rsrc-box" style="max-width:700px;margin-bottom:18px;">
-      <div class="rsrc-t">Fonti dati rischio utilizzate</div>
+  const rmap = {h:['badge-danger','ALTO'],m:['badge-warn','MEDIO'],l:['badge-ok','BASSO']};
+  const rfill = {h:'rf-h',m:'rf-m',l:'rf-l'};
+  body.innerHTML = `<div class="main-area page-pad">
+    <div class="page-eyebrow">Database Internazionale</div>
+    <div class="page-title" style="margin-bottom:12px;">Schede <em>Paese</em></div>
+    <div class="rsrc" style="margin-bottom:18px;">
+      <div class="rsrc-title">Fonti dati rischio</div>
       <div style="display:flex;gap:20px;flex-wrap:wrap;">
-        <div class="rsrc-row" style="margin:0"><div class="rsrc-dot"></div><span style="font-size:10px;color:rgba(255,255,255,.4);"><strong style="color:rgba(255,255,255,.6)">MAECI Farnesina</strong> (viaggiaresicuri.mae.it)</span></div>
-        <div class="rsrc-row" style="margin:0"><div class="rsrc-dot"></div><span style="font-size:10px;color:rgba(255,255,255,.4);"><strong style="color:rgba(255,255,255,.6)">ACLED Conflict Index 2025</strong></span></div>
-        <div class="rsrc-row" style="margin:0"><div class="rsrc-dot"></div><span style="font-size:10px;color:rgba(255,255,255,.4);"><strong style="color:rgba(255,255,255,.6)">WEF Global Risk Report 2025</strong></span></div>
+        <div class="rsrc-row" style="margin:0"><div class="rsrc-dot"></div><span class="rsrc-text"><strong style="color:rgba(255,255,255,.6)">MAECI Farnesina</strong> — viaggiaresicuri.mae.it (fonte ufficiale italiana)</span></div>
+        <div class="rsrc-row" style="margin:0"><div class="rsrc-dot"></div><span class="rsrc-text"><strong style="color:rgba(255,255,255,.6)">ACLED Conflict Index 2025</strong> — acleddata.com</span></div>
+        <div class="rsrc-row" style="margin:0"><div class="rsrc-dot"></div><span class="rsrc-text"><strong style="color:rgba(255,255,255,.6)">WEF Global Risk Report 2025</strong></span></div>
       </div>
     </div>
-    <div class="pgrid">
-      ${P.map(p=>{const[bc,bl]=rm[p.risk].split(' ');return`
-        <div class="pc">
-          <div class="pc-f">${p.f}</div>
-          <div class="pc-n">${p.n}</div>
-          <div class="pc-r">${p.r}</div>
-          <div class="rbar"><div class="rbf ${p.risk}"></div></div>
-          <span class="rbadge ${bc}">${bl}</span>
-          <div class="pc-src">Fonte: ${p.src}</div>
-        </div>`;}).join('')}
+    <div class="paese-grid">
+      ${PAESI.map(p => `<div class="paese-card">
+        <div class="pc-flag">${p.f}</div>
+        <div class="pc-name">${p.n}</div>
+        <div class="pc-region">${p.r}</div>
+        <div class="pc-rbar"><div class="pc-rfill ${rfill[p.risk]}" style="width:${p.risk==='h'?'80%':p.risk==='m'?'50%':'20%'}"></div></div>
+        <span class="badge ${rmap[p.risk][0]}">${rmap[p.risk][1]}</span>
+        <div class="pc-src">${p.src}</div>
+      </div>`).join('')}
     </div>
   </div>`;
 }
 
-/* ═══════════════════════════════
-   MANUALE
-═══════════════════════════════ */
-const MAN_SECS=[
-  ['generali','Raccomandazioni Generali'],['pretrip','Prima della Trasferta'],['durante','Durante'],
-  ['alloggi','Alloggi & Spostamenti'],['incidente','Incidente Stradale'],['blackout','Blackout'],
-  ['incendio','Incendi'],['terremoto','Terremoti'],['alluvione','Alluvioni & Calore'],
-  ['manifestazioni','Manifestazioni'],['terrorismo','Attacco Terroristico'],['criminali','Aggressione & Rapina'],
+/* ══════════════════════════════════════════════════════
+   MANUALE OPERATIVO
+══════════════════════════════════════════════════════ */
+const MAN = [
+  ['gen','Raccomandazioni Generali'],['pre','Prima della Trasferta'],['dur','Durante'],
+  ['all','Alloggi & Spostamenti'],['inc','Incidente Stradale'],['bla','Blackout'],
+  ['inf','Incendi'],['ter','Terremoti'],['all2','Alluvioni & Calore'],
+  ['man','Manifestazioni'],['att','Attacco Terroristico'],['cri','Aggressione & Rapina'],
   ['neo','Evacuazione NEO'],
 ];
-const MAN_BODY={
-  generali:`<h3>Raccomandazioni Generali</h3><p>Approntare sempre una checklist prima della trasferta per salvaguardare salute fisica e psicologica del viaggiatore.</p><h4>Note sui Medicinali</h4><div class="ab danger"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--danger)"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg><span>Non tutti i farmaci legali in Italia lo sono all'estero. Rischio confisca o arresto. Verificare: legalità, quantità consentita, documenti necessari.</span></div><ul class="mlist"><li>Conoscere il nome internazionale del principio attivo</li><li>Portare copia della prescrizione medica</li><li>Medicinali essenziali: FANS, antidiarroici, farmaci salvavita prescritti</li></ul>`,
-  pretrip:`<h3>Prima della Trasferta</h3><ul class="mlist"><li>Valutare condizioni sanitarie e vaccinazioni con il medico competente</li><li>Registrarsi sul portale MAECI con tappe e periodi di permanenza</li><li>Stampare su carta weatherproof la Contact Sheet e copia passaporto</li></ul><h4>Zaino delle Emergenze</h4><ul class="mlist"><li>Kit primo soccorso · Torcia · Copia documenti</li><li>Piccola somma di denaro · Coperta isotermica</li><li>Fischietto · Acqua · Viveri secchi · Power bank</li></ul>`,
-  durante:`<h3>Durante la Trasferta</h3><ul class="mlist"><li>Conformarsi agli usi e costumi locali</li><li>Usufruire solo di servizi di trasporto ufficiali</li><li>Bere esclusivamente da contenitori sigillati</li><li>Evitare cibi crudi</li><li>Portare sempre tessera sanitaria con gruppo sanguigno</li></ul>`,
-  alloggi:`<h3>Alloggi & Spostamenti</h3><h4>In Hotel</h4><ul class="mlist"><li>Non separarsi dai bagagli durante il check-in</li><li>Non dire ad alta voce il numero di stanza</li><li>Documenti originali sempre in cassaforte</li></ul><h4>Spostamenti</h4><ul class="mlist"><li>Comunicare TUTTI gli spostamenti al responsabile</li><li>Transfer solo con servizi autorizzati e prenotati</li><li>In taxi: annotare targa, nome conducente, numero licenza</li></ul>`,
-  incidente:`<h3>Incidente Stradale</h3><ul class="mlist"><li>Contattare immediatamente il punto di noleggio e i servizi di emergenza</li><li>Mantenere atteggiamento distensivo — non ammettere responsabilità</li><li>Rimandare qualsiasi discussione all'arrivo delle forze dell'ordine</li></ul>`,
-  blackout:`<h3>Blackout</h3><ul class="mlist"><li>Piano di continuità: batterie, cavi ricarica, copie cartacee numeri utili</li><li>Cibo non deperibile, acqua, medicinali per più giorni</li><li>Torce e radio in luoghi di rapido accesso</li><li>Identificare aree sicure: alberghi, ospedali, stazioni di polizia</li><li>Monitorare media locali e seguire istruzioni autorità</li></ul>`,
-  incendio:`<h3>Incendi</h3><h4>Al Chiuso</h4><ul class="mlist"><li>Attivare allarme antincendio e servizi emergenza</li><li>Seguire vie di fuga — non usare ascensori</li><li>Coprire naso e bocca durante l'evacuazione</li><li>Non tornare per oggetti personali</li></ul><h4>All'Aperto</h4><ul class="mlist"><li>Cercare via di fuga: strada o corso d'acqua</li><li>Stendersi a terra dove non c'è vegetazione incendiabile</li></ul>`,
-  terremoto:`<h3>Terremoti</h3><h4>Al Chiuso</h4><ul class="mlist"><li>Mettersi nel vano di una porta portante o sotto un tavolo resistente</li><li>Attendere la fine della scossa — non precipitarsi fuori</li></ul><h4>All'Aperto</h4><ul class="mlist"><li>Allontanarsi da edifici, alberi, lampioni, linee elettriche</li></ul><h4>Dopo</h4><ul class="mlist"><li>Verificare lo stato di salute delle persone vicine</li><li>In zona a rischio maremoto: allontanarsi verso zone elevate</li></ul>`,
-  alluvione:`<h3>Alluvioni & Ondate di Calore</h3><h4>Alluvione — Al Chiuso</h4><ul class="mlist"><li>Non scendere in cantine o garage</li><li>Salire ai piani superiori — non usare l'ascensore</li><li>Non bere acqua dal rubinetto: potrebbe essere contaminata</li></ul><h4>Ondata di Calore</h4><ul class="mlist"><li>Bere molti liquidi, evitare alcol e caffeina</li><li>Ridurre attività fisica nelle ore più calde</li></ul>`,
-  manifestazioni:`<h3>Manifestazioni e Proteste</h3><ul class="mlist"><li>Evitare aree con proteste, cortei, dimostrazioni</li><li>Non attraversare blocchi stradali dei manifestanti</li><li>Monitorare media locali per aggiornamenti</li><li>Preferire percorsi principali — attenzione ai GPS non aggiornati</li></ul>`,
-  terrorismo:`<h3>Attacco Terroristico</h3><div class="mproc"><div class="mproc-t">Protocollo RUN · HIDE · TELL</div><div class="mproc-b"><strong style="color:var(--danger)">RUN</strong> — Scappa rapidamente dall'area se è sicuro farlo.<br/><strong style="color:var(--warn)">HIDE</strong> — Nasconditi e barricati se non puoi scappare.<br/><strong style="color:var(--ok)">TELL</strong> — Al sicuro, chiama le autorità con tutte le informazioni.</div></div><ul class="mlist"><li>Evitare la zona dell'attacco se non coinvolti</li><li>Raggiungere un ospedale rapidamente se feriti</li><li>Rimanere informati tramite media locali ufficiali</li></ul>`,
-  criminali:`<h3>Aggressione, Furto o Rapina</h3><h4>Prevenzione</h4><ul class="mlist"><li>Non uscire da solo di notte</li><li>Non esibire orologi, gioielli, grandi quantità di denaro</li><li>Usare solo taxi prenotati tramite app o albergo</li></ul><div class="ab warn" style="margin-top:10px"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--warn)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg><span><strong>Non reagire.</strong> Consegnare gli oggetti richiesti. La resistenza può provocare violenza letale.</span></div>`,
-  neo:`<h3>Evacuazione NEO (Non-combat Evacuation)</h3><div class="mproc"><div class="mproc-t">Fase 1 — Evacuazione con Mezzi Privati</div><div class="mproc-b">Comunicazione ai cittadini tramite dispositivi mobili di evacuare autonomamente. Prerequisito: registrazione MAECI attiva.</div></div><div class="mproc"><div class="mproc-t">Fase 2 — Direttiva Ippocampo (2006)</div><div class="mproc-b">L'Ambasciatore dichiara l'evacuazione. Il personale raggiunge autonomamente i centri di raccolta comunicati dall'Ambasciata.</div></div><ul class="mlist"><li>Mantenersi in contatto con l'Ambasciata italiana</li><li>In assenza, rivolgersi alle ambasciate UE (coordinamento UK e Giappone)</li></ul>`,
+const MAN_BODY = {
+  gen:`<h3>Raccomandazioni Generali</h3><p>Approntare sempre una checklist prima della trasferta per salvaguardare salute fisica e psicologica del viaggiatore.</p><h4>Medicinali</h4><div class="alert alert-danger" style="margin-bottom:10px"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="color:var(--danger);flex-shrink:0"><path d="M8 2L1 14h14L8 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg><span>Non tutti i farmaci legali in Italia lo sono all'estero. Rischio confisca o arresto. Verificare legalità, quantità consentita e documenti necessari.</span></div><ul class="mlist"><li>Conoscere il nome internazionale del principio attivo</li><li>Portare copia della prescrizione medica</li><li>Medicinali essenziali: FANS, antidiarroici, farmaci salvavita prescritti</li></ul>`,
+  pre:`<h3>Prima della Trasferta</h3><ul class="mlist"><li>Valutare condizioni sanitarie e vaccinazioni con il medico competente</li><li>Registrarsi sul portale MAECI con tappe e periodi di permanenza</li><li>Stampare su carta weatherproof la Contact Sheet e copia passaporto</li></ul><h4>Zaino delle Emergenze</h4><ul class="mlist"><li>Kit primo soccorso · Torcia · Copia documenti</li><li>Piccola somma di denaro · Coperta isotermica</li><li>Fischietto · Acqua · Viveri secchi · Power bank</li></ul>`,
+  dur:`<h3>Durante la Trasferta</h3><ul class="mlist"><li>Conformarsi agli usi e costumi locali</li><li>Usufruire solo di servizi di trasporto ufficiali</li><li>Bere esclusivamente da contenitori sigillati</li><li>Evitare cibi crudi</li><li>Portare sempre tessera sanitaria con gruppo sanguigno</li></ul>`,
+  all:`<h3>Alloggi & Spostamenti</h3><h4>In Hotel</h4><ul class="mlist"><li>Non separarsi dai bagagli durante il check-in</li><li>Non dire ad alta voce il numero di stanza</li><li>Documenti originali sempre in cassaforte</li></ul><h4>Spostamenti</h4><ul class="mlist"><li>Comunicare TUTTI gli spostamenti al responsabile</li><li>Transfer solo con servizi autorizzati e prenotati</li><li>In taxi: annotare targa, nome conducente, numero licenza</li></ul>`,
+  inc:`<h3>Incidente Stradale</h3><ul class="mlist"><li>Contattare immediatamente il punto di noleggio e i servizi di emergenza</li><li>Mantenere atteggiamento distensivo — non ammettere responsabilità</li><li>Rimandare qualsiasi discussione all'arrivo delle forze dell'ordine</li></ul>`,
+  bla:`<h3>Blackout</h3><ul class="mlist"><li>Piano di continuità: batterie, cavi ricarica, copie cartacee numeri utili</li><li>Cibo non deperibile, acqua, medicinali per più giorni</li><li>Torce e radio in luoghi di rapido accesso</li><li>Monitorare media locali e seguire istruzioni autorità</li></ul>`,
+  inf:`<h3>Incendi</h3><h4>Al Chiuso</h4><ul class="mlist"><li>Attivare allarme antincendio e servizi emergenza</li><li>Seguire vie di fuga — non usare ascensori</li><li>Coprire naso e bocca durante l'evacuazione</li><li>Non tornare per oggetti personali</li></ul><h4>All'Aperto</h4><ul class="mlist"><li>Cercare via di fuga: strada o corso d'acqua</li><li>Stendersi a terra dove non c'è vegetazione incendiabile</li></ul>`,
+  ter:`<h3>Terremoti</h3><h4>Al Chiuso</h4><ul class="mlist"><li>Mettersi nel vano di una porta portante o sotto un tavolo resistente</li><li>Attendere la fine della scossa — non precipitarsi fuori</li></ul><h4>All'Aperto</h4><ul class="mlist"><li>Allontanarsi da edifici, alberi, lampioni, linee elettriche</li></ul><h4>Dopo</h4><ul class="mlist"><li>Verificare lo stato di salute delle persone vicine</li><li>Raggiungere le aree di attesa del Piano di protezione locale</li></ul>`,
+  all2:`<h3>Alluvioni & Ondate di Calore</h3><h4>Alluvione — Al Chiuso</h4><ul class="mlist"><li>Non scendere in cantine o garage</li><li>Salire ai piani superiori — non usare l'ascensore</li><li>Non bere acqua dal rubinetto: potrebbe essere contaminata</li></ul><h4>Ondata di Calore</h4><ul class="mlist"><li>Bere molti liquidi, evitare alcol e caffeina</li><li>Ridurre attività fisica nelle ore più calde</li></ul>`,
+  man:`<h3>Manifestazioni e Proteste</h3><ul class="mlist"><li>Evitare aree con proteste, cortei, dimostrazioni</li><li>Non attraversare blocchi stradali dei manifestanti</li><li>Monitorare media locali per aggiornamenti</li><li>Preferire percorsi principali — attenzione ai GPS non aggiornati</li></ul>`,
+  att:`<h3>Attacco Terroristico</h3><div class="mproc"><div class="mproc-t">Protocollo RUN · HIDE · TELL</div><div class="mproc-b"><strong style="color:var(--danger)">RUN</strong> — Scappa rapidamente dall'area se è sicuro farlo.<br/><strong style="color:var(--warn)">HIDE</strong> — Nasconditi e barricati se non puoi scappare.<br/><strong style="color:var(--ok)">TELL</strong> — Al sicuro, chiama le autorità con tutte le informazioni.</div></div>`,
+  cri:`<h3>Aggressione, Furto o Rapina</h3><ul class="mlist"><li>Non uscire da solo di notte</li><li>Non esibire orologi, gioielli, grandi quantità di denaro</li><li>Usare solo taxi prenotati tramite app o albergo</li></ul><div class="alert alert-warn" style="margin-top:10px"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex-shrink:0;color:var(--warn)"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/></svg><span><strong>Non reagire.</strong> Consegnare gli oggetti richiesti. La resistenza può provocare violenza letale.</span></div>`,
+  neo:`<h3>Evacuazione NEO (Non-combat Evacuation)</h3><div class="mproc"><div class="mproc-t">Fase 1 — Evacuazione con Mezzi Privati</div><div class="mproc-b">Comunicazione ai cittadini tramite dispositivi mobili di evacuare autonomamente. Prerequisito: registrazione MAECI attiva.</div></div><div class="mproc"><div class="mproc-t">Fase 2 — Direttiva Ippocampo (2006)</div><div class="mproc-b">L'Ambasciatore dichiara l'evacuazione. Il personale raggiunge autonomamente i centri di raccolta comunicati dall'Ambasciata. Evacuazioni italiane coordinate con UK e Giappone.</div></div>`,
 };
 
-function renderManuale(body){
-  const first=MAN_SECS[0][0];
-  body.innerHTML=`<div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
-    <div style="padding:20px 28px 12px;flex-shrink:0;">
-      <div class="peyebrow">Documento Operativo Ver. 0.3</div>
-      <div class="ptitle">Manuale <em>Operativo</em></div>
+function renderManuale(body) {
+  const first = MAN[0][0];
+  body.innerHTML = `<div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+    <div class="page-pad" style="flex-shrink:0;padding-bottom:14px;">
+      <div class="page-eyebrow">Documento Operativo Ver. 0.3</div>
+      <div class="page-title">Manuale <em>Operativo</em></div>
     </div>
-    <div class="card" style="flex:1;overflow:hidden;margin:0 28px 20px;display:flex;flex-direction:column;">
-      <div class="man-wrap" style="flex:1;overflow:hidden;">
+    <div class="card" style="flex:1;overflow:hidden;margin:0 32px 24px;display:flex;flex-direction:column;">
+      <div class="man-wrap">
         <div class="man-sb">
-          ${MAN_SECS.map(([id,l])=>`<div class="man-sb-i ${id===first?'on':''}" onclick="swMan('${id}',this)">${l}</div>`).join('')}
+          ${MAN.map(([id,l]) => `<div class="msbi ${id===first?'on':''}" onclick="swMan('${id}',this)">${l}</div>`).join('')}
         </div>
         <div class="man-body">
-          ${MAN_SECS.map(([id])=>`<div class="ms ${id===first?'on':''}" id="ms-${id}">${MAN_BODY[id]||'<p>In aggiornamento.</p>'}</div>`).join('')}
+          ${MAN.map(([id]) => `<div class="msec ${id===first?'on':''}" id="ms-${id}">${MAN_BODY[id]||'<p>In aggiornamento.</p>'}</div>`).join('')}
         </div>
       </div>
     </div>
   </div>`;
 }
-function swMan(id,el){
-  document.querySelectorAll('.man-sb-i').forEach(i=>i.classList.remove('on'));
-  document.querySelectorAll('.ms').forEach(s=>s.classList.remove('on'));
+
+function swMan(id, el) {
+  document.querySelectorAll('.msbi').forEach(i => i.classList.remove('on'));
+  document.querySelectorAll('.msec').forEach(s => s.classList.remove('on'));
   el.classList.add('on');
-  const s=document.getElementById('ms-'+id);if(s)s.classList.add('on');
+  const s = document.getElementById('ms-'+id); if(s) s.classList.add('on');
 }
+
+// Close modal on overlay click
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('modal-overlay')) closeModal();
+});
 </script>
 </body>
 </html>
