@@ -139,50 +139,17 @@
     }
 
     /* ══════════════════════════════════
-       SCENE 1 — HERO EDITORIALE
+       SCENE 1 — HERO: foto sx, testo dx
     ══════════════════════════════════ */
     .scene-hero {
       min-height: 100svh;
       display: grid;
-      grid-template-columns: 55% 45%;
+      grid-template-columns: 48% 52%;
       position: relative;
-    }
-
-    /* ─ COLONNA SINISTRA: testo ─ */
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 80px 56px 72px 0;
-      background: var(--ink);
       overflow: hidden;
     }
-    .hero-text {
-      padding-left: 72px;
-    }
 
-    /* pattern diagonale sottile */
-    .hero-content::before {
-      content: '';
-      position: absolute; inset: 0; pointer-events: none;
-      background: repeating-linear-gradient(
-        -52deg, transparent, transparent 90px,
-        rgba(200,169,110,0.016) 90px, rgba(200,169,110,0.016) 91px
-      );
-    }
-
-    /* bordo dorato a destra del testo */
-    .hero-content::after {
-      content: '';
-      position: absolute;
-      right: 0; top: 15%; bottom: 15%;
-      width: 1px;
-      background: linear-gradient(to bottom, transparent, rgba(200,169,110,0.35), transparent);
-    }
-
-    /* ─ COLONNA DESTRA: foto ─ */
+    /* ─ FOTO — colonna sinistra ─ */
     .hero-bg {
       position: relative;
       overflow: hidden;
@@ -193,9 +160,9 @@
       inset: 0;
       width: 100%; height: 100%;
       object-fit: cover;
-      object-position: 35% top;
+      object-position: center top;
       display: block;
-      filter: grayscale(15%) contrast(1.06) brightness(0.78);
+      filter: grayscale(15%) contrast(1.06) brightness(0.82);
       transform: scale(1.04);
       animation: heroZoom 14s ease-out forwards;
     }
@@ -203,89 +170,92 @@
       from { transform: scale(1.04); }
       to   { transform: scale(1.00); }
     }
-
-    /* vignetta: più scura in basso e sul bordo sinistro */
+    /* vignetta destra della foto per sfumare verso il testo */
     .hero-bg::after {
       content: '';
       position: absolute; inset: 0; pointer-events: none;
       background:
-        linear-gradient(to right, rgba(8,15,28,0.38) 0%, transparent 40%),
-        linear-gradient(to top,   rgba(8,15,28,0.55) 0%, transparent 45%),
-        linear-gradient(to bottom,rgba(8,15,28,0.20) 0%, transparent 30%);
+        linear-gradient(to right,  transparent 55%, rgba(8,15,28,0.5) 100%),
+        linear-gradient(to top,    rgba(8,15,28,0.45) 0%, transparent 40%),
+        linear-gradient(to bottom, rgba(8,15,28,0.25) 0%, transparent 30%);
     }
 
-    /* credit in basso nella foto */
-    .hero-photo-label {
+    /* linea dorata verticale — bordo destro della foto */
+    .hero-bg::before {
+      content: '';
       position: absolute;
-      bottom: 28px; right: 28px;
-      z-index: 3;
-      font-size: 8px;
-      font-weight: 500;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.22);
-      writing-mode: vertical-rl;
+      right: 0; top: 12%; bottom: 12%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(200,169,110,0.38), transparent);
+      z-index: 2;
     }
 
-    /* separatore decorativo — NON serve più come div separato */
-    .hero-divider { display: none; }
+    /* ─ TESTO — colonna destra ─ */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 100px 72px 80px 64px;
+      background: var(--ink);
+      overflow: hidden;
+    }
+
+    /* righe diagonali decorative sul testo */
+    .hero-content::after {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(
+        -52deg, transparent, transparent 90px,
+        rgba(200,169,110,0.016) 90px, rgba(200,169,110,0.016) 91px
+      );
+    }
+
+    /* wrapper interno per il testo — non serve, il padding è sulla colonna */
+    .hero-text { position: relative; z-index: 1; }
 
     .hero-tag {
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 3.5px;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 22px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      opacity: 0;
-      animation: fadeUp 0.8s 0.4s forwards;
+      font-size: 9px; font-weight: 500;
+      letter-spacing: 3.5px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 24px;
+      display: flex; align-items: center; gap: 12px;
+      opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
     }
     .hero-tag::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
 
     .hero-name {
       font-family: var(--serif);
-      font-size: clamp(48px, 7vw, 96px);
+      font-size: clamp(52px, 7.5vw, 108px);
       font-weight: 300;
-      line-height: 0.92;
+      line-height: 0.91;
       color: #fff;
       margin-bottom: 28px;
-      opacity: 0;
-      animation: fadeUp 0.9s 0.6s forwards;
+      opacity: 0; animation: fadeUp 0.9s 0.6s forwards;
       letter-spacing: -0.01em;
     }
     .hero-name em { display: block; font-style: italic; color: var(--gold-lt); }
 
     .hero-role {
-      font-size: clamp(12px, 1.3vw, 14px);
+      font-size: clamp(12px, 1.2vw, 14px);
       font-weight: 300;
       color: rgba(255,255,255,0.48);
-      letter-spacing: 0.04em;
-      line-height: 1.75;
-      max-width: 380px;
-      margin-bottom: 48px;
-      opacity: 0;
-      animation: fadeUp 0.9s 0.8s forwards;
+      letter-spacing: 0.04em; line-height: 1.75;
+      max-width: 360px; margin-bottom: 48px;
+      opacity: 0; animation: fadeUp 0.9s 0.8s forwards;
     }
 
     .hero-cta-row {
-      display: flex;
-      align-items: center;
-      gap: 24px;
-      opacity: 0;
-      animation: fadeUp 0.9s 1s forwards;
+      display: flex; align-items: center; gap: 24px;
+      opacity: 0; animation: fadeUp 0.9s 1s forwards;
       flex-wrap: wrap;
     }
 
     .btn-primary {
       display: inline-flex; align-items: center; gap: 10px;
-      padding: 13px 26px;
-      background: var(--gold); color: var(--ink);
+      padding: 13px 26px; background: var(--gold); color: var(--ink);
       font-size: 9px; font-weight: 600; letter-spacing: 2.5px; text-transform: uppercase;
-      text-decoration: none; border-radius: 2px;
-      transition: background 0.25s, gap 0.2s;
+      text-decoration: none; border-radius: 2px; transition: background 0.25s, gap 0.2s;
     }
     .btn-primary:hover { background: var(--gold-lt); gap: 16px; }
 
@@ -299,48 +269,39 @@
     /* scroll indicator */
     .scroll-ind {
       position: absolute;
-      bottom: 32px; left: 72px;
+      bottom: 32px; right: 72px;
       z-index: 3;
-      display: flex; align-items: center; gap: 10px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
       opacity: 0; animation: fadeIn 1s 1.4s forwards;
     }
     .scroll-ind span {
       font-size: 8px; letter-spacing: 3px; text-transform: uppercase;
-      color: rgba(255,255,255,0.22);
+      color: rgba(255,255,255,0.22); writing-mode: vertical-rl;
     }
     .scroll-ind-line {
-      width: 40px; height: 1px;
-      background: linear-gradient(to right, var(--gold-dk), transparent);
+      width: 1px; height: 48px;
+      background: linear-gradient(to bottom, var(--gold-dk), transparent);
       animation: lineGrow 2s 1.8s ease-out infinite;
     }
     @keyframes lineGrow {
-      0%   { transform: scaleX(0); transform-origin: left; }
-      50%  { transform: scaleX(1); transform-origin: left; }
-      51%  { transform: scaleX(1); transform-origin: right; }
-      100% { transform: scaleX(0); transform-origin: right; }
+      0%   { transform: scaleY(0); transform-origin: top; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      51%  { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
     }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(28px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    @keyframes fadeIn {
-      from { opacity: 0; } to { opacity: 1; }
-    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* MOBILE */
+    /* ─ MOBILE ─ */
     @media (max-width: 780px) {
-      .scene-hero { grid-template-columns: 1fr; grid-template-rows: 52vh auto; }
+      .scene-hero { grid-template-columns: 1fr; grid-template-rows: 56vw 1fr; }
       .hero-bg { grid-row: 1; }
-      .hero-bg img { object-position: center 20%; }
-      .hero-content {
-        grid-row: 2;
-        padding: 0 0 60px;
-        justify-content: flex-start;
-      }
-      .hero-text { padding-left: 28px; padding-right: 28px; padding-top: 44px; }
-      .hero-content::after { display: none; }
-      .scroll-ind { left: 28px; bottom: 20px; }
+      .hero-bg::before { display: none; }
+      .hero-content { grid-row: 2; padding: 44px 28px 60px; justify-content: flex-start; }
     }
 
         /* ══════════════════════════════════
@@ -941,39 +902,41 @@
   <!-- ══ HERO ══ -->
   <section class="scene-hero" id="home">
 
-    <div class="hero-content">
-      <div class="hero-text">
-      <div class="hero-tag">Security &amp; Safety Specialist</div>
-      <h1 class="hero-name">
-        Giulia
-        <em>Fumagalli</em>
-      </h1>
-      <p class="hero-role">
-        Consulente in Enterprise Risk &amp; Security Management,<br/>
-        Travel Risk e progettazione formativa — Milano · Roma
-      </p>
-      <div class="hero-cta-row">
-        <a href="#aree" class="btn-primary">
-          Cosa faccio
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-        <a href="#profilo" class="btn-ghost">
-          Scopri il profilo
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
-      </div><!-- /.hero-text -->
-    </div>
-
+    <!-- foto — colonna sinistra -->
     <div class="hero-bg">
       <img src="foto.png" alt="Giulia Fumagalli"/>
-      <div class="hero-photo-label">Security &amp; Safety</div>
+    </div>
+
+    <!-- testo — colonna destra -->
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-tag">Security &amp; Safety Specialist</div>
+        <h1 class="hero-name">
+          Giulia
+          <em>Fumagalli</em>
+        </h1>
+        <p class="hero-role">
+          Consulente in Enterprise Risk &amp; Security Management,<br/>
+          Travel Risk e progettazione formativa — Milano · Roma
+        </p>
+        <div class="hero-cta-row">
+          <a href="#aree" class="btn-primary">
+            Cosa faccio
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#profilo" class="btn-ghost">
+            Scopri il profilo
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div><!-- /.hero-text -->
     </div>
 
     <div class="scroll-ind">
       <span>Scroll</span>
       <div class="scroll-ind-line"></div>
     </div>
+
   </section>
 
   <!-- ══ PROFILO ══ -->
