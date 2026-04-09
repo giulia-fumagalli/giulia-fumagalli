@@ -28,37 +28,9 @@
       background: var(--ink);
       color: #fff;
       overflow-x: hidden;
-      cursor: none;
     }
 
-    /* ── CUSTOM CURSOR (desktop only) ── */
-    .cursor {
-      position: fixed;
-      width: 8px; height: 8px;
-      background: var(--gold);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%,-50%);
-      transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
-      mix-blend-mode: normal;
-    }
-    .cursor-ring {
-      position: fixed;
-      width: 36px; height: 36px;
-      border: 1px solid rgba(200,169,110,0.5);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%,-50%);
-      transition: transform 0.18s ease, width 0.3s, height 0.3s;
-    }
-    .cursor.hover { width: 14px; height: 14px; }
-    .cursor-ring.hover { width: 56px; height: 56px; border-color: rgba(200,169,110,0.8); }
-
-    @media (hover: none) {
-      .cursor, .cursor-ring { display: none; }
-      body { cursor: auto; }
+          body { cursor: auto; }
     }
 
     /* ── NAV ── */
@@ -156,55 +128,75 @@
     }
 
     /* ══════════════════════════════════
-       SCENE 1 — HERO CINEMATOGRAFICO
+       SCENE 1 — HERO SPLIT
     ══════════════════════════════════ */
     .scene-hero {
-      position: relative;
       min-height: 100svh;
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
       overflow: hidden;
     }
 
-    /* foto full bleed */
-    .hero-bg {
-      position: absolute;
-      inset: 0;
+    /* TESTO — sinistra */
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 120px 56px 80px 48px;
       background: var(--ink);
+    }
+
+    /* sottili righe diagonali decorative */
+    .hero-content::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background: repeating-linear-gradient(
+        -55deg, transparent, transparent 80px,
+        rgba(200,169,110,0.018) 80px, rgba(200,169,110,0.018) 81px
+      );
+    }
+
+    /* FOTO — destra */
+    .hero-bg {
+      position: relative;
+      overflow: hidden;
+      background: var(--ink-mid);
     }
     .hero-bg img {
       width: 100%; height: 100%;
       object-fit: cover;
       object-position: center top;
       display: block;
-      filter: grayscale(30%) contrast(1.1) brightness(0.55);
+      filter: grayscale(18%) contrast(1.08) brightness(0.82);
       transform: scale(1.04);
-      animation: heroZoom 12s ease-out forwards;
+      animation: heroZoom 14s ease-out forwards;
     }
     @keyframes heroZoom {
       from { transform: scale(1.04); }
       to   { transform: scale(1.00); }
     }
 
-    /* gradiente overlay */
+    /* vignetta sottile sui bordi della foto */
     .hero-bg::after {
       content: '';
       position: absolute; inset: 0;
       background:
-        linear-gradient(to right, rgba(8,15,28,0.75) 0%, rgba(8,15,28,0.2) 60%, transparent 100%),
-        linear-gradient(to top, rgba(8,15,28,0.9) 0%, transparent 50%);
+        linear-gradient(to left,  transparent 65%, rgba(8,15,28,0.55) 100%),
+        linear-gradient(to top,   rgba(8,15,28,0.5) 0%, transparent 35%),
+        linear-gradient(to bottom,rgba(8,15,28,0.3) 0%, transparent 25%);
     }
 
-    /* contenuto hero */
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      min-height: 100svh;
-      padding: 0 40px 64px;
-      max-width: 900px;
+    /* linea dorata verticale tra testo e foto */
+    .hero-divider {
+      position: absolute;
+      left: 50%; top: 12%; bottom: 12%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(200,169,110,0.35), transparent);
+      z-index: 3;
+      transform: translateX(-50%);
     }
 
     .hero-tag {
@@ -495,13 +487,9 @@
     }
 
     .aree-header {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      margin-bottom: 72px;
-      padding-bottom: 48px;
+      margin-bottom: 52px;
+      padding-bottom: 32px;
       border-bottom: 1px solid var(--line);
-      align-items: end;
     }
 
     .aree-header h2 {
@@ -524,18 +512,18 @@
     .aree-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--line);
-      border: 1px solid var(--line);
+      gap: 12px;
       border-radius: 4px;
       overflow: hidden;
     }
 
     .area-card {
-      background: var(--ink-mid);
-      padding: 40px 32px;
+      background: #1a2740;
+      padding: 38px 30px;
+      border-radius: 5px;
+      border: 1px solid rgba(200,169,110,0.1);
       position: relative;
-      transition: background 0.35s;
+      transition: background 0.35s, border-color 0.35s;
       overflow: hidden;
     }
     .area-card::after {
@@ -546,7 +534,7 @@
       background: var(--gold);
       transition: width 0.45s ease;
     }
-    .area-card:hover { background: rgba(200,169,110,0.05); }
+    .area-card:hover { background: #1f2e4a; border-color: rgba(200,169,110,0.25); }
     .area-card:hover::after { width: 100%; }
 
     /* numero grande */
@@ -554,13 +542,13 @@
       font-family: var(--serif);
       font-size: 64px;
       font-weight: 300;
-      color: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.10);
       line-height: 1;
       margin-bottom: -10px;
       transition: color 0.4s;
       user-select: none;
     }
-    .area-card:hover .area-num { color: rgba(200,169,110,0.08); }
+    .area-card:hover .area-num { color: rgba(200,169,110,0.22); }
 
     .area-icon {
       width: 44px; height: 44px;
@@ -575,9 +563,9 @@
       font-weight: 600;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: var(--gold-dk);
-      background: rgba(140,112,64,0.12);
-      border: 1px solid rgba(140,112,64,0.2);
+      color: var(--gold-lt);
+      background: rgba(200,169,110,0.12);
+      border: 1px solid rgba(200,169,110,0.28);
       padding: 3px 9px;
       border-radius: 2px;
       display: inline-block;
@@ -595,7 +583,7 @@
 
     .area-desc {
       font-size: 12px;
-      color: rgba(255,255,255,0.38);
+      color: rgba(255,255,255,0.58);
       line-height: 1.75;
     }
 
@@ -883,7 +871,11 @@
        RESPONSIVE
     ══════════════════════════════════ */
     @media (max-width: 860px) {
-      .hero-content { padding: 0 24px 56px; }
+      .scene-hero { grid-template-columns: 1fr; grid-template-rows: 55vw 1fr; }
+      .hero-bg { grid-row: 1; }
+      .hero-divider { display: none; }
+      .hero-content { grid-row: 2; padding: 44px 24px 56px; justify-content: flex-start; }
+      .hero-content::before { display: none; }
       .profilo-inner, .aree-inner, .servizi-inner, .store-inner { padding: 72px 24px; }
       .profilo-split { grid-template-columns: 1fr; gap: 52px; }
       .aree-header { grid-template-columns: 1fr; gap: 20px; margin-bottom: 48px; }
@@ -903,10 +895,6 @@
   </style>
 </head>
 <body>
-
-  <!-- CURSOR -->
-  <div class="cursor" id="cur"></div>
-  <div class="cursor-ring" id="curR"></div>
 
   <!-- NAV -->
   <nav class="nav" id="nav">
@@ -930,9 +918,7 @@
 
   <!-- ══ HERO ══ -->
   <section class="scene-hero" id="home">
-    <div class="hero-bg">
-      <img src="foto.png" alt="Giulia Fumagalli"/>
-    </div>
+    <div class="hero-divider"></div>
 
     <div class="hero-content">
       <div class="hero-tag">Security &amp; Safety Specialist</div>
@@ -954,6 +940,10 @@
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
+    </div>
+
+    <div class="hero-bg">
+      <img src="foto.png" alt="Giulia Fumagalli"/>
     </div>
 
     <div class="scroll-ind">
@@ -1015,7 +1005,7 @@
           <h2>Servizi per privati,<br/>professionisti<br/>e <em>aziende</em>.</h2>
         </div>
         <div>
-          <p class="aree-header-sub">Ogni servizio nasce da un'esigenza reale. Che tu sia un privato, un professionista, un'associazione o un'azienda — trovi qui un supporto su misura, concreto e qualificato.</p>
+
         </div>
       </div>
 
@@ -1230,21 +1220,7 @@
   </footer>
 
   <script>
-    // ── Cursor
-    const cur = document.getElementById('cur');
-    const curR = document.getElementById('curR');
-    document.addEventListener('mousemove', e => {
-      cur.style.left = e.clientX + 'px';
-      cur.style.top  = e.clientY + 'px';
-      setTimeout(() => {
-        curR.style.left = e.clientX + 'px';
-        curR.style.top  = e.clientY + 'px';
-      }, 60);
-    });
-    document.querySelectorAll('a, button, .area-card').forEach(el => {
-      el.addEventListener('mouseenter', () => { cur.classList.add('hover'); curR.classList.add('hover'); });
-      el.addEventListener('mouseleave', () => { cur.classList.remove('hover'); curR.classList.remove('hover'); });
-    });
+
 
     // ── Nav solid on scroll
     const nav = document.getElementById('nav');
